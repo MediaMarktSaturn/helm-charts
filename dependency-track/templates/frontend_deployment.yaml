@@ -1,0 +1,75 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "frontendName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "frontendLabels" . | nindent 4 }}
+  annotations:
+    release/time: {{ date "2006-01-02T15:04:05Z07:00" now }}
+    release/revision: {{ .Release.Revision | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "frontendLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "frontendLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "frontendName" . }}
+      containers:
+        - name: dependency-track-frontend
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 101
+          resources:
+            {{- toYaml .Values.frontend.resources | nindent 12 }}
+          image: "{{ .Values.frontend.image.repository | trim }}:{{ .Values.frontend.image.tag | trim}}"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: API_BASE_URL
+              value: {{ .Values.apiserver.baseurl }}
+          envFrom: {{ if not (or .Values.frontend.configuration .Values.frontend.configEnvFrom .Values.frontend.secretEnvFrom) -}}[]{{- end }}
+            {{- if .Values.frontend.configuration }}
+            - configMapRef:
+                name: {{ include "frontendName" . }}
+            {{- end }}
+            {{- range $c := .Values.frontend.configEnvFrom }}
+            - configMapRef:
+                name: {{ $c }}
+            {{- end }}
+            {{- range $s := .Values.frontend.secretEnvFrom }}
+            - secretRef:
+                name: {{ $s }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          livenessProbe:
+            httpGet:
+              port: http
+              path: /
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              port: http
+              path: /
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+      volumes:
+        - name: tmp
+          emptyDir: { }

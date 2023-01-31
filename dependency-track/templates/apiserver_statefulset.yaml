@@ -1,0 +1,85 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "apiserverName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "apiserverLabels" . | nindent 4 }}
+  annotations:
+    release/time: {{ date "2006-01-02T15:04:05Z07:00" now }}
+    release/revision: {{ .Release.Revision | quote }}
+spec:
+  serviceName: {{ include "apiserverName" . }}
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "apiserverLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "apiserverLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "apiserverName" . }}
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: dependency-track-apiserver
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+          image: "{{ .Values.apiserver.image.repository | trim }}:{{ .Values.apiserver.image.tag | trim}}"
+          imagePullPolicy: IfNotPresent
+          resources:
+            {{- toYaml .Values.apiserver.resources | nindent 12 }}
+          env:
+            - name: ALPINE_DATA_DIRECTORY
+              value: "/data"
+          envFrom: {{ if not (or .Values.apiserver.configuration .Values.apiserver.configEnvFrom .Values.apiserver.secretEnvFrom) -}}[]{{- end }}
+            {{- if .Values.apiserver.configuration }}
+            - configMapRef:
+                name: {{ include "apiserverName" . }}
+            {{- end }}
+            {{- range $c := .Values.apiserver.configEnvFrom }}
+            - configMapRef:
+                name: {{ $c }}
+            {{- end }}
+            {{- range $s := .Values.apiserver.secretEnvFrom }}
+            - secretRef:
+                name: {{ $s }}
+            {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: tmp
+              mountPath: /tmp
+          ports:
+            - name: api
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: api
+              path: /api/version
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              port: api
+              path: /
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+      volumes:
+        - name: tmp
+          emptyDir: { }
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "apiserverName" . }}

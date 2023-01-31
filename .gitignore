@@ -1,0 +1,14 @@
+# Eclipse project files
+.classpath
+.project
+.settings
+
+# IntelliJ project files
+*.iml
+.idea/
+
+# VSCode project files
+.vscode
+
+# packaged charts
+*.tgz

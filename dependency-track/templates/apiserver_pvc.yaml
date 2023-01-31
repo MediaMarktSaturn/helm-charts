@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "apiserverName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "apiserverLabels" . | nindent 4 }}
+  annotations:
+    release/time: {{ date "2006-01-02T15:04:05Z07:00" now }}
+    release/revision: {{ .Release.Revision | quote }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{ .Values.apiserver.storage.class }}
+  resources:
+    requests:
+      storage: {{ .Values.apiserver.storage.size }}

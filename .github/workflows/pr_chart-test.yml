@@ -1,0 +1,60 @@
+---
+name: Lint and Test Charts
+# yamllint disable-line rule:truthy
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+env:
+  # see https://github.com/kubernetes-sigs/kind/releases
+  kind_version: v0.17.0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          # take the images for a certain kind version from its GH release page: https://github.com/kubernetes-sigs/kind/releases
+          - name: k8s-1.26
+            kindest_image: kindest/node:v1.26.0@sha256:691e24bd2417609db7e589e1a479b902d2e209892a10ce375fab60a8407c7352
+          - name: k8s-1.25
+            kindest_image: kindest/node:v1.25.3@sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1
+          - name: k8s-1.24
+            kindest_image: kindest/node:v1.24.7@sha256:577c630ce8e509131eab1aea12c022190978dd2f745aac5eb1fe65c0807eb315
+          - name: k8s-1.23
+            kindest_image: kindest/node:v1.23.13@sha256:ef453bb7c79f0e3caba88d2067d4196f427794086a7d0df8df4f019d5e336b61
+          - name: k8s-1.22
+            kindest_image: kindest/node:v1.22.15@sha256:7d9708c4b0873f0fe2e171e2b1b7f45ae89482617778c1c875f1053d4cef2e41
+          - name: k8s-1.21
+            kindest_image: kindest/node:v1.21.14@sha256:9d9eb5fb26b4fbc0c6d95fa8c790414f9750dd583f5d7cee45d92e8c26670aa1
+    name: ${{ matrix.name }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: azure/setup-helm@v3.5
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.7
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.3.1
+
+      - name: Lint charts
+        run: ct lint --config .github/workflows/conf/ct.yml
+
+      - uses: helm/kind-action@main
+        with:
+          config: .github/workflows/conf/kind.yml
+          version: ${{ env.kind_version }}
+          node_image: ${{ matrix.kindest_image }}
+
+      - name: Chart installation tests
+        run: ct install --config .github/workflows/conf/ct.yml
+
+      - run: kubectl describe nodes; echo "=== API Versions ==="; kubectl api-versions; echo "=== CRDs ==="; kubectl get crd
+        if: failure()

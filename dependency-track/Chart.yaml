@@ -1,0 +1,10 @@
+apiVersion: v2
+name: dependency-track
+home: https://github.com/MediaMarktSaturn/helm-charts
+description: Helm Chart for running OWASP Dependency-Track on Kubernetes
+type: application
+maintainers:
+  - name: MediaMarktSaturn
+    url: https://github.com/MediaMarktSaturn
+appVersion: 4.7.0
+version: 1.0.1

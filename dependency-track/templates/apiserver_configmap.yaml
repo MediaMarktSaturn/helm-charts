@@ -1,0 +1,17 @@
+{{- if .Values.apiserver.configuration }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "apiserverName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "apiserverLabels" . | nindent 4 }}
+  annotations:
+    release/time: {{ date "2006-01-02T15:04:05Z07:00" now }}
+    release/revision: {{ .Release.Revision | quote }}
+data:
+  {{- range $k, $v := .Values.apiserver.configuration }}
+  {{ $k }}: {{ $v | quote }}
+  {{- end }}
+{{- end }}
