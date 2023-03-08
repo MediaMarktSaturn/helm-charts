@@ -38,8 +38,6 @@ jobs:
       - uses: azure/setup-helm@v3.5
 
       - uses: actions/setup-python@v4
-        with:
-          python-version: 3.7
 
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2.3.1
@@ -54,12 +52,19 @@ jobs:
           node_image: ${{ matrix.kindest_image }}
 
       - name: Chart installation tests
-        run: |
-          # copy test-values into charts
-          rsync -a chart-tests/ charts/
-
-          # run chart tests
-          ct install --config .github/workflows/conf/ct.yml
+        run: .github/workflows/scripts/chart-test.sh
 
       - run: kubectl describe nodes; echo "=== API Versions ==="; kubectl api-versions; echo "=== CRDs ==="; kubectl get crd
         if: failure()
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v4
+
+      - name: Run checkov on each test case permutation
+        run: .github/workflows/scripts/checkov-chart-linting.sh
