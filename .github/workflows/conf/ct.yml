@@ -1,6 +1,6 @@
 ---
 chart-dirs:
-  - /
+  - charts
 all: true
 debug: true
 check-version-increment: true
