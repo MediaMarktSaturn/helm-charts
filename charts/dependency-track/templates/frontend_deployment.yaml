@@ -23,8 +23,11 @@ spec:
       containers:
         - name: dependency-track-frontend
           securityContext:
+            readOnlyRootFilesystem: true
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
             allowPrivilegeEscalation: false
-            runAsUser: 101
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
           image: "{{ .Values.frontend.image.repository | trim }}:{{ .Values.frontend.image.tag | trim}}"

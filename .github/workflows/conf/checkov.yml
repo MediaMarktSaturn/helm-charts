@@ -1,0 +1,16 @@
+---
+skip-check:
+  - CKV_K8S_31 # https://docs.bridgecrew.io/docs/bc_k8s_29 - Ensure seccomp is set to Docker/Default or Runtime/Default
+  - CKV_K8S_40 # https://docs.bridgecrew.io/docs/bc_k8s_37 - Ensure containers run with a high UID to avoid host conflict
+  - CKV_K8S_23 # https://docs.bridgecrew.io/docs/bc_k8s_22 - Minimize admission of root containers
+  - CKV_K8S_22 # https://docs.bridgecrew.io/docs/bc_k8s_21 - Use Read-Only filesystem for containers where possible
+  - CKV_K8S_29 # https://docs.bridgecrew.io/docs/ensure-securitycontext-is-applied-to-pods-and-containers  - Ensure securityContext is applied to pods and containers
+  - CKV_K8S_30 # https://docs.bridgecrew.io/docs/bc_k8s_28 - Ensure securityContext is applied to pods and containers
+  - CKV_K8S_37 # https://docs.bridgecrew.io/docs/bc_k8s_34 - Ensure admission of containers with capabilities assigned is limited
+  - CKV_K8S_15 # https://docs.bridgecrew.io/docs/bc_k8s_14 - Ensure image pull policy is set to Always
+  - CKV_K8S_43 # https://docs.bridgecrew.io/docs/bc_k8s_39 - Ensure images are selected using a digest
+  - CKV_K8S_28 # https://docs.bridgecrew.io/docs/bc_k8s_27 - Ensure admission of containers with NET_RAW capability is minimized
+  - CKV_K8S_38 # https://docs.bridgecrew.io/docs/bc_k8s_35 - Ensure service account tokens are mounted where necessary; required for side-car injection
+  - CKV_K8S_35 # https://docs.bridgecrew.io/docs/bc_k8s_33 - Use secrets as files instead of environment variable
+  - CKV_SECRET_6 # https://docs.bridgecrew.io/docs/git_secrets_6 - Base64 High Entropy String; checksums result in false positives here
+  - CKV2_K8S_6 # https://www.checkov.io/5.Policy%20Index/kubernetes.html - Minimize the admission of pods which lack an associated NetworkPolicy

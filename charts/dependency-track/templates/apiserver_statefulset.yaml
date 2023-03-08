@@ -30,6 +30,7 @@ spec:
             runAsGroup: 1000
             runAsNonRoot: true
             runAsUser: 1000
+            allowPrivilegeEscalation: false
           image: "{{ .Values.apiserver.image.repository | trim }}:{{ .Values.apiserver.image.tag | trim}}"
           imagePullPolicy: IfNotPresent
           resources:
