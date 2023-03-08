@@ -1,0 +1,23 @@
+apiserver:
+  resources:
+    requests:
+      cpu: "100m"
+      memory: 1024Mi
+  storage:
+    class: "standard"
+    size: "10Mi"
+
+frontend:
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+  configEnvFrom: []
+  secretEnvFrom: []
+  configuration: {}
+  service:
+    annotations: {}
+    type: ClusterIP
+
+ingress:
+  enabled: false

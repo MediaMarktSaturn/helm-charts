@@ -54,7 +54,12 @@ jobs:
           node_image: ${{ matrix.kindest_image }}
 
       - name: Chart installation tests
-        run: ct install --config .github/workflows/conf/ct.yml
+        run: |
+          # copy test-values into charts
+          rsync -a chart-tests/ charts/
+
+          # run chart tests
+          ct install --config .github/workflows/conf/ct.yml
 
       - run: kubectl describe nodes; echo "=== API Versions ==="; kubectl api-versions; echo "=== CRDs ==="; kubectl get crd
         if: failure()
