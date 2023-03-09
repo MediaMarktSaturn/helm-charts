@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # copy test-values into charts
 rsync -a chart-tests/ charts/
