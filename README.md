@@ -1,4 +1,4 @@
-# Helm-Charts
+# MediaMarktSaturn Technology - Helm-Charts
 
 This repository contains Helm charts bundled and used by the MediaMarktSaturn Technology team.
 
@@ -6,7 +6,7 @@ This repository contains Helm charts bundled and used by the MediaMarktSaturn Te
 
 With helm cli:
 
-`helm repo add mediamarktsaturn https://helm-charts.mmst.eu`
+`helm repo add mediamarktsaturn https://helm-charts.mms.tech`
 
 With FluxCD:
 
@@ -18,11 +18,15 @@ metadata:
   name: mediamarktsaturn
 spec:
   interval: 120m
-  url: https://helm-charts.mmst.eu
+  url: https://helm-charts.mms.tech
 ```
 
 ## Charts
 
-### [Dependency-Track](charts/dependency-track)
+### [Dependency-Track](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/dependency-track)
 
 The [OWASP Dependency-Track](https://owasp.org/www-project-dependency-track/) project with separate deployments for API-server and frontend.
+
+---
+
+_This repository is published under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)_
