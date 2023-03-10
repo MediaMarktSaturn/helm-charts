@@ -1,3 +1,5 @@
+![MediaMarktSaturng Logo](assets/mms.png)
+
 # MediaMarktSaturn Technology - Helm-Charts
 
 This repository contains Helm charts bundled and used by the MediaMarktSaturn Technology team.
@@ -30,3 +32,5 @@ The [OWASP Dependency-Track](https://owasp.org/www-project-dependency-track/) pr
 ---
 
 _This repository is published under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)_
+
+**_get to know us 👉 [https://mms.tech](https://mms.tech) 👈_**
