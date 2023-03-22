@@ -1,5 +1,5 @@
 apiVersion: v2
-name: k8s-pod-cleanup
+name: pod-cleanup
 home: https://github.com/MediaMarktSaturn/helm-charts
 description: Helm Chart for cleaning up failed/terminated Kubernetes pods
 type: application

@@ -33,6 +33,8 @@ The [OWASP Dependency-Track](https://owasp.org/www-project-dependency-track/) pr
 
 A CronJob that deletes terminated/failed pods from a Kubernetes cluster.
 
+Useful when e.g. provisioning Google Kubernetes Engine clusters with preemptible nodes. The preemption leads to pods being shut down during node recreation, however the pods are still kept and displayed when listing them.
+
 ---
 
 _This repository is published under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)_
