@@ -29,7 +29,7 @@ spec:
 
 The [OWASP Dependency-Track](https://owasp.org/www-project-dependency-track/) project with separate deployments for API-server and frontend.
 
-### [Kubernetes failed/terminated pods cleanup](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/k8s-pod-cleanup)
+### [Kubernetes failed/terminated pods cleanup](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/pod-cleanup)
 
 A CronJob that deletes terminated/failed pods from a Kubernetes cluster.
 
