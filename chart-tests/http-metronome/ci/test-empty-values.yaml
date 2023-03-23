@@ -1,0 +1,19 @@
+# Preemptible VMs may cause cron job executions to fail, so restart on failure is default behaviour
+restartPolicy: OnFailure
+
+# Define if cronjobs for the same target should run in parallel, defaulting to: only one job at a time
+concurrencyPolicy: Forbid
+
+# how much completed jobs to keep in each state
+successfulJobsHistoryLimit: 1
+failedJobsHistoryLimit: 1
+
+# please find details about these settings on the Kubernetes documentation: https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
+ttlSecondsAfterFinished: 1000
+startingDeadlineSeconds: 200
+
+# in an istio meshed environment, sidecar lifecycle has to be managed
+istioManaged: false
+
+# list of cronjobs that should run, structure see below.
+jobs: []

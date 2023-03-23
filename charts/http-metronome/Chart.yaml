@@ -1,0 +1,10 @@
+apiVersion: v2
+name: http-metronome
+home: https://github.com/MediaMarktSaturn/helm-charts
+description: Chart for k8s cronjobs to periodic triggering cluster-local http endpoints.
+type: application
+maintainers:
+  - name: MediaMarktSaturn
+    url: https://github.com/MediaMarktSaturn
+appVersion: 1.0.0
+version: 1.0.0

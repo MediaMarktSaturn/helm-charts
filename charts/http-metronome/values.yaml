@@ -1,0 +1,38 @@
+image:
+  repository: registry.access.redhat.com/ubi8/ubi-minimal
+  tag: "8.5"
+  pullPolicy: IfNotPresent
+
+# please find details about these settings on the Kubernetes documentation: https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
+
+# Preemptible VMs may cause cron job executions to fail, so restart on failure is default behaviour
+restartPolicy: OnFailure
+
+# Define if cronjobs for the same target should run in parallel, defaulting to: only one job at a time
+concurrencyPolicy: Forbid
+
+# how much completed jobs to keep in each state
+successfulJobsHistoryLimit: 1
+failedJobsHistoryLimit: 1
+
+# https://kubernetes.io/docs/concepts/workloads/controllers/ttlafterfinished/
+ttlSecondsAfterFinished: 86400
+startingDeadlineSeconds: 200
+
+# in an istio meshed environment, sidecar lifecycle has to be managed
+istioManaged: false
+
+# list of cronjobs that should run, structure see below.
+jobs:
+  - name: this-is-just-a-test                          # MANDATORY: name of the cron-job that should be created
+    schedule: "* * * * *"                              # MANDATORY: cron expression this job trigger should run
+    target: http://the-cluster-local-service/the-path  # MANDATORY: http endpoint within the cluster that should be called using GET
+    activeDeadlineSeconds: 60                          # MANDATORY: maximum lifetime of a single job execution
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 100m
+    memory: 100Mi
