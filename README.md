@@ -29,6 +29,12 @@ spec:
 
 The [OWASP Dependency-Track](https://owasp.org/www-project-dependency-track/) project with separate deployments for API-server and frontend.
 
+### [Kubernetes failed/terminated pods cleanup](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/k8s-pod-cleanup)
+
+A CronJob that deletes terminated/failed pods from a Kubernetes cluster.
+
+Useful when e.g. provisioning Google Kubernetes Engine clusters with preemptible nodes. The preemption leads to pods being shut down during node recreation, however the pods are still kept and displayed when listing them.
+
 ---
 
 _This repository is published under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)_

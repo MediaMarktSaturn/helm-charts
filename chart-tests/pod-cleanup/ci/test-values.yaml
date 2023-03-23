@@ -1,0 +1,12 @@
+schedule: "0 5 * * 1"
+
+successfulJobsHistoryLimit: 4
+failedJobsHistoryLimit: 1
+
+resources:
+  requests:
+    cpu: 123m
+    memory: 321Mi
+  limits:
+    cpu: 123m
+    memory: 321Mi

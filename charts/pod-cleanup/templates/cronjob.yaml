@@ -1,0 +1,41 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ $.Release.Name }}
+  name: {{ $.Release.Name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  schedule: {{ $.Values.schedule | quote }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: {{ $.Values.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ $.Values.failedJobsHistoryLimit }}
+  jobTemplate:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ $.Release.Name }}
+    spec:
+      ttlSecondsAfterFinished: {{ $.Values.ttlSecondsAfterFinished }}
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: {{ $.Release.Name }}
+        spec:
+          securityContext:
+            runAsUser: 1000
+          automountServiceAccountToken: true
+          containers:
+            - image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+              name: {{ $.Release.Name }}
+              command:
+                - /bin/sh
+                - -c
+                - kubectl delete pods -A --field-selector=status.phase=Failed
+              resources:
+                {{- toYaml $.Values.resources | nindent 16 }}
+              imagePullPolicy: IfNotPresent
+              securityContext:
+                allowPrivilegeEscalation: false
+          restartPolicy: OnFailure
+          serviceAccountName: {{ $.Release.Name }}

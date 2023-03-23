@@ -1,0 +1,9 @@
+apiVersion: v2
+name: pod-cleanup
+home: https://github.com/MediaMarktSaturn/helm-charts
+description: Helm Chart for cleaning up failed/terminated Kubernetes pods
+type: application
+maintainers:
+  - name: MediaMarktSaturn
+    url: https://github.com/MediaMarktSaturn
+version: 1.0.0
