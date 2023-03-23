@@ -43,4 +43,18 @@ entries:
     urls:
     - https://github.com/MediaMarktSaturn/helm-charts/releases/download/dependency-track-1.0.2/dependency-track-1.0.2.tgz
     version: 1.0.2
-generated: "2023-03-09T11:42:25.230070808Z"
+  pod-cleanup:
+  - apiVersion: v2
+    created: "2023-03-23T06:45:30.325973027Z"
+    description: Helm Chart for cleaning up failed/terminated Kubernetes pods
+    digest: 1ccc10eb33bdaa29a7020ff1ccdf767e3555d0475e54bb98ecae5969aece79a5
+    home: https://github.com/MediaMarktSaturn/helm-charts
+    maintainers:
+    - name: MediaMarktSaturn
+      url: https://github.com/MediaMarktSaturn
+    name: pod-cleanup
+    type: application
+    urls:
+    - https://github.com/MediaMarktSaturn/helm-charts/releases/download/pod-cleanup-1.0.0/pod-cleanup-1.0.0.tgz
+    version: 1.0.0
+generated: "2023-03-23T06:45:30.325987227Z"
