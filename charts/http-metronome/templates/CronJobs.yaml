@@ -1,0 +1,52 @@
+{{ range .Values.jobs }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: "{{ $.Release.Name | trim }}-{{ .name | trim }}"
+  namespace: {{ $.Release.Namespace }}
+  annotations:
+    release/time: {{ date "2006-01-02T15:04:05Z07:00" now }}
+    release/revision: {{ $.Release.Revision | quote }}
+spec:
+  schedule: {{ .schedule | quote }}
+  concurrencyPolicy: {{ $.Values.concurrencyPolicy }}
+  startingDeadlineSeconds: {{ $.Values.startingDeadlineSeconds }}
+  successfulJobsHistoryLimit: {{ $.Values.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ $.Values.failedJobsHistoryLimit }}
+  jobTemplate:
+    metadata:
+      annotations:
+        checksum/script: {{ $.Files.Get (print $.Template.BasePath "/ConfigMap.yaml") | sha256sum }}
+    spec:
+      ttlSecondsAfterFinished: {{ $.Values.ttlSecondsAfterFinished }}
+      activeDeadlineSeconds: {{ .activeDeadlineSeconds }}
+      template:
+                {{- if $.Values.istioManaged }}
+        metadata:
+          labels:
+            istio-prometheus-ignore: "true"
+                {{- end }}
+        spec:
+          automountServiceAccountToken: false
+          containers:
+            - name: {{ .name }}
+              imagePullPolicy: {{ $.Values.image.pullPolicy }}
+              image: "{{ $.Values.image.repository | trim }}:{{ $.Values.image.tag | trim }}"
+              args:
+                - /script/curl.sh
+                - {{ .target }}
+              volumeMounts:
+                - name: script-volume
+                  mountPath: /script
+              resources:
+                {{- toYaml $.Values.resources | nindent 16 }}
+              securityContext:
+                allowPrivilegeEscalation: false
+          volumes:
+            - name: script-volume
+              configMap:
+                name: {{ $.Release.Name }}-cronjob-script
+                defaultMode: 0777
+          restartPolicy: {{ $.Values.restartPolicy }}
+{{ end }}

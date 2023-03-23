@@ -54,7 +54,8 @@ jobs:
       - name: Chart installation tests
         run: .github/workflows/scripts/chart-test.sh
 
-      - run: kubectl describe nodes; echo "=== API Versions ==="; kubectl api-versions; echo "=== CRDs ==="; kubectl get crd
+      - name: Dump debug information on failure
+        run: kubectl describe nodes; echo "=== API Versions ==="; kubectl api-versions; echo "=== CRDs ==="; kubectl get crd
         if: failure()
 
   lint:

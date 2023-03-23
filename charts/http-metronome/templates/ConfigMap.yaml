@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $.Release.Name }}-cronjob-script
+  namespace: {{ $.Release.Namespace }}
+data:
+  # script that executes a curl call as soon as envoy gets healthy and terminates envoy on exit (so that the job can complete) since istio-proxy container would run forever otherwise.
+  curl.sh: |
+    #!/bin/sh
+    FLOW_ID=$(date +%s.%N)
+    {{- if $.Values.istioManaged }}
+    trap "curl --max-time 2 -s -f -XPOST http://127.0.0.1:15000/quitquitquit" EXIT
+    while ! curl -s -f http://127.0.0.1:15020/healthz/ready; do sleep 1; done
+    sleep 2 # take a deep breath to give the sidecar a change to complete its initialization and retrieve its configuration
+    {{- end }}
+    echo "Job Flow-ID: $FLOW_ID"
+    set -x
+    time curl -H "X-Flow-ID: $FLOW_ID" -f -v $1
