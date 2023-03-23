@@ -25,15 +25,21 @@ spec:
 
 ## Charts
 
-### [Dependency-Track](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/dependency-track)
+### [dependency-track](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/dependency-track)
 
 The [OWASP Dependency-Track](https://owasp.org/www-project-dependency-track/) project with separate deployments for API-server and frontend.
 
-### [Kubernetes failed/terminated pods cleanup](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/pod-cleanup)
+### [pod-cleanup](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/pod-cleanup)
 
 A CronJob that deletes terminated/failed pods from a Kubernetes cluster.
 
 Useful when e.g. provisioning Google Kubernetes Engine clusters with preemptible nodes. The preemption leads to pods being shut down during node recreation, however the pods are still kept and displayed when listing them.
+
+### [http-metronome](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/http-metronome)
+
+Creates CronJobs for periodic triggering of cluster-internal http endpoints using GET.
+
+Can be used in an Istio meshed environment, see its [values](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/http-metronome/values.yaml) for details.
 
 ---
 
