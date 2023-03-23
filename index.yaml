@@ -43,6 +43,22 @@ entries:
     urls:
     - https://github.com/MediaMarktSaturn/helm-charts/releases/download/dependency-track-1.0.2/dependency-track-1.0.2.tgz
     version: 1.0.2
+  http-metronome:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-03-23T15:26:52.673835701Z"
+    description: Chart for k8s cronjobs to periodic triggering cluster-local http
+      endpoints.
+    digest: e62a6b7b384ea247ea2c53fd4733a80b900868d26602a7a8646abe090d33a899
+    home: https://github.com/MediaMarktSaturn/helm-charts
+    maintainers:
+    - name: MediaMarktSaturn
+      url: https://github.com/MediaMarktSaturn
+    name: http-metronome
+    type: application
+    urls:
+    - https://github.com/MediaMarktSaturn/helm-charts/releases/download/http-metronome-1.0.0/http-metronome-1.0.0.tgz
+    version: 1.0.0
   pod-cleanup:
   - apiVersion: v2
     created: "2023-03-23T06:45:30.325973027Z"
@@ -57,4 +73,4 @@ entries:
     urls:
     - https://github.com/MediaMarktSaturn/helm-charts/releases/download/pod-cleanup-1.0.0/pod-cleanup-1.0.0.tgz
     version: 1.0.0
-generated: "2023-03-23T06:45:30.325987227Z"
+generated: "2023-03-23T15:26:52.981673073Z"
