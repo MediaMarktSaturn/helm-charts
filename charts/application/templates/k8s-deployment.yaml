@@ -1,0 +1,137 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+  annotations:
+    release/time: {{ date "2006-01-02T15:04:05Z07:00" now }}
+    release/revision: {{ .Release.Revision | quote }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "selectorLabels" . | nindent 6 }}
+  replicas: {{ .Values.autoscaling.minReplicaCount }}
+  template:
+    metadata:
+      labels:
+        {{- include "labels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/k8s-config-map.yaml") . | sha256sum }}
+        {{- if or .Values.encryptedSecret.data .Values.encryptedSecret.stringData }}
+        checksum/secret: {{ include (print $.Template.BasePath "/k8s-secret.yaml") . | sha256sum }}
+        {{- end }}
+        {{- range $k, $v := .Values.container.annotations }}
+        {{ $k }}: {{ $v | quote }}
+        {{- end }}
+        {{- if .Values.linkerd.enabled }}
+        linkerd.io/inject: enabled
+        {{- range $k, $v := .Values.linkerd.proxyConfig }}
+        {{ $k }}: {{ $v | quote }}
+        {{- end }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ .Release.Name }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      nodeSelector: {{ if not .Values.serviceAccount.workloadIdentityServiceAccount -}}{{- if not .Values.nodeSelector -}}{}{{- end -}}{{- end }}
+        {{- if .Values.serviceAccount.workloadIdentityServiceAccount }}
+        iam.gke.io/gke-metadata-server-enabled: "true"
+        {{- end }}
+        {{- range $k, $v := .Values.nodeSelector }}
+        {{ $k }}: {{ $v | quote }}
+        {{- end }}
+      automountServiceAccountToken: {{ or .Values.istio.enabled .Values.linkerd.enabled }} # 'true' if required for side-car injection
+      containers:
+        - name: {{ .Release.Name }}
+          securityContext:
+            {{- toYaml .Values.container.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "configmap" . }}
+            {{- range $c := .Values.configEnvFrom }}
+            - configMapRef:
+                name: {{ $c }}
+            {{- end }}
+            {{- range $s := .Values.secretEnvFrom }}
+            - secretRef:
+                name: {{ $s }}
+            {{- end }}
+            {{- if and (or .Values.encryptedSecret.data .Values.encryptedSecret.stringData) (not .Values.encryptedSecret.mountPath) }}
+            - secretRef:
+                name: {{ include "secret" . }}
+            {{- end }}
+          {{- if .Values.serviceAccount.secretName }}
+          env:
+            - name: "GOOGLE_APPLICATION_CREDENTIALS"
+              value: "{{- .Values.serviceAccount.mountPath -}}/key.json"
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.container.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.path }}
+              port: {{ .Values.container.port }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.path }}
+              port: {{ .Values.container.port }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts: {{ if not (or .Values.secretVolumes .Values.serviceAccount.secretName .Values.encryptedSecret.mountPath .Values.volumeMounts) -}}[]{{- end -}}
+            {{- range .Values.secretVolumes }}
+            - name: {{ .secretName }}
+              mountPath: {{ .mountPath }}
+              readOnly: true
+            {{- end }}
+            {{- if .Values.serviceAccount.secretName }}
+            - name: service-account
+              mountPath: /config/service-account
+              readOnly: true
+            {{- end }}
+            {{- if .Values.encryptedSecret.mountPath }}
+            - name: secret-env
+              mountPath: {{ .Values.encryptedSecret.mountPath }}
+              readOnly: true
+            {{- end }}
+            {{- range .Values.volumeMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
+      volumes: {{ if not (or .Values.secretVolumes .Values.serviceAccount.secretName .Values.encryptedSecret.mountPath .Values.volumeMounts) -}}[]{{- end -}}
+        {{- range .Values.secretVolumes }}
+        - name: {{ .secretName }}
+          secret:
+            secretName: {{ .secretName }}
+        {{- end }}
+        {{- if .Values.serviceAccount.secretName }}
+        - name: service-account
+          secret:
+            secretName: {{ .Values.serviceAccount.secretName }}
+        {{- end }}
+        {{- if .Values.encryptedSecret.mountPath }}
+        - name: secret-env
+          secret:
+            secretName: {{ include "secret" . }}
+        {{- end }}
+        {{- range .Values.volumeMounts }}
+        - name: {{ .name }}
+          {{- if .pvcName }}
+          persistentVolumeClaim:
+            claimName: {{ .pvcName }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- end }}

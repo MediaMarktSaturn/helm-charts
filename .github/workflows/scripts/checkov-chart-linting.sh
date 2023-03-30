@@ -17,9 +17,9 @@ for chart in $(ls -d charts/*/); do
     # for every test case of this chart
     for values in $(ls $chart_ci); do
       printf "\n\n=== Checking chart $chart with test case $values ===\n\n"
-      rm -rf chckv
-      helm template charts/$chart --values $chart_ci/$values --name-template test-release --namespace test-ns --output-dir chckv
-      checkov --config-file .github/workflows/conf/checkov.yml -d chckv
+      rm -rf .chckv
+      helm template charts/$chart --values $chart_ci/$values --name-template test-release --namespace test-ns --output-dir .chckv
+      checkov --config-file .github/workflows/conf/checkov.yml -d .chckv
       if [ $? -ne 0 ]; then
         printf "=== Chart $chart with test case $values FAILED ===\n\n"
         CHECK_STATUS=1

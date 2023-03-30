@@ -1,0 +1,19 @@
+{{- if and .Values.image.tagSemverRange .Values.image.tagUpdateInterval }}
+{{- if .Capabilities.APIVersions.Has "image.toolkit.fluxcd.io/v1beta2" }}
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+{{- else }}
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+{{- end }}
+kind: ImagePolicy
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  imageRepositoryRef:
+    name: {{ .Release.Name }}
+  policy:
+    semver:
+      range: {{ .Values.image.tagSemverRange | quote }}
+{{- end }}

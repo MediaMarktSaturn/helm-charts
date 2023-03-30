@@ -1,0 +1,18 @@
+{{- if or .Values.disruptionBudget.minAvailable .Values.disruptionBudget.maxUnavailable }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  {{- if .Values.disruptionBudget.minAvailable }}
+  minAvailable: {{ .Values.disruptionBudget.minAvailable }}
+  {{- else if .Values.disruptionBudget.maxUnavailable }}
+  maxUnavailable: {{ .Values.disruptionBudget.maxUnavailable }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "selectorLabels" . | nindent 6 }}
+{{- end }}

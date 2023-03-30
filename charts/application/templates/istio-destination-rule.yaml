@@ -1,0 +1,16 @@
+{{- if .Values.istio.enabled }}
+{{- if not .Values.canary.enabled }}
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  host: {{ .Release.Name }}
+  trafficPolicy:
+    tls:
+      mode: {{ .Values.istio.tlsMode }}
+{{- end }}
+{{- end }}

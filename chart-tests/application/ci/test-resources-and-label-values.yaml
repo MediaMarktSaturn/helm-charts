@@ -1,0 +1,83 @@
+container:
+  port: 8080
+  securityContext: {}
+  # annotations to be added to the pod template
+  annotations:
+    "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
+
+autoscaling:
+  minReplicaCount: 1
+  maxReplicaCount: 2
+  averageUtilization:
+    cpu: 80
+    # memory: 80
+
+image:
+  repository: quay.io/heubeck/examiner
+  tag: 1.9.1
+  pullPolicy: IfNotPresent
+
+  # ImagePolicy and check period for automated updates
+  tagSemverRange: "^2.x"
+  tagUpdateInterval: "10m0s"
+
+  # exising secret in same namespace holding a
+  repositorySecret: oci-registry-service
+
+service:
+  port: 80
+  timeout: 120s
+  annotations: {}
+
+nodeSelector: {}
+
+# additional labels to be added to all resource
+labels:
+  this-is: great
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 50Mi
+  limits:
+    cpu: 100m
+    memory: 100Mi
+
+podSecurityContext: {}
+configuration:
+  my: value
+  thats: "true"
+  absolute: valid
+
+disruptionBudget:
+  minAvailable: "80%"
+  maxUnavailable:
+
+# list of secrets to be mounted to app pod
+secretVolumes: []
+#  - secretName: mysecret
+#    mountPath: /mypath
+
+# list of secret names to be used as envFrom entries
+secretEnvFrom: []
+
+# Pick one of the service mesh configs
+istio:
+  enabled: false
+
+linkerd:
+  enabled: false
+
+monitoring:
+  serviceMonitor: false
+
+canary:
+  enabled: false
+
+encryptedSecret:
+  # SOPS encrypted data used as k8s secret data block. DO NOT PUT CLEAR BASE64 TEXT HERE. Details: https://fluxcd.io/docs/guides/mozilla-sops/
+  data:
+    this-is: Zm9yLW15LWV5ZXMtb25seQo=
+  # SOPS encrypted stringData used as k8s secret stringData block. DO NOT PUT CLEAR TEXT HERE. Details: https://fluxcd.io/docs/guides/mozilla-sops/
+  stringData:
+    you-shall: not-view

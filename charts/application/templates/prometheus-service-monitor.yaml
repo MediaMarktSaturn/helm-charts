@@ -1,0 +1,31 @@
+{{- if .Values.monitoring.serviceMonitor }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Values.monitoring.namespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  jobLabel: {{ .Release.Name }}
+  selector:
+    matchExpressions:
+      - key: app.kubernetes.io/name
+        operator: In
+        values:
+          {{- if .Values.canary.enabled }}
+          - "{{- printf "%s-primary" .Release.Name -}}"
+          - "{{- printf "%s-canary" .Release.Name -}}"
+          {{ else }}
+          - "{{ .Release.Name }}"
+          {{ end }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  endpoints:
+    - port: http
+      path: {{ .Values.monitoring.metricsPath | quote }}
+      interval: {{ .Values.monitoring.scrapeInterval | quote }}
+      scrapeTimeout: {{ .Values.monitoring.scrapeTimeout | quote }}
+      followRedirects: {{ .Values.monitoring.followRedirects }}
+{{ end }}

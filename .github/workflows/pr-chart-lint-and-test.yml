@@ -51,10 +51,13 @@ jobs:
           version: ${{ env.kind_version }}
           node_image: ${{ matrix.kindest_image }}
 
+      - name: Create chart preconditions
+        run: .github/workflows/scripts/chart-test-prep.sh
+
       - name: Chart installation tests
         run: .github/workflows/scripts/chart-test.sh
 
-      - name: Dump debug information on failure
+      - name: Debug information on failure
         run: kubectl describe nodes; echo "=== API Versions ==="; kubectl api-versions; echo "=== CRDs ==="; kubectl get crd
         if: failure()
 

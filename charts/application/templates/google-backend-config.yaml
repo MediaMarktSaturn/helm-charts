@@ -1,0 +1,23 @@
+{{- if .Values.service.backendConfig.enabled }}
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  logging:
+    enable: false
+  healthCheck:
+    type: HTTP
+    requestPath: {{ .Values.readinessProbe.path }}
+    port: {{ .Values.container.port }}
+  {{- if and .Values.service.timeout (regexMatch "^\\d+s$" .Values.service.timeout) }}
+  timeoutSec: {{ trimSuffix "s" .Values.service.timeout }}
+  {{- end }}
+  {{- if .Values.service.backendConfig.securityPolicyName }}
+  securityPolicy:
+    name: {{ .Values.service.backendConfig.securityPolicyName }}
+  {{- end }}
+{{- end }}

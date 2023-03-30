@@ -1,0 +1,72 @@
+container:
+  port: 8080
+  securityContext: {}
+  # annotations to be added to the pod template
+  annotations:
+    "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
+
+autoscaling:
+  minReplicaCount: 1
+  maxReplicaCount: 1
+  averageUtilization:
+    cpu: 80
+    # memory: 80
+
+service:
+  port: 80
+  timeout: 120s
+  annotations: {}
+  backendConfig:
+    enabled: true
+
+nodeSelector: {}
+
+# additional labels to be added to all resource
+labels: {}
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 50Mi
+  limits:
+    cpu: 100m
+    memory: 100Mi
+
+podSecurityContext: {}
+configuration: {}
+
+disruptionBudget:
+  minAvailable:
+  maxUnavailable: "50%"
+
+# list of secrets to be mounted to app pod
+secretVolumes: []
+#  - secretName: mysecret
+#    mountPath: /mypath
+
+# list of secret names to be used as envFrom entries
+secretEnvFrom: []
+
+serviceAccount:
+  # service account email address for use with workload identity, see https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
+  workloadIdentityServiceAccount:
+  # secret containing a 'key.json' of the GCP service account key to be used by this app
+  secretName:
+  mountPath: /config/service-account
+
+# Pick one of the service mesh configs
+istio:
+  enabled: true
+  tlsMode: ISTIO_MUTUAL
+  ingress:
+    enabled: false
+
+linkerd:
+  enabled: false
+
+monitoring:
+  serviceMonitor: true
+  namespace: monitoring
+
+canary:
+  enabled: false
