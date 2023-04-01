@@ -12,3 +12,8 @@
 
 # packaged charts
 *.tgz
+
+# test generated files
+.tmp
+.chckv
+charts/*/ci

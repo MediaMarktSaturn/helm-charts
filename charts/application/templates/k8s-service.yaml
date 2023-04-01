@@ -1,0 +1,28 @@
+{{- if not (and .Values.canary.enabled .Values.istio.enabled ) }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+  {{- if or .Values.service.annotations .Values.service.backendConfig.enabled }}
+  annotations:
+    {{- if .Values.service.backendConfig.enabled }}
+    cloud.google.com/backend-config: '{"default": "{{ .Release.Name }}"}'
+    cloud.google.com/neg: '{"ingress": true}'
+    {{- end }}
+    {{- range $k, $v := .Values.service.annotations }}
+    {{ $k }}: {{ $v | quote }}
+    {{- end }}
+  {{- end }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.container.port }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "selectorLabels" . | nindent 4 }}
+{{- end }}

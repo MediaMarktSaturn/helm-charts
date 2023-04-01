@@ -1,0 +1,23 @@
+resources:
+  requests:
+    cpu: 10m
+    memory: 50Mi
+  limits:
+    cpu: 100m
+    memory: 100Mi
+
+prepJob:
+  enabled: true
+  image: busybox:stable
+  command: ["echo", "I'm first"]
+  configuration:
+    just-do-it: please
+    really: true
+    count: 23
+  resources:
+    requests:
+      cpu: 10m
+      memory: 50Mi
+    limits:
+      cpu: 100m
+      memory: 100Mi

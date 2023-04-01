@@ -1,0 +1,37 @@
+{{- if not (eq .Values.autoscaling.minReplicaCount .Values.autoscaling.maxReplicaCount) }}
+{{- if .Capabilities.APIVersions.Has "autoscaling/v2" }}
+apiVersion: autoscaling/v2
+{{- else }}
+apiVersion: autoscaling/v2beta2
+{{- end }}
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  minReplicas: {{ .Values.autoscaling.minReplicaCount }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicaCount }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Release.Name }}
+  metrics:
+    {{- if .Values.autoscaling.averageUtilization.cpu }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.averageUtilization.cpu }}
+    {{- end }}
+    {{- if .Values.autoscaling.averageUtilization.memory }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.averageUtilization.memory }}
+    {{- end }}
+{{- end }}

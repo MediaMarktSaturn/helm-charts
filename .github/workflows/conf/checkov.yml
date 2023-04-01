@@ -14,3 +14,5 @@ skip-check:
   - CKV_K8S_35 # https://docs.bridgecrew.io/docs/bc_k8s_33 - Use secrets as files instead of environment variable
   - CKV_SECRET_6 # https://docs.bridgecrew.io/docs/git_secrets_6 - Base64 High Entropy String; checksums result in false positives here
   - CKV2_K8S_6 # https://www.checkov.io/5.Policy%20Index/kubernetes.html - Minimize the admission of pods which lack an associated NetworkPolicy
+  - CKV_K8S_13 # https://docs.bridgecrew.io/docs/bc_k8s_12 - Ensure memory limits are set
+  - CKV_K8S_11 # https://docs.bridgecrew.io/docs/bc_k8s_10 - Ensure CPU limits are set

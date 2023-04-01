@@ -1,0 +1,55 @@
+{{- if and .Values.canary.enabled (or .Values.istio.enabled .Values.linkerd.enabled ) }}
+apiVersion: flagger.app/v1beta1
+kind: Canary
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  {{- if .Values.istio.enabled }}
+  provider: istio
+  {{- else if .Values.linkerd.enabled }}
+  provider: linkerd
+  {{- end }}
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Release.Name }}
+  progressDeadlineSeconds: {{ .Values.canary.progressDeadlineSeconds }}
+  autoscalerRef:
+    apiVersion: autoscaling/v2beta2
+    kind: HorizontalPodAutoscaler
+    name: {{ .Release.Name }}
+  service:
+    port: {{ .Values.service.port }}
+    targetPort: {{ .Values.container.port }}
+    timeout: {{ .Values.service.timeout }}
+    {{- if .Values.istio.enabled }}
+    gateways:
+      - {{ .Values.istio.ingress.gateway }}
+    hosts:
+      - {{ .Values.istio.ingress.host | quote }}
+    match:
+      - uri:
+          prefix: {{ .Values.istio.ingress.uriPrefix }}
+    rewrite:
+      uri: /
+    trafficPolicy:
+      tls:
+        mode: {{ .Values.istio.tlsMode }}
+    {{- end }}
+  skipAnalysis: {{ .Values.canary.analysis.skip }}
+  analysis:
+    interval: {{ .Values.canary.analysis.interval }}
+    threshold: {{ .Values.canary.analysis.threshold }}
+    maxWeight: {{ .Values.canary.analysis.maxWeight }}
+    stepWeight: {{ .Values.canary.analysis.stepWeight }}
+    stepWeightPromotion: {{ .Values.canary.analysis.stepWeightPromotion }}
+    metrics:
+      {{- toYaml .Values.canary.analysis.metrics | nindent 6 }}
+    webhooks:
+      {{- toYaml .Values.canary.analysis.webhooks | nindent 6 }}
+    alerts:
+      {{- toYaml .Values.canary.analysis.alerts | nindent 6 }}
+{{- end }}

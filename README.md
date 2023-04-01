@@ -41,6 +41,13 @@ Creates CronJobs for periodic triggering of cluster-internal http endpoints usin
 
 Can be used in an Istio meshed environment, see its [values](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/http-metronome/values.yaml) for details.
 
+## [application](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/application)
+
+A generic chart, that creates a deployment with lots of valuable companions for configuration, service meshes or automated canary deployments.
+We're using this for lots of our business applications.
+
+Please have a look on the [values](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/application/values.yaml) for all its features.
+
 ---
 
 _This repository is published under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)_

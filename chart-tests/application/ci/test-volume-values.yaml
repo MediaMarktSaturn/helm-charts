@@ -1,0 +1,5 @@
+volumeMounts:
+  - name: data
+    # name of a pre-existent PVC to be used. if empty, a 'emptyDir' is bound
+    pvcName:
+    mountPath: /data
