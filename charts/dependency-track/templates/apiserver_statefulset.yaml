@@ -5,20 +5,20 @@ metadata:
   name: {{ include "apiserverName" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "apiserverLabels" . | nindent 4 }}
-  annotations:
-    release/time: {{ date "2006-01-02T15:04:05Z07:00" now }}
-    release/revision: {{ .Release.Revision | quote }}
+    {{- include "apiserverSelectorLabels" . | nindent 4 }}
 spec:
   serviceName: {{ include "apiserverName" . }}
   replicas: 1
   selector:
     matchLabels:
-      {{- include "apiserverLabels" . | nindent 6 }}
+      {{- include "apiserverSelectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         {{- include "apiserverLabels" . | nindent 8 }}
+      annotations:
+        release/time: {{ date "2006-01-02T15:04:05Z07:00" now }}
+        release/revision: {{ .Release.Revision | quote }}
     spec:
       serviceAccountName: {{ include "apiserverName" . }}
       securityContext:
