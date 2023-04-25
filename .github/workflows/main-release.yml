@@ -92,5 +92,9 @@ jobs:
           author: github_actions <noreply@github.com>
           delete-branch: true
           branch: generate-chart-docs/patch
+          title: "docs: update versions in readme"
+          body: |
+            Update versions in README file(s) after the latest merge on main.
+            :information_source: close and re-open this pull request to trigger any checks.
           add-paths: |
             *.md
