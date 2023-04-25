@@ -64,20 +64,20 @@ spec:
             httpGet:
               port: api
               path: /api/version
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 2
-            successThreshold: 1
-            failureThreshold: 3
+            initialDelaySeconds: {{ .Values.apiserver.probes.initialDelaySeconds }}
+            periodSeconds: {{ .Values.apiserver.probes.periodSeconds }}
+            timeoutSeconds: {{ .Values.apiserver.probes.timeoutSeconds }}
+            successThreshold: {{ .Values.apiserver.probes.successThreshold }}
+            failureThreshold: {{ .Values.apiserver.probes.failureThreshold }}
           readinessProbe:
             httpGet:
               port: api
               path: /
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 2
-            successThreshold: 1
-            failureThreshold: 3
+            initialDelaySeconds: {{ .Values.apiserver.probes.initialDelaySeconds }}
+            periodSeconds: {{ .Values.apiserver.probes.periodSeconds }}
+            timeoutSeconds: {{ .Values.apiserver.probes.timeoutSeconds }}
+            successThreshold: {{ .Values.apiserver.probes.successThreshold }}
+            failureThreshold: {{ .Values.apiserver.probes.failureThreshold }}
       volumes:
         - name: tmp
           emptyDir: { }

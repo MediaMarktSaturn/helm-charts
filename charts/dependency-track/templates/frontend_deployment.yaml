@@ -56,20 +56,20 @@ spec:
             httpGet:
               port: http
               path: /
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 2
-            successThreshold: 1
-            failureThreshold: 3
+            initialDelaySeconds: {{ .Values.frontend.probes.initialDelaySeconds }}
+            periodSeconds: {{ .Values.frontend.probes.periodSeconds }}
+            timeoutSeconds: {{ .Values.frontend.probes.timeoutSeconds }}
+            successThreshold: {{ .Values.frontend.probes.successThreshold }}
+            failureThreshold: {{ .Values.frontend.probes.failureThreshold }}
           readinessProbe:
             httpGet:
               port: http
               path: /
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 2
-            successThreshold: 1
-            failureThreshold: 3
+            initialDelaySeconds: {{ .Values.frontend.probes.initialDelaySeconds }}
+            periodSeconds: {{ .Values.frontend.probes.periodSeconds }}
+            timeoutSeconds: {{ .Values.frontend.probes.timeoutSeconds }}
+            successThreshold: {{ .Values.frontend.probes.successThreshold }}
+            failureThreshold: {{ .Values.frontend.probes.failureThreshold }}
       volumes:
         - name: tmp
           emptyDir: { }
