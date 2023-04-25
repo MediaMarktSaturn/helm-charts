@@ -98,3 +98,24 @@ jobs:
 
       - name: Run checkov on each test case permutation
         run: .github/workflows/scripts/checkov-chart-linting.sh
+
+  skip:
+    runs-on: ubuntu-latest
+    needs: prep_job
+    if: ${{ needs.prep_job.outputs.has_changes != 'true' }}
+    strategy:
+      matrix:
+        include:
+          - name: k8s-1.26
+          - name: k8s-1.25
+          - name: k8s-1.24
+          - name: k8s-1.23
+          - name: k8s-1.22
+          - name: k8s-1.21
+          - name: lint
+    name: ${{ matrix.name }}
+    steps:
+      - run: |
+          echo "Skip ${{ matrix.name }} for this pull request because no relevant files have been changed."
+          echo "This is needed to not block the pull request as these are configured as required status check."
+
