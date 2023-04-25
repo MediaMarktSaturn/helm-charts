@@ -1,6 +1,6 @@
 # dependency-track
 
-![Version: 1.1.1](https://img.shields.io/badge/Version-1.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.7.1](https://img.shields.io/badge/AppVersion-4.7.1-informational?style=flat-square)
+![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.8.0](https://img.shields.io/badge/AppVersion-4.8.0-informational?style=flat-square)
 
 Helm Chart for running OWASP Dependency-Track on Kubernetes
 
@@ -17,7 +17,7 @@ Helm Chart for running OWASP Dependency-Track on Kubernetes
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | apiserver.image.repository | string | `"docker.io/dependencytrack/apiserver"` |  |
-| apiserver.image.tag | string | `"4.7.1"` |  |
+| apiserver.image.tag | string | `"4.8.0"` |  |
 | apiserver.resources.limits.cpu | string | `"3"` |  |
 | apiserver.resources.limits.memory | string | `"12Gi"` |  |
 | apiserver.resources.requests.cpu | string | `"1"` |  |
@@ -36,8 +36,13 @@ Helm Chart for running OWASP Dependency-Track on Kubernetes
 | apiserver.service.annotations | object | `{}` |  |
 | apiserver.service.type | string | `"ClusterIP"` |  |
 | apiserver.baseurl | string | `"https://127.0.0.1"` |  |
+| apiserver.probes.initialDelaySeconds | int | `60` |  |
+| apiserver.probes.periodSeconds | int | `30` |  |
+| apiserver.probes.timeoutSeconds | int | `20` |  |
+| apiserver.probes.successThreshold | int | `1` |  |
+| apiserver.probes.failureThreshold | int | `4` |  |
 | frontend.image.repository | string | `"docker.io/dependencytrack/frontend"` |  |
-| frontend.image.tag | string | `"4.7.1"` |  |
+| frontend.image.tag | string | `"4.8.0"` |  |
 | frontend.resources.limits.cpu | string | `"1"` |  |
 | frontend.resources.limits.memory | string | `"512Mi"` |  |
 | frontend.resources.requests.cpu | string | `"100m"` |  |
@@ -47,6 +52,11 @@ Helm Chart for running OWASP Dependency-Track on Kubernetes
 | frontend.configuration | object | `{}` |  |
 | frontend.service.annotations | object | `{}` |  |
 | frontend.service.type | string | `"ClusterIP"` |  |
+| frontend.probes.initialDelaySeconds | int | `60` |  |
+| frontend.probes.periodSeconds | int | `30` |  |
+| frontend.probes.timeoutSeconds | int | `20` |  |
+| frontend.probes.successThreshold | int | `1` |  |
+| frontend.probes.failureThreshold | int | `4` |  |
 | ingress.enabled | bool | `true` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.host | string | `"127.0.0.1"` |  |
