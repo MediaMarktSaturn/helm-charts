@@ -1,6 +1,6 @@
 # dependency-track
 
-![Version: 1.2.1](https://img.shields.io/badge/Version-1.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.8.0](https://img.shields.io/badge/AppVersion-4.8.0-informational?style=flat-square)
+![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.8.0](https://img.shields.io/badge/AppVersion-4.8.0-informational?style=flat-square)
 
 Helm Chart for running OWASP Dependency-Track on Kubernetes
 
@@ -36,11 +36,17 @@ Helm Chart for running OWASP Dependency-Track on Kubernetes
 | apiserver.service.annotations | object | `{}` |  |
 | apiserver.service.type | string | `"ClusterIP"` |  |
 | apiserver.baseurl | string | `"https://127.0.0.1"` |  |
-| apiserver.probes.initialDelaySeconds | int | `60` |  |
 | apiserver.probes.periodSeconds | int | `30` |  |
 | apiserver.probes.timeoutSeconds | int | `20` |  |
 | apiserver.probes.successThreshold | int | `1` |  |
 | apiserver.probes.failureThreshold | int | `4` |  |
+| apiserver.metrics.enabled | bool | `true` |  |
+| apiserver.metrics.grafana.dashboard | bool | `true` |  |
+| apiserver.metrics.grafana.namespace | string | `"monitoring"` |  |
+| apiserver.metrics.grafana.datasourceUid | string | `"Prometheus"` |  |
+| apiserver.metrics.serviceMonitor.enabled | bool | `false` |  |
+| apiserver.metrics.serviceMonitor.scrapeInterval | string | `"30s"` |  |
+| apiserver.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` |  |
 | frontend.image.repository | string | `"docker.io/dependencytrack/frontend"` |  |
 | frontend.image.tag | string | `"4.8.0"` |  |
 | frontend.resources.limits.cpu | string | `"1"` |  |
@@ -52,7 +58,7 @@ Helm Chart for running OWASP Dependency-Track on Kubernetes
 | frontend.configuration | object | `{}` |  |
 | frontend.service.annotations | object | `{}` |  |
 | frontend.service.type | string | `"ClusterIP"` |  |
-| frontend.probes.initialDelaySeconds | int | `60` |  |
+| frontend.probes.initialDelaySeconds | int | `30` |  |
 | frontend.probes.periodSeconds | int | `30` |  |
 | frontend.probes.timeoutSeconds | int | `20` |  |
 | frontend.probes.successThreshold | int | `1` |  |
