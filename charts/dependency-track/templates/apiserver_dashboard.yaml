@@ -1,0 +1,17 @@
+{{- if and .Values.apiserver.metrics.enabled .Values.apiserver.metrics.grafana.dashboard }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "apiserverName" . }}-grafana
+  namespace: {{ .Values.apiserver.metrics.grafana.namespace }}
+  labels:
+    {{- include "apiserverLabels" . | nindent 4 }}
+    grafana_dashboard: "1"
+  annotations:
+    release/time: {{ date "2006-01-02T15:04:05Z07:00" now }}
+    release/revision: {{ .Release.Revision | quote }}
+data:
+  dtrack-apiserver.json: |
+    {{- include "grafanaDashboardJson" . | nindent 4 }}
+{{- end }}

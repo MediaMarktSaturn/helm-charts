@@ -27,11 +27,22 @@ apiserver:
     type: ClusterIP
   baseurl: "https://127.0.0.1"
   probes:
-    initialDelaySeconds: 60
     periodSeconds: 30
     timeoutSeconds: 20
     successThreshold: 1
     failureThreshold: 4
+  metrics:
+    enabled: true
+    grafana:
+      # create configmap holding the grafana dashboard visualizing the metrics
+      dashboard: true
+      namespace: monitoring
+      datasourceUid: Prometheus
+    serviceMonitor:
+      # whether to create a monitoring.coreos.com/v1/ServiceMonitor for use with the Prometheus Operator
+      enabled: false
+      scrapeInterval: 30s
+      scrapeTimeout: 10s
 
 frontend:
   image:
@@ -51,7 +62,7 @@ frontend:
     annotations: {}
     type: ClusterIP
   probes:
-    initialDelaySeconds: 60
+    initialDelaySeconds: 30
     periodSeconds: 30
     timeoutSeconds: 20
     successThreshold: 1

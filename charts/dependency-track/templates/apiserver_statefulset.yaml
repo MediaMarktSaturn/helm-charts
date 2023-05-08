@@ -38,6 +38,10 @@ spec:
           env:
             - name: ALPINE_DATA_DIRECTORY
               value: "/data"
+            {{- if .Values.apiserver.metrics.enabled }}
+            - name: ALPINE_METRICS_ENABLED
+              value: "true"
+            {{- end }}
           envFrom: {{ if not (or .Values.apiserver.configuration .Values.apiserver.configEnvFrom .Values.apiserver.secretEnvFrom) -}}[]{{- end }}
             {{- if .Values.apiserver.configuration }}
             - configMapRef:
@@ -63,8 +67,7 @@ spec:
           livenessProbe:
             httpGet:
               port: api
-              path: /api/version
-            initialDelaySeconds: {{ .Values.apiserver.probes.initialDelaySeconds }}
+              path: /health/live
             periodSeconds: {{ .Values.apiserver.probes.periodSeconds }}
             timeoutSeconds: {{ .Values.apiserver.probes.timeoutSeconds }}
             successThreshold: {{ .Values.apiserver.probes.successThreshold }}
@@ -72,12 +75,19 @@ spec:
           readinessProbe:
             httpGet:
               port: api
-              path: /
-            initialDelaySeconds: {{ .Values.apiserver.probes.initialDelaySeconds }}
+              path: /health/ready
             periodSeconds: {{ .Values.apiserver.probes.periodSeconds }}
             timeoutSeconds: {{ .Values.apiserver.probes.timeoutSeconds }}
             successThreshold: {{ .Values.apiserver.probes.successThreshold }}
             failureThreshold: {{ .Values.apiserver.probes.failureThreshold }}
+          startupProbe:
+            httpGet:
+              port: api
+              path: /health/started
+            periodSeconds: 5
+            timeoutSeconds: 4
+            successThreshold: 1
+            failureThreshold: 60
       volumes:
         - name: tmp
           emptyDir: { }

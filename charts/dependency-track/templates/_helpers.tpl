@@ -56,3 +56,14 @@ app.kubernetes.io/component: frontend
 {{ include "commonLabels" . }}
 {{ include "frontendSelectorLabels" . }}
 {{- end -}}
+
+{{/*
+  Customized grafana dashboard, originated from https://docs.dependencytrack.org/files/grafana-dashboard.json
+*/}}
+{{- define "grafanaDashboardJson" -}}
+    {{ $.Files.Get "static/grafana-dashboard.json"
+      | replace "${DS_PROMETHEUS}" .Values.apiserver.metrics.grafana.datasourceUid
+      | replace "instance=\\\"$instance\\\"" (printf "namespace=\\\"%s\\\", service=\\\"%s\\\"" .Release.Namespace (include "apiserverName" .))
+      | replace "\"editable\": true," "\"editable\": false,"
+     }}
+{{- end -}}

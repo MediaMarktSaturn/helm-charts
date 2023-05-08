@@ -1,0 +1,24 @@
+{{- if and .Values.apiserver.metrics.enabled .Values.apiserver.metrics.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "apiserverName" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "apiserverLabels" . | nindent 4 }}
+  annotations:
+    release/time: {{ date "2006-01-02T15:04:05Z07:00" now }}
+    release/revision: {{ .Release.Revision | quote }}
+spec:
+  jobLabel: {{ include "apiserverName" . }}
+  selector:
+    matchLabels:
+      {{- include "apiserverSelectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  endpoints:
+    - path: /metrics
+      interval: {{ .Values.apiserver.metrics.serviceMonitor.scrapeInterval | quote }}
+      scrapeTimeout: {{ .Values.apiserver.metrics.serviceMonitor.scrapeTimeout | quote }}
+{{- end }}
