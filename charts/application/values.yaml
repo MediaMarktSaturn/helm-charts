@@ -220,3 +220,10 @@ volumeMounts: []
 #    # name of a pre-existent PVC to be used. if empty, a 'emptyDir' is bound
 #    pvcName:
 #    mountPath: /data
+
+# list of additional ports to be exposed
+additionalPorts: []
+# - name: grpc
+#   protocol: TCP
+#   containerPort: 8081
+#   servicePort: 81

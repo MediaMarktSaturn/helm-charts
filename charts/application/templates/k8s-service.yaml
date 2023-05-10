@@ -23,6 +23,13 @@ spec:
       targetPort: {{ .Values.container.port }}
       protocol: TCP
       name: http
+    {{- range $ap := .Values.additionalPorts }}
+    - port: {{ $ap.servicePort }}
+      targetPort: {{ $ap.containerPort }}
+      protocol: {{ $ap.protocol }}
+      name: {{ $ap.name }}
+    {{- end }}
+
   selector:
     {{- include "selectorLabels" . | nindent 4 }}
 {{- end }}

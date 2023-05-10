@@ -73,6 +73,11 @@ spec:
             - name: http
               containerPort: {{ .Values.container.port }}
               protocol: TCP
+            {{- range $ap := .Values.additionalPorts }}
+            - name: {{ $ap.name }}
+              containerPort: {{ $ap.containerPort }}
+              protocol: {{ $ap.protocol }}
+            {{- end }}
           livenessProbe:
             httpGet:
               path: {{ .Values.livenessProbe.path }}
