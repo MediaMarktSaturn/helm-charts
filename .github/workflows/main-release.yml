@@ -50,7 +50,7 @@ jobs:
         run: git checkout origin/main -- README.md
 
       - name: Generate index.html from readme.md
-        uses: jaywcjlove/markdown-to-html-cli@v3.5.3
+        uses: jaywcjlove/markdown-to-html-cli@v3.5.4
         with:
           source: README.md
           output: index.html
