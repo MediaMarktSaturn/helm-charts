@@ -24,6 +24,8 @@ livenessProbe:
   failureThreshold: 3
   # Number of seconds after which the probe times out.
   timeoutSeconds: 5
+  # Whether the probes should be executed by curl from inside the container ('true') or via http probes from outside ('false')
+  useCurl: false
 
 # Check if the container are able to service requests
 readinessProbe:
@@ -36,6 +38,8 @@ readinessProbe:
   failureThreshold: 3
   # Number of seconds after which the probe times out.
   timeoutSeconds: 5
+  # Whether the probes should be executed by curl from inside the container ('true') or via http probes from outside ('false')
+  useCurl: false
 
 image:
   repository: quay.io/heubeck/examiner
@@ -227,3 +231,8 @@ additionalPorts: []
 #   protocol: TCP
 #   containerPort: 8081
 #   servicePort: 81
+
+# list of additional environment variables
+additionalEnv: []
+# - name: "ktor.port"
+#   value: "8080"

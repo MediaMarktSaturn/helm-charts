@@ -64,10 +64,16 @@ spec:
             - secretRef:
                 name: {{ include "secret" . }}
             {{- end }}
-          {{- if .Values.serviceAccount.secretName }}
+          {{- if or .Values.serviceAccount.secretName .Values.additionalEnv }}
           env:
+            {{- if .Values.serviceAccount.secretName }}
             - name: "GOOGLE_APPLICATION_CREDENTIALS"
               value: "{{- .Values.serviceAccount.mountPath -}}/key.json"
+            {{- end }}
+            {{- range .Values.additionalEnv }}
+            - name: {{ .name | quote }}
+              value: {{ .value | quote }}
+            {{- end }}
           {{- end }}
           ports:
             - name: http
@@ -79,17 +85,35 @@ spec:
               protocol: {{ $ap.protocol }}
             {{- end }}
           livenessProbe:
+            {{- if .Values.livenessProbe.useCurl }}
+            exec:
+              command:
+                - curl
+                - -f
+                - -k
+                - {{ include "liveurl" . }}
+            {{ else }}
             httpGet:
               path: {{ .Values.livenessProbe.path }}
               port: {{ .Values.container.port }}
+            {{- end }}
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
           readinessProbe:
+            {{- if .Values.readinessProbe.useCurl }}
+            exec:
+              command:
+                - curl
+                - -f
+                - -k
+                - {{ include "readyurl" . }}
+            {{ else }}
             httpGet:
               path: {{ .Values.readinessProbe.path }}
               port: {{ .Values.container.port }}
+            {{- end }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
