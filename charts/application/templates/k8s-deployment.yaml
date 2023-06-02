@@ -64,16 +64,10 @@ spec:
             - secretRef:
                 name: {{ include "secret" . }}
             {{- end }}
-          {{- if or .Values.serviceAccount.secretName .Values.additionalEnv }}
+          {{- if .Values.serviceAccount.secretName }}
           env:
-            {{- if .Values.serviceAccount.secretName }}
             - name: "GOOGLE_APPLICATION_CREDENTIALS"
               value: "{{- .Values.serviceAccount.mountPath -}}/key.json"
-            {{- end }}
-            {{- range .Values.additionalEnv }}
-            - name: {{ .name | quote }}
-              value: {{ .value | quote }}
-            {{- end }}
           {{- end }}
           ports:
             - name: http

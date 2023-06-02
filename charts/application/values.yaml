@@ -233,8 +233,3 @@ additionalPorts: []
 #   protocol: TCP
 #   containerPort: 8081
 #   servicePort: 81
-
-# list of additional environment variables
-additionalEnv: []
-# - name: "ktor.port"
-#   value: "8080"

@@ -39,17 +39,3 @@ Selector labels
 {{ include "commonLabels" . }}
 {{ include "selectorLabels" . }}
 {{- end -}}
-
-{{/*
-    Liveness Probe using curl
-*/}}
-{{- define "liveurl" -}}
-"http://localhost:{{ .Values.container.port }}{{ .Values.livenessProbe.path }}"
-{{- end -}}
-
-{{/*
-    Readyness Probe using curl
-*/}}
-{{- define "readyurl" -}}
-"http://localhost:{{ .Values.container.port }}{{ .Values.readinessProbe.path }}"
-{{- end -}}
