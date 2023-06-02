@@ -1,0 +1,5 @@
+additionalEnv:
+  - name: "ktor.port"
+    value: "8080"
+  - name: "utility.port"
+    value: "8081"
