@@ -79,17 +79,33 @@ spec:
               protocol: {{ $ap.protocol }}
             {{- end }}
           livenessProbe:
+            {{- if .Values.livenessProbe.cmd }}
+            exec:
+              command:
+              {{- range .Values.livenessProbe.cmd }}
+                - {{ . | quote }}
+              {{- end }}
+            {{ else }}
             httpGet:
               path: {{ .Values.livenessProbe.path }}
               port: {{ .Values.container.port }}
+            {{- end }}
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
           readinessProbe:
+            {{- if .Values.readinessProbe.cmd }}
+            exec:
+              command:
+              {{- range .Values.readinessProbe.cmd }}
+                - {{ . | quote }}
+              {{- end }}
+            {{ else }}
             httpGet:
               path: {{ .Values.readinessProbe.path }}
               port: {{ .Values.container.port }}
+            {{- end }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}

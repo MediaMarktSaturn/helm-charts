@@ -1,0 +1,5 @@
+livenessProbe:
+  cmd: ['curl', '-f', 'http://localhost:8080/.well-known/live']
+
+readinessProbe:
+  cmd: ['curl', '-f', 'http://localhost:8080/.well-known/ready']
