@@ -1,5 +1,0 @@
-livenessProbe:
-  useCurl: true
-
-readinessProbe:
-  useCurl: true
