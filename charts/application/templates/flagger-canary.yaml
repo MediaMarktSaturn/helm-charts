@@ -18,7 +18,11 @@ spec:
     name: {{ .Release.Name }}
   progressDeadlineSeconds: {{ .Values.canary.progressDeadlineSeconds }}
   autoscalerRef:
+    {{- if .Capabilities.APIVersions.Has "autoscaling/v2" }}
+    apiVersion: autoscaling/v2
+    {{- else }}
     apiVersion: autoscaling/v2beta2
+    {{- end }}
     kind: HorizontalPodAutoscaler
     name: {{ .Release.Name }}
   service:
