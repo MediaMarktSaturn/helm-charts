@@ -45,14 +45,14 @@ readinessProbe:
 
 image:
   repository: quay.io/heubeck/examiner
-  tag: 1.9.1
+  tag: 1.11.14
   pullPolicy: IfNotPresent
 
   # ImagePolicy and check period for automated updates
   tagSemverRange: "^1.x"
   tagUpdateInterval: "10m0s"
 
-  # exising secret in same namespace holding a
+  # existing secret of type 'kubernetes.io/dockerconfigjson' in same namespace
   repositorySecret: oci-registry-service
 
   # Provider of the image registry to be used with Fluxs ImageRepository: https://fluxcd.io/flux/components/image/imagerepositories/#provider
@@ -238,3 +238,42 @@ additionalPorts: []
 #   protocol: TCP
 #   containerPort: 8081
 #   servicePort: 81
+
+# further containers to run inside the pod
+sidecars: []
+# - name: sqlproxy
+#   image:
+#     repository: quay.io/heubeck/examiner
+#     tag: 1.11.14
+#   args: []
+#   env: {}
+#   configEnvFrom: []
+#   secretEnvFrom: []
+#   secretVolumes: []
+#     - secretName: mysecret
+#       mountPath: /mypath
+#   # see sidecarDefaults
+#   resources: {}
+#   securityContext: {}
+#   # probe timing is identical to main container
+#   livenessProbe:
+#     path: /liveness
+#     port: 9090
+#   readinessProbe:
+#     path: /readiness
+#     port: 9090
+
+# default values that apply on sidecars if not explicit set
+sidecarDefaults:
+  image:
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi
+  securityContext:
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
