@@ -1,6 +1,6 @@
 # application
 
-![Version: 1.4.0](https://img.shields.io/badge/Version-1.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.5.1](https://img.shields.io/badge/Version-1.5.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Generic application chart with common requirements of a typical workload.
 
@@ -19,6 +19,7 @@ Generic application chart with common requirements of a typical workload.
 | container.port | int | `8080` |  |
 | container.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | container.annotations."cluster-autoscaler.kubernetes.io/safe-to-evict" | string | `"true"` |  |
+| container.args | list | `[]` |  |
 | autoscaling.minReplicaCount | int | `1` |  |
 | autoscaling.maxReplicaCount | int | `1` |  |
 | autoscaling.averageUtilization.cpu | int | `80` |  |
