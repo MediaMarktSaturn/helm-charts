@@ -49,6 +49,10 @@ spec:
             {{- toYaml .Values.container.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: {{ if not .Values.container.args }}[]{{ end }}
+            {{- range .Values.container.args }}
+            - {{ . | quote }}
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "configmap" . }}
