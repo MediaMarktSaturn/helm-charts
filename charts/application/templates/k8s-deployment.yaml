@@ -108,6 +108,7 @@ spec:
             {{- end }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -136,7 +137,70 @@ spec:
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
             {{- end }}
-      volumes: {{ if not (or .Values.secretVolumes .Values.configVolumes .Values.serviceAccount.secretName .Values.encryptedSecret.mountPath .Values.volumeMounts) -}}[]{{- end -}}
+        {{- range $s := .Values.sidecars }}
+        - name: {{ $s.name }}
+          image: "{{ .image.repository }}:{{ .image.tag }}"
+          imagePullPolicy: {{ or $s.image.pullPolicy $.Values.sidecarDefaults.image.pullPolicy }}
+          args: {{ if not $s.args }}[]{{ end }}
+            {{- range $s.args }}
+            - {{ . | quote }}
+            {{- end }}
+          securityContext:
+            {{- if and $s.securityContext $.Values.sidecarDefaults.securityContext }}
+            {{- toYaml (merge $s.securityContext $.Values.sidecarDefaults.securityContext) | nindent 12 }}
+            {{- else }}
+            {{- toYaml (or $s.securityContext $.Values.sidecarDefaults.securityContext) | nindent 12 }}
+            {{- end }}
+          resources:
+            {{- toYaml (or $s.resources $.Values.sidecarDefaults.resources) | nindent 12 }}
+          {{- if .env }}
+          env:
+            {{- range $k, $v := .env }}
+            - name: {{ $k }}
+              value: {{ $v | quote }}
+            {{- end }}
+          {{- end }}
+          {{- if (or $s.configEnvFrom $s.secretEnvFrom )}}
+          envFrom:
+            {{- range $c := $s.configEnvFrom }}
+            - configMapRef:
+                name: {{ $c }}
+            {{- end }}
+            {{- range $se := $s.secretEnvFrom }}
+            - secretRef:
+                name: {{ $se }}
+            {{- end }}
+          {{- end }}
+          volumeMounts: {{ if not $s.secretVolumes -}}[]{{- end -}}
+            {{- range $s.secretVolumes }}
+            - name: "{{ $s.name }}-{{ .secretName }}"
+              mountPath: {{ .mountPath }}
+              readOnly: true
+            {{- end }}
+          {{- if $s.livenessProbe }}
+          livenessProbe:
+            httpGet:
+              path: {{ $s.livenessProbe.path }}
+              port: {{ $s.livenessProbe.port }}
+            initialDelaySeconds: {{ $.Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $.Values.livenessProbe.periodSeconds }}
+            failureThreshold: {{ $.Values.livenessProbe.failureThreshold }}
+            timeoutSeconds: {{ $.Values.livenessProbe.timeoutSeconds }}
+          {{- end }}
+          {{- if $s.readinessProbe }}
+          readinessProbe:
+            httpGet:
+              path: {{ $s.readinessProbe.path }}
+              port: {{ $s.readinessProbe.port }}
+            initialDelaySeconds: {{ $.Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $.Values.readinessProbe.periodSeconds }}
+            failureThreshold: {{ $.Values.readinessProbe.failureThreshold }}
+            timeoutSeconds: {{ $.Values.readinessProbe.timeoutSeconds }}
+          {{- end }}
+        {{- end }}
+      {{ $hasSidecarVolume := 0 }}
+      {{ range .Values.sidecars }}{{ if .secretVolumes }}{{ $hasSidecarVolume =1 }}{{ end }}{{ end }}
+      volumes: {{ if not (or .Values.secretVolumes .Values.configVolumes .Values.serviceAccount.secretName .Values.encryptedSecret.mountPath .Values.volumeMounts $hasSidecarVolume) -}}[]{{- end -}}
         {{- range .Values.secretVolumes }}
         - name: {{ .secretName }}
           secret:
@@ -165,4 +229,13 @@ spec:
           {{- else }}
           emptyDir: {}
           {{- end }}
+        {{- end }}
+        {{- range $s := .Values.sidecars }}
+        {{ if .secretVolumes }}
+        {{- range .secretVolumes }}
+          - name: "{{ $s.name }}-{{ .secretName }}"
+            secret:
+              secretName: {{ .secretName }}
+        {{- end }}
+        {{- end }}
         {{- end }}
