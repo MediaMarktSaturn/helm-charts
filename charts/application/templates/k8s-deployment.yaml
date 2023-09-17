@@ -18,6 +18,7 @@ spec:
       labels:
         {{- include "labels" . | nindent 8 }}
       annotations:
+        kubectl.kubernetes.io/default-container: {{ .Release.Name }}
         checksum/config: {{ include (print $.Template.BasePath "/k8s-config-map.yaml") . | sha256sum }}
         {{- if or .Values.encryptedSecret.data .Values.encryptedSecret.stringData }}
         checksum/secret: {{ include (print $.Template.BasePath "/k8s-secret.yaml") . | sha256sum }}
