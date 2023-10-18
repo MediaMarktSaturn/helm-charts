@@ -1,6 +1,6 @@
 # application
 
-![Version: 1.5.2](https://img.shields.io/badge/Version-1.5.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.6.0](https://img.shields.io/badge/Version-1.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Generic application chart with common requirements of a typical workload.
 
@@ -64,6 +64,7 @@ Generic application chart with common requirements of a typical workload.
 | serviceAccount.workloadIdentityServiceAccount | string | `nil` |  |
 | serviceAccount.secretName | string | `nil` |  |
 | serviceAccount.mountPath | string | `"/config/service-account"` |  |
+| serviceAccount.automountServiceAccountToken | bool | `false` |  |
 | istio.enabled | bool | `false` |  |
 | istio.tlsMode | string | `"ISTIO_MUTUAL"` |  |
 | istio.ingress.enabled | bool | `true` |  |
