@@ -43,7 +43,7 @@ spec:
         {{- range $k, $v := .Values.nodeSelector }}
         {{ $k }}: {{ $v | quote }}
         {{- end }}
-      automountServiceAccountToken: {{ or .Values.istio.enabled .Values.linkerd.enabled }} # 'true' if required for side-car injection
+      automountServiceAccountToken: {{ or .Values.serviceAccount.automountServiceAccountToken .Values.istio.enabled .Values.linkerd.enabled }} # 'true' if explictly set or required for side-car injection
       containers:
         {{- range $s := .Values.sidecars }}
         - name: {{ $s.name }}
