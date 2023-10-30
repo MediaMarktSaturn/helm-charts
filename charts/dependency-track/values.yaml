@@ -47,7 +47,7 @@ apiserver:
 frontend:
   image:
     repository: docker.io/dependencytrack/frontend
-    tag: 4.9.0
+    tag: 4.9.1
   resources:
     limits:
       cpu: "1"
