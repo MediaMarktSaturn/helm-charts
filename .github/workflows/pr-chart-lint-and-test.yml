@@ -61,10 +61,10 @@ jobs:
       - uses: actions/setup-python@v4
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.4.0
+        uses: helm/chart-testing-action@v2.6.0
 
       - name: Lint charts
-        run: ct lint --config .github/workflows/conf/ct.yml
+        run: ct lint --config .github/workflows/conf/ct-lint.yml
 
       - uses: helm/kind-action@main
         with:

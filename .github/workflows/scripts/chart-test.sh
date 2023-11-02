@@ -4,4 +4,4 @@
 rsync -a chart-tests/ charts/
 
 # run chart tests
-ct install --config .github/workflows/conf/ct.yml
+ct install --config .github/workflows/conf/ct-test.yml
