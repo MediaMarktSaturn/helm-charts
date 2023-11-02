@@ -33,6 +33,10 @@ jobs:
             **/*.md
             .github/**
 
+      - run: |
+          echo "Has changes: ${{ steps.changed-files.outputs.any_changed }}"
+          echo "Changed files: ${{ steps.changed-files.outputs.all_changed_files }}"
+
   test:
     runs-on: ubuntu-latest
     needs: prep_job
