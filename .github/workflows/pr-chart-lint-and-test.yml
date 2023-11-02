@@ -29,9 +29,8 @@ jobs:
             **/*.yaml
             **/*.yml
             **/*.tpl
-          files_ignore: |
-            **/*.md
-            .github/**
+            !**/.*md
+            !.github/**
 
       - run: |
           echo "Has changes: ${{ steps.changed-files.outputs.any_changed }}"
