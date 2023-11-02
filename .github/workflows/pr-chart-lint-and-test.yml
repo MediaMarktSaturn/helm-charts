@@ -62,7 +62,7 @@ jobs:
 
       - uses: azure/setup-helm@v3.5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          version: v3.12.1
 
       - uses: actions/setup-python@v4
         with:
