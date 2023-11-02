@@ -64,7 +64,7 @@ jobs:
         uses: helm/chart-testing-action@v2.6.0
 
       - name: Lint charts
-        run: ct lint --config .github/workflows/conf/ct.yml
+        run: ct lint --config .github/workflows/conf/ct-lint.yml
 
       - uses: helm/kind-action@main
         with:
