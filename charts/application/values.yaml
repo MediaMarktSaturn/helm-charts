@@ -47,7 +47,7 @@ readinessProbe:
 
 image:
   repository: quay.io/heubeck/examiner
-  tag: 1.11.19
+  tag: 1.11.23
   pullPolicy: IfNotPresent
 
   # ImagePolicy and check period for automated updates
@@ -248,7 +248,7 @@ sidecars: []
 # - name: sqlproxy
 #   image:
 #     repository: quay.io/heubeck/examiner
-#     tag: 1.11.19
+#     tag: 1.11.23
 #   args: []
 #   env: {}
 #   configEnvFrom: []
@@ -281,3 +281,34 @@ sidecarDefaults:
   securityContext:
     runAsNonRoot: true
     allowPrivilegeEscalation: false
+
+# initContainers to be executed at pod startup
+initContainers: []
+# - name: setup
+#   image:
+#     repository: busybox
+#     tag: latest
+#   command: ['sh', '-c', 'echo "bump me up"']
+#   env: {}
+#   restartPolicy: Always
+#   configEnvFrom: []
+#   secretEnvFrom: []
+#   secretVolumes:
+#     - secretName: mysecret
+#       mountPath: /mypath
+#   # see initDefaults
+#   resources: {}
+#   securityContext: {}
+
+# default values that apply on init containers if not explicit set
+initDefaults:
+  image:
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 100Mi
+  restartPolicy: Always

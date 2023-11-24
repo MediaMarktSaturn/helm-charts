@@ -44,6 +44,48 @@ spec:
         {{ $k }}: {{ $v | quote }}
         {{- end }}
       automountServiceAccountToken: {{ or .Values.serviceAccount.automountServiceAccountToken .Values.istio.enabled .Values.linkerd.enabled }} # 'true' if explictly set or required for side-car injection
+      initContainers: {{ if not .Values.initContainers -}}[]{{- end -}}
+        {{- range $i := .Values.initContainers }}
+        - name: {{ $i.name }}
+          image: "{{ .image.repository }}:{{ .image.tag }}"
+          imagePullPolicy: {{ or $i.image.pullPolicy $.Values.initDefaults.image.pullPolicy }}
+          command: {{ if not $i.command }}[]{{ end }}
+            {{- range $i.command }}
+            - {{ . | quote }}
+            {{- end }}
+          securityContext:
+            {{- toYaml $i.securityContext | nindent 12 }}
+          resources:
+            {{- toYaml (or $i.resources $.Values.initDefaults.resources) | nindent 12 }}
+          {{- if .env }}
+          env:
+            {{- range $k, $v := .env }}
+            - name: {{ $k }}
+              value: {{ $v | quote }}
+            {{- end }}
+          {{- end }}
+          {{- if (or $i.configEnvFrom $i.secretEnvFrom )}}
+          envFrom:
+            {{- range $c := $i.configEnvFrom }}
+            - configMapRef:
+                name: {{ $c }}
+            {{- end }}
+            {{- range $ie := $i.secretEnvFrom }}
+            - secretRef:
+                name: {{ $ie }}
+            {{- end }}
+          {{- end }}
+          volumeMounts: {{ if not (or $i.secretVolumes $.Values.volumeMounts) -}}[]{{- end -}}
+            {{- range $i.secretVolumes }}
+            - name: "{{ $i.name }}-{{ .secretName }}"
+              mountPath: {{ .mountPath }}
+              readOnly: true
+            {{- end }}
+            {{- range $.Values.volumeMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
+        {{- end }}
       containers:
         {{- range $s := .Values.sidecars }}
         - name: {{ $s.name }}
@@ -204,8 +246,10 @@ spec:
               mountPath: {{ .mountPath }}
             {{- end }}
       {{ $hasSidecarVolume := 0 }}
-      {{ range .Values.sidecars }}{{ if .secretVolumes }}{{ $hasSidecarVolume =1 }}{{ end }}{{ end }}
-      volumes: {{ if not (or .Values.secretVolumes .Values.configVolumes .Values.serviceAccount.secretName .Values.encryptedSecret.mountPath .Values.volumeMounts $hasSidecarVolume) -}}[]{{- end -}}
+      {{ range .Values.sidecars }}{{ if .secretVolumes }}{{ $hasSidecarVolume = 1 }}{{ end }}{{ end }}
+      {{ $hasInitVolume := 0 }}
+      {{ range .Values.initContainers }}{{ if .secretVolumes }}{{ $hasInitVolume = 1 }}{{ end }}{{ end }}
+      volumes: {{ if not (or .Values.secretVolumes .Values.configVolumes .Values.serviceAccount.secretName .Values.encryptedSecret.mountPath .Values.volumeMounts $hasSidecarVolume $hasInitVolume) -}}[]{{- end -}}
         {{- range .Values.secretVolumes }}
         - name: {{ .secretName }}
           secret:
@@ -239,6 +283,15 @@ spec:
         {{ if .secretVolumes }}
         {{- range .secretVolumes }}
           - name: "{{ $s.name }}-{{ .secretName }}"
+            secret:
+              secretName: {{ .secretName }}
+        {{- end }}
+        {{- end }}
+        {{- end }}
+        {{- range $i := .Values.initContainers }}
+        {{ if .secretVolumes }}
+        {{- range .secretVolumes }}
+          - name: "{{ $i.name }}-{{ .secretName }}"
             secret:
               secretName: {{ .secretName }}
         {{- end }}

@@ -1,0 +1,37 @@
+resources:
+  requests:
+    cpu: 10m
+    memory: 50Mi
+  limits:
+    cpu: 100m
+    memory: 100Mi
+
+volumeMounts:
+  - name: share
+    mountPath: /share
+
+initContainers:
+  - name: first
+    image:
+      repository: redhat/ubi9-minimal
+      tag: 9.3
+    command: ['sh', '-c', 'echo $BUMP_ME_UP']
+    env:
+     BUMP_ME_UP: bump me up
+    securityContext:
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      runAsUser: 65534
+      runAsGroup: 65534
+  - name: second
+    image:
+      repository: redhat/ubi9-minimal
+      tag: 9.3
+    command: ['ls', '-lah', '/']
+    env: {}
+    restartPolicy: Never
+    securityContext:
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      runAsUser: 65534
+      runAsGroup: 65534
