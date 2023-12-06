@@ -266,6 +266,9 @@ sidecars: []
 #   readinessProbe:
 #     path: /readiness
 #     port: 9090
+#   # 'volumeMounts' names to be mounted in sidecar as well (under the same path); default: none
+#   volumeMountNames: []
+#   #  - data
 
 # default values that apply on sidecars if not explicit set
 sidecarDefaults:
@@ -299,6 +302,9 @@ initContainers: []
 #   # see initDefaults
 #   resources: {}
 #   securityContext: {}
+#   # 'volumeMounts' names to be mounted in init container as well (under the same path); default: none
+#   volumeMountNames: []
+#   #  - data
 
 # default values that apply on init containers if not explicit set
 initDefaults:

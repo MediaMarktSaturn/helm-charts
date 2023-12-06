@@ -23,6 +23,8 @@ initContainers:
       allowPrivilegeEscalation: false
       runAsUser: 65534
       runAsGroup: 65534
+    volumeMountNames:
+      - share
   - name: second
     image:
       repository: redhat/ubi9-minimal
