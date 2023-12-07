@@ -34,13 +34,13 @@ sidecars:
       tag: 1.11.23
     env:
       ECHO_VALUE: wohooo
-      QUARKUS_HTTP_PORT: 9090
+      QUARKUS_HTTP_PORT: 7070
     livenessProbe:
       path: /.well-known/live
-      port: 9090
+      port: 7070
     readinessProbe:
       path: /.well-known/ready
-      port: 9090
+      port: 7070
     securityContext:
       runAsUser: 65532
 
