@@ -6,6 +6,10 @@ resources:
     cpu: 100m
     memory: 100Mi
 
+volumeMounts:
+  - name: share
+    mountPath: /share
+
 sidecars:
   - name: sidekick
     image:
@@ -20,6 +24,23 @@ sidecars:
     readinessProbe:
       path: /.well-known/ready
       port: 9090
+    securityContext:
+      runAsUser: 65532
+    volumeMountNames:
+      - share
+  - name: kickback
+    image:
+      repository: quay.io/heubeck/examiner
+      tag: 1.11.23
+    env:
+      ECHO_VALUE: wohooo
+      QUARKUS_HTTP_PORT: 7070
+    livenessProbe:
+      path: /.well-known/live
+      port: 7070
+    readinessProbe:
+      path: /.well-known/ready
+      port: 7070
     securityContext:
       runAsUser: 65532
 

@@ -75,15 +75,19 @@ spec:
                 name: {{ $ie }}
             {{- end }}
           {{- end }}
-          volumeMounts: {{ if not (or $i.secretVolumes $.Values.volumeMounts) -}}[]{{- end -}}
+          {{ $hasInitVolumeMount := 0 }}
+          {{ range $.Values.volumeMounts }}{{ if (has .name $i.volumeMountNames) }}{{ $hasInitVolumeMount = 1 }}{{ end }}{{ end }}
+          volumeMounts: {{ if not (or $i.secretVolumes (and $.Values.volumeMounts $hasInitVolumeMount)) -}}[]{{- end -}}
             {{- range $i.secretVolumes }}
             - name: "{{ $i.name }}-{{ .secretName }}"
               mountPath: {{ .mountPath }}
               readOnly: true
             {{- end }}
             {{- range $.Values.volumeMounts }}
+            {{- if (has .name $i.volumeMountNames) }}
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
+            {{- end }}
             {{- end }}
         {{- end }}
       containers:
@@ -121,11 +125,19 @@ spec:
                 name: {{ $se }}
             {{- end }}
           {{- end }}
-          volumeMounts: {{ if not $s.secretVolumes -}}[]{{- end -}}
+          {{ $hasSidecarVolumeMount := 0 }}
+          {{ range $.Values.volumeMounts }}{{ if (has .name $s.volumeMountNames) }}{{ $hasSidecarVolumeMount = 1 }}{{ end }}{{ end }}
+          volumeMounts: {{ if not (or $s.secretVolumes (and $.Values.volumeMounts $hasSidecarVolumeMount)) -}}[]{{- end -}}
             {{- range $s.secretVolumes }}
             - name: "{{ $s.name }}-{{ .secretName }}"
               mountPath: {{ .mountPath }}
               readOnly: true
+            {{- end }}
+            {{- range $.Values.volumeMounts }}
+            {{- if (has .name $s.volumeMountNames) }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
             {{- end }}
           {{- if $s.livenessProbe }}
           livenessProbe:
