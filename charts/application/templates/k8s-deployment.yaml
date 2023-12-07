@@ -34,8 +34,10 @@ spec:
         {{- end }}
     spec:
       serviceAccountName: {{ .Release.Name }}
+      {{- if .Values.podSecurityContext }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
       nodeSelector: {{ if not .Values.serviceAccount.workloadIdentityServiceAccount -}}{{- if not .Values.nodeSelector -}}{}{{- end -}}{{- end }}
         {{- if .Values.serviceAccount.workloadIdentityServiceAccount }}
         iam.gke.io/gke-metadata-server-enabled: "true"
@@ -54,7 +56,11 @@ spec:
             - {{ . | quote }}
             {{- end }}
           securityContext:
-            {{- toYaml $i.securityContext | nindent 12 }}
+            {{- if and $i.securityContext $.Values.initDefaults.securityContext }}
+            {{- toYaml (merge $i.securityContext $.Values.initDefaults.securityContext) | nindent 12 }}
+            {{- else }}
+            {{- toYaml (or $i.securityContext $.Values.initDefaults.securityContext) | nindent 12 }}
+            {{- end }}
           resources:
             {{- toYaml (or $i.resources $.Values.initDefaults.resources) | nindent 12 }}
           {{- if .env }}
@@ -161,8 +167,10 @@ spec:
           {{- end }}
         {{- end }}
         - name: {{ .Release.Name }}
+          {{- if .Values.container.securityContext }}
           securityContext:
             {{- toYaml .Values.container.securityContext | nindent 12 }}
+          {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args: {{ if not .Values.container.args }}[]{{ end }}
@@ -294,18 +302,18 @@ spec:
         {{- range $s := .Values.sidecars }}
         {{ if .secretVolumes }}
         {{- range .secretVolumes }}
-          - name: "{{ $s.name }}-{{ .secretName }}"
-            secret:
-              secretName: {{ .secretName }}
+        - name: "{{ $s.name }}-{{ .secretName }}"
+          secret:
+            secretName: {{ .secretName }}
         {{- end }}
         {{- end }}
         {{- end }}
         {{- range $i := .Values.initContainers }}
         {{ if .secretVolumes }}
         {{- range .secretVolumes }}
-          - name: "{{ $i.name }}-{{ .secretName }}"
-            secret:
-              secretName: {{ .secretName }}
+        - name: "{{ $i.name }}-{{ .secretName }}"
+          secret:
+            secretName: {{ .secretName }}
         {{- end }}
         {{- end }}
         {{- end }}
