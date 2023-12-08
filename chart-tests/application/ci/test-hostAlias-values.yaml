@@ -1,0 +1,5 @@
+hostAliases:
+  "127.0.0.1":
+    - this-is.local
+    - home-sweet-home
+  "172.23.17.1": somewhere
