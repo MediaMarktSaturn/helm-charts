@@ -243,6 +243,13 @@ additionalPorts: []
 #   containerPort: 8081
 #   servicePort: 81
 
+# additional /etc/hosts entries, either a list, or a single hostname
+hostAliases: []
+# "127.0.0.1":
+#   - this-is.local
+#   - home-sweet-home
+# "172.23.17.1": somewhere
+
 # further containers to run inside the pod
 sidecars: []
 # - name: sqlproxy

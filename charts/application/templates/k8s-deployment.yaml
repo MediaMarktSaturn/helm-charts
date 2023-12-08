@@ -46,6 +46,20 @@ spec:
         {{ $k }}: {{ $v | quote }}
         {{- end }}
       automountServiceAccountToken: {{ or .Values.serviceAccount.automountServiceAccountToken .Values.istio.enabled .Values.linkerd.enabled }} # 'true' if explictly set or required for side-car injection
+      {{- if .Values.hostAliases }}
+      hostAliases:
+      {{- range $ip, $hostList := .Values.hostAliases }}
+        - ip: {{ $ip | quote }}
+          hostnames:
+          {{- if (eq "string" (kindOf $hostList)) }}
+            - {{ $hostList | quote}}
+          {{- else -}}
+          {{- range $host := $hostList }}
+            - {{ $host | quote }}
+          {{- end }}
+          {{- end }}
+      {{- end }}
+      {{- end }}
       initContainers: {{ if not .Values.initContainers -}}[]{{- end -}}
         {{- range $i := .Values.initContainers }}
         - name: {{ $i.name }}
