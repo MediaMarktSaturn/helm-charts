@@ -1,6 +1,6 @@
 # application
 
-![Version: 1.9.1](https://img.shields.io/badge/Version-1.9.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.10.0](https://img.shields.io/badge/Version-1.10.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Generic application chart with common requirements of a typical workload.
 
@@ -38,7 +38,11 @@ Generic application chart with common requirements of a typical workload.
 | image.repository | string | `"quay.io/heubeck/examiner"` |  |
 | image.tag | string | `"1.11.24"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.tagSemverRange | string | `"^1.x"` |  |
+| image.tagSemverRange | string | `nil` |  |
+| image.tagNumerical | string | `nil` |  |
+| image.tagAlphabetical | string | `nil` |  |
+| image.tagFilterPattern | string | `nil` |  |
+| image.tagFilterExtract | string | `nil` |  |
 | image.tagUpdateInterval | string | `"10m0s"` |  |
 | image.repositorySecret | string | `"oci-registry-service"` |  |
 | image.repositoryProvider | string | `"generic"` |  |
