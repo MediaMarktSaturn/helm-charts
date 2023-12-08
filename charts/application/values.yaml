@@ -50,8 +50,19 @@ image:
   tag: 1.11.24
   pullPolicy: IfNotPresent
 
-  # ImagePolicy and check period for automated updates
-  tagSemverRange: "^1.x"
+  # ImagePolicy options:
+  # update acc. to semver pattern
+  tagSemverRange:
+  # update based on numerical sorting of tags: asc or desc
+  tagNumerical:
+  # update based on alphabetical sorting of tags: asc or desc
+  tagAlphabetical:
+
+  # image tag filtering, see: https://fluxcd.io/flux/components/image/imagepolicies/#filter-tags
+  tagFilterPattern:
+  tagFilterExtract:
+
+  # period to check for new image tags
   tagUpdateInterval: "10m0s"
 
   # existing secret of type 'kubernetes.io/dockerconfigjson' in same namespace
