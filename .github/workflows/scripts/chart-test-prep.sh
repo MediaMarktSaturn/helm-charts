@@ -34,3 +34,6 @@ kubectl create -f https://raw.githubusercontent.com/fluxcd/flagger/main/artifact
 
 # apply chart preconditions
 kubectl apply -f .github/workflows/scripts/chart-test-prep/preconditions.yaml
+
+# install gateway crd
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml

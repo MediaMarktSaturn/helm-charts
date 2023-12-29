@@ -1,4 +1,4 @@
-{{- if and .Values.canary.enabled (or .Values.istio.enabled .Values.linkerd.enabled ) }}
+{{- if and .Values.canary.enabled (or .Values.istio.enabled .Values.linkerd.enabled .Values.gatewayApi.enabled ) }}
 apiVersion: flagger.app/v1beta1
 kind: Canary
 metadata:
@@ -11,6 +11,12 @@ spec:
   provider: istio
   {{- else if .Values.linkerd.enabled }}
   provider: linkerd
+  {{- else if .Values.gatewayApi.enabled }}
+  {{- if .Capabilities.APIVersions.Has "gateway.networking.k8s.io/v1" }}
+  provider: gatewayapi:v1
+  {{- else }}
+  provider: gatewayapi:v1beta1
+  {{- end }}
   {{- end }}
   targetRef:
     apiVersion: apps/v1
@@ -44,6 +50,26 @@ spec:
     trafficPolicy:
       tls:
         mode: {{ .Values.istio.tlsMode }}
+    {{- end }}
+    {{- if .Values.gatewayApi.enabled }}
+    {{- if .Values.gatewayApi.host }}
+    hosts:
+      - {{ .Values.gatewayApi.host | quote }}
+    {{- end }}
+    {{- if .Values.gatewayApi.pathPrefix }}
+    match:
+      - uri:
+          prefix: {{ .Values.gatewayApi.pathPrefix | quote }}
+    {{- if .Values.gatewayApi.stripPathPrefix }}
+    rewrite:
+      uri: /
+    {{- end }}
+    {{- end }}
+    gatewayRefs:
+      - name: {{ .Values.gatewayApi.gatewayRef.name }}
+        {{- if .Values.gatewayApi.gatewayRef.namespace }}
+        namespace: {{ .Values.gatewayApi.gatewayRef.namespace }}
+        {{- end }}
     {{- end }}
   skipAnalysis: {{ .Values.canary.analysis.skip }}
   analysis:

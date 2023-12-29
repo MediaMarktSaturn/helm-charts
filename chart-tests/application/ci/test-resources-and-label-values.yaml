@@ -14,7 +14,7 @@ autoscaling:
 
 image:
   repository: quay.io/heubeck/examiner
-  tag: 1.11.24
+  tag: 1.11.26
   pullPolicy: IfNotPresent
 
   # ImagePolicy and check period for automated updates
