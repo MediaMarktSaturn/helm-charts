@@ -1,0 +1,15 @@
+resources:
+  requests:
+    cpu: 10m
+    memory: 50Mi
+  limits:
+    cpu: 100m
+    memory: 100Mi
+
+gatewayApi:
+  enabled: true
+  pathPrefix: /examine
+  stripPathPrefix: true
+  gatewayRef:
+    name: http-gateway
+    namespace: default

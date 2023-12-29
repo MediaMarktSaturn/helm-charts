@@ -47,7 +47,7 @@ readinessProbe:
 
 image:
   repository: quay.io/heubeck/examiner
-  tag: 1.11.24
+  tag: 1.11.26
   pullPolicy: IfNotPresent
 
   # ImagePolicy options:
@@ -156,6 +156,16 @@ linkerd:
     config.linkerd.io/proxy-log-level: error
     config.linkerd.io/proxy-cpu-request: "0.2"
     config.linkerd.io/proxy-memory-request: 128Mi
+
+gatewayApi:
+  enabled: false
+  host:
+  pathPrefix:
+  stripPathPrefix: false
+  gatewayRef:
+    name:
+    namespace:
+    sectionName:
 
 monitoring:
   serviceMonitor: false
@@ -266,7 +276,7 @@ sidecars: []
 # - name: sqlproxy
 #   image:
 #     repository: quay.io/heubeck/examiner
-#     tag: 1.11.24
+#     tag: 1.11.26
 #   args: []
 #   env: {}
 #   configEnvFrom: []

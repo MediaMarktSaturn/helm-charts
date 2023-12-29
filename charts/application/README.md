@@ -36,7 +36,7 @@ Generic application chart with common requirements of a typical workload.
 | readinessProbe.failureThreshold | int | `3` |  |
 | readinessProbe.timeoutSeconds | int | `5` |  |
 | image.repository | string | `"quay.io/heubeck/examiner"` |  |
-| image.tag | string | `"1.11.24"` |  |
+| image.tag | string | `"1.11.26"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.tagSemverRange | string | `nil` |  |
 | image.tagNumerical | string | `nil` |  |

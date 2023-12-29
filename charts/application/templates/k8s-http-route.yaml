@@ -1,0 +1,45 @@
+{{- if and (not .Values.canary.enabled) .Values.gatewayApi.enabled }}
+{{- if .Capabilities.APIVersions.Has "gateway.networking.k8s.io/v1" }}
+apiVersion: gateway.networking.k8s.io/v1
+{{- else }}
+apiVersion: gateway.networking.k8s.io/v1beta1
+{{- end }}
+kind: HTTPRoute
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  parentRefs:
+    - name: {{ .Values.gatewayApi.gatewayRef.name }}
+      {{- if .Values.gatewayApi.gatewayRef.namespace }}
+      namespace: {{ .Values.gatewayApi.gatewayRef.namespace }}
+      {{- end }}
+      {{- if .Values.gatewayApi.gatewayRef.sectionName }}
+      sectionName: {{ .Values.gatewayApi.gatewayRef.sectionName }}
+      {{- end }}
+  {{- if .Values.gatewayApi.host }}
+  hostnames:
+    - {{ .Values.gatewayApi.host | quote }}
+  {{- end }}
+  rules:
+    - backendRefs:
+      - name: {{ .Release.Name }}
+        kind: Service
+        port: {{ .Values.service.port }}
+      {{- if .Values.gatewayApi.pathPrefix }}
+      matches:
+      - path:
+          type: PathPrefix
+          value: {{ .Values.gatewayApi.pathPrefix | quote }}
+      {{- if .Values.gatewayApi.stripPathPrefix }}
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              replaceFullPath: /
+              type: ReplaceFullPath
+      {{- end }}
+      {{- end }}
+{{- end }}
