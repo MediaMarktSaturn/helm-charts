@@ -1,6 +1,6 @@
 # application
 
-![Version: 1.10.0](https://img.shields.io/badge/Version-1.10.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.11.0](https://img.shields.io/badge/Version-1.11.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Generic application chart with common requirements of a typical workload.
 
@@ -79,6 +79,13 @@ Generic application chart with common requirements of a typical workload.
 | linkerd.proxyConfig."config.linkerd.io/proxy-log-level" | string | `"error"` |  |
 | linkerd.proxyConfig."config.linkerd.io/proxy-cpu-request" | string | `"0.2"` |  |
 | linkerd.proxyConfig."config.linkerd.io/proxy-memory-request" | string | `"128Mi"` |  |
+| gatewayApi.enabled | bool | `false` |  |
+| gatewayApi.host | string | `nil` |  |
+| gatewayApi.pathPrefix | string | `nil` |  |
+| gatewayApi.stripPathPrefix | bool | `false` |  |
+| gatewayApi.gatewayRef.name | string | `nil` |  |
+| gatewayApi.gatewayRef.namespace | string | `nil` |  |
+| gatewayApi.gatewayRef.sectionName | string | `nil` |  |
 | monitoring.serviceMonitor | bool | `false` |  |
 | monitoring.namespace | string | `"monitoring"` |  |
 | monitoring.metricsPath | string | `"/metrics"` |  |
