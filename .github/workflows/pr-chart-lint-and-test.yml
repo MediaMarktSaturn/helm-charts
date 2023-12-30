@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       has_changes: ${{ steps.changed-files.outputs.any_changed }}
+      matrix: ${{ steps.result.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,36 +37,32 @@ jobs:
           echo "Has changes: ${{ steps.changed-files.outputs.any_changed }}"
           echo "Changed files: ${{ steps.changed-files.outputs.all_changed_files }}"
 
+          {
+            echo "matrix<<EOF"
+            echo '{ "include": ['
+            echo '{ "name": "k8s-1.29", "kindest_image": "kindest/node:v1.29.0"  },'
+            echo '{ "name": "k8s-1.28", "kindest_image": "kindest/node:v1.28.0"  },'
+            echo '{ "name": "k8s-1.27", "kindest_image": "kindest/node:v1.27.3"  },'
+            echo '{ "name": "k8s-1.26", "kindest_image": "kindest/node:v1.26.6"  },'
+            echo '{ "name": "k8s-1.25", "kindest_image": "kindest/node:v1.25.11" },'
+            echo '{ "name": "k8s-1.24", "kindest_image": "kindest/node:v1.24.15" },'
+            echo '{ "name": "k8s-1.23", "kindest_image": "kindest/node:v1.23.17" }'
+            echo '] }'
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+        id: result
+
   test:
     runs-on: ubuntu-latest
     needs: prep_job
+    if: ${{ needs.prep_job.outputs.has_changes != 'false' }}
     env:
       # see https://github.com/kubernetes-sigs/kind/releases
       kind_version: v0.20.0
     strategy:
-      matrix:
-        include:
-          - name: k8s-1.29
-            kindest_image: kindest/node:v1.29.0
-          - name: k8s-1.28
-            kindest_image: kindest/node:v1.28.0
-          - name: k8s-1.27
-            kindest_image: kindest/node:v1.27.3
-          - name: k8s-1.26
-            kindest_image: kindest/node:v1.26.6
-          - name: k8s-1.25
-            kindest_image: kindest/node:v1.25.11
-          - name: k8s-1.24
-            kindest_image: kindest/node:v1.24.15
-          - name: k8s-1.23
-            kindest_image: kindest/node:v1.23.17
+      matrix: ${{fromJson(needs.prep_job.outputs.matrix)}}
     name: ${{ matrix.name }}
     steps:
-      - run: |
-          echo "Skip following steps as there're no relevant changes found in this pull request."
-          exit 0
-        if: ${{ needs.prep_job.outputs.has_changes == 'false' }}
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -115,3 +112,15 @@ jobs:
 
       - name: Run checkov on each test case permutation
         run: .github/workflows/scripts/checkov-chart-linting.sh
+
+  skip:
+    runs-on: ubuntu-latest
+    needs: prep_job
+    if: ${{ needs.prep_job.outputs.has_changes != 'true' }}
+    strategy:
+      matrix: ${{fromJson(needs.prep_job.outputs.matrix)}}
+    name: ${{ matrix.name }}
+    steps:
+      - run: |
+          echo "Skip ${{ matrix.name }} for this pull request because no relevant files have been changed."
+          echo "This is needed to not block the pull request as these are configured as required status check."
