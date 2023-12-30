@@ -1,4 +1,3 @@
----
 container:
   port: 8080
   securityContext:
@@ -347,4 +346,3 @@ initDefaults:
       cpu: 500m
       memory: 100Mi
   restartPolicy: Always
-# test workflow changes
