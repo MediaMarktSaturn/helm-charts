@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       has_changes: ${{ steps.changed-files.outputs.any_changed }}
+      matrix: ${{ steps.result.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,31 +37,31 @@ jobs:
           echo "Has changes: ${{ steps.changed-files.outputs.any_changed }}"
           echo "Changed files: ${{ steps.changed-files.outputs.all_changed_files }}"
 
+          {
+            echo "matrix<<EOF"
+            echo '{ "include": ['
+            [[ "${{ steps.changed-files.outputs.any_changed }}" == 'false' ]] && echo '{ "name": "lint" },'
+            echo '{ "name": "k8s-1.29", "kindest_image": "kindest/node:v1.29.0"  },'
+            echo '{ "name": "k8s-1.28", "kindest_image": "kindest/node:v1.28.0"  },'
+            echo '{ "name": "k8s-1.27", "kindest_image": "kindest/node:v1.27.3"  },'
+            echo '{ "name": "k8s-1.26", "kindest_image": "kindest/node:v1.26.6"  },'
+            echo '{ "name": "k8s-1.25", "kindest_image": "kindest/node:v1.25.11" },'
+            echo '{ "name": "k8s-1.24", "kindest_image": "kindest/node:v1.24.15" },'
+            echo '{ "name": "k8s-1.23", "kindest_image": "kindest/node:v1.23.17" }'
+            echo '] }'
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+        id: result
+
   test:
     runs-on: ubuntu-latest
     needs: prep_job
     if: ${{ needs.prep_job.outputs.has_changes == 'true' }}
     env:
       # see https://github.com/kubernetes-sigs/kind/releases
-      # make sure to update the image refs in the matrix as well, when update this version!
       kind_version: v0.20.0
     strategy:
-      matrix:
-        include:
-          - name: k8s-1.29
-            kindest_image: kindest/node:v1.29.0
-          - name: k8s-1.28
-            kindest_image: kindest/node:v1.28.0
-          - name: k8s-1.27
-            kindest_image: kindest/node:v1.27.3
-          - name: k8s-1.26
-            kindest_image: kindest/node:v1.26.6
-          - name: k8s-1.25
-            kindest_image: kindest/node:v1.25.11
-          - name: k8s-1.24
-            kindest_image: kindest/node:v1.24.15
-          - name: k8s-1.23
-            kindest_image: kindest/node:v1.23.17
+      matrix: ${{ fromJson(needs.prep_job.outputs.matrix) }}
     name: ${{ matrix.name }}
     steps:
       - uses: actions/checkout@v4
@@ -116,16 +117,9 @@ jobs:
   skip:
     runs-on: ubuntu-latest
     needs: prep_job
-    if: ${{ needs.prep_job.outputs.has_changes != 'true' }}
+    if: ${{ needs.prep_job.outputs.has_changes == 'false' }}
     strategy:
-      matrix:
-        include:
-          - name: k8s-1.27
-          - name: k8s-1.26
-          - name: k8s-1.25
-          - name: k8s-1.24
-          - name: k8s-1.23
-          - name: lint
+      matrix: ${{ fromJson(needs.prep_job.outputs.matrix) }}
     name: ${{ matrix.name }}
     steps:
       - run: |
