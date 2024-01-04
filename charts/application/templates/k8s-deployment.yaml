@@ -161,9 +161,17 @@ spec:
             {{- end }}
           {{- if $s.livenessProbe }}
           livenessProbe:
+            {{- if $s.livenessProbe.cmd }}
+            exec:
+              command:
+              {{- range $s.livenessProbe.cmd }}
+                - {{ . | quote }}
+              {{- end }}
+            {{ else }}
             httpGet:
               path: {{ $s.livenessProbe.path }}
               port: {{ $s.livenessProbe.port }}
+            {{- end }}
             initialDelaySeconds: {{ $.Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ $.Values.livenessProbe.periodSeconds }}
             failureThreshold: {{ $.Values.livenessProbe.failureThreshold }}
@@ -171,9 +179,17 @@ spec:
           {{- end }}
           {{- if $s.readinessProbe }}
           readinessProbe:
+            {{- if $s.readinessProbe.cmd }}
+            exec:
+              command:
+              {{- range $s.readinessProbe.cmd }}
+                - {{ . | quote }}
+              {{- end }}
+            {{ else }}
             httpGet:
               path: {{ $s.readinessProbe.path }}
               port: {{ $s.readinessProbe.port }}
+            {{- end }}
             initialDelaySeconds: {{ $.Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ $.Values.readinessProbe.periodSeconds }}
             failureThreshold: {{ $.Values.readinessProbe.failureThreshold }}
