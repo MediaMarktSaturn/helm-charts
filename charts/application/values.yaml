@@ -291,9 +291,15 @@ sidecars: []
 #   livenessProbe:
 #     path: /liveness
 #     port: 9090
+#     # Use a command to check liveness from inside the container.
+#     # This will take precedence over the given `path` and `port` value, if provided.
+#     cmd: []
 #   readinessProbe:
 #     path: /readiness
 #     port: 9090
+#     # Use a command to check readiness from inside the container.
+#     # This will take precedence over the given `path` and `port` value, if provided.
+#     cmd: []
 #   # 'volumeMounts' names to be mounted in sidecar as well (under the same path); default: none
 #   volumeMountNames: []
 #   #  - data
