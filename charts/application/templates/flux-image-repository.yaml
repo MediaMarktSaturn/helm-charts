@@ -7,7 +7,7 @@ apiVersion: image.toolkit.fluxcd.io/v1beta1
 kind: ImageRepository
 metadata:
   name: {{ .Release.Name }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.image.imageAutomationNamespace }}
   labels:
     {{- include "labels" . | nindent 4 }}
 spec:
