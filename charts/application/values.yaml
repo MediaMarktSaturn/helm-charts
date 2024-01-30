@@ -71,6 +71,9 @@ image:
   # Provider of the image registry to be used with Fluxs ImageRepository: https://fluxcd.io/flux/components/image/imagerepositories/#provider
   repositoryProvider: generic
 
+  # namespace to provision ImageRepository and ImagePolicy into. Defaulting to namespace of the release itself, may be useful to change to re-use an ImageUpdateAutomation from a different namespace
+  imageAutomationNamespace:
+
 service:
   port: 80
   timeout: 120s
