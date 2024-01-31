@@ -23,6 +23,7 @@ spec:
             prefix: {{ .Values.istio.ingress.uriPrefix }}
       rewrite:
         uri: {{ or .Values.istio.ingress.uriRewrite "/" }}
+        uri: {{ .Values.istio.ingress.uriRewrite }}
           {{ end }}
       timeout: {{ .Values.service.timeout }}
 {{- end }}
