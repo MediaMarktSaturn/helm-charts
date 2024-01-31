@@ -17,13 +17,11 @@ spec:
     - route:
         - destination:
             host: {{ .Release.Name }}
-      {{- if not (eq .Values.istio.ingress.uriPrefix "/") }}
       match:
         - uri:
             prefix: {{ .Values.istio.ingress.uriPrefix }}
       rewrite:
         uri: {{ .Values.istio.ingress.uriRewrite }}
-      {{ end }}
       timeout: {{ .Values.service.timeout }}
 {{- end }}
 {{- end }}
