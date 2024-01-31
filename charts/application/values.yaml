@@ -149,6 +149,7 @@ istio:
     gateway: public-gateway
     host: "*"
     uriPrefix: /
+    uriRewrite: /
 
 linkerd:
   enabled: false
