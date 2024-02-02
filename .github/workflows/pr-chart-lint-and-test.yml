@@ -1,4 +1,3 @@
----
 name: Lint and Test Charts
 "on":
   pull_request:
@@ -30,8 +29,11 @@ jobs:
             **/*.yaml
             **/*.yml
             **/*.tpl
-            !**/.*md
-            !.github/**
+            .github/
+          files_ignore: |
+            **/.*md
+            .github/CODEOWNERS
+            .github/dependabot.yml
 
       - run: |
           echo "Has changes: ${{ steps.changed-files.outputs.any_changed }}"
