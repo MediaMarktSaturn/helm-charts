@@ -41,12 +41,12 @@ jobs:
             echo "matrix<<EOF"
             echo '{ "include": ['
             [[ "${{ steps.changed-files.outputs.any_changed }}" == 'false' ]] && echo '{ "name": "lint" },'
-            echo '{ "name": "k8s-1.29", "kindest_image": "kindest/node:v1.29.0"  },'
-            echo '{ "name": "k8s-1.28", "kindest_image": "kindest/node:v1.28.0"  },'
-            echo '{ "name": "k8s-1.27", "kindest_image": "kindest/node:v1.27.3"  },'
-            echo '{ "name": "k8s-1.26", "kindest_image": "kindest/node:v1.26.6"  },'
-            echo '{ "name": "k8s-1.25", "kindest_image": "kindest/node:v1.25.11" },'
-            echo '{ "name": "k8s-1.24", "kindest_image": "kindest/node:v1.24.15" },'
+            echo '{ "name": "k8s-1.29", "kindest_image": "kindest/node:v1.29.1"  },'
+            echo '{ "name": "k8s-1.28", "kindest_image": "kindest/node:v1.28.6"  },'
+            echo '{ "name": "k8s-1.27", "kindest_image": "kindest/node:v1.27.10" },'
+            echo '{ "name": "k8s-1.26", "kindest_image": "kindest/node:v1.26.13" },'
+            echo '{ "name": "k8s-1.25", "kindest_image": "kindest/node:v1.25.16" },'
+            echo '{ "name": "k8s-1.24", "kindest_image": "kindest/node:v1.24.17" },'
             echo '{ "name": "k8s-1.23", "kindest_image": "kindest/node:v1.23.17" }'
             echo '] }'
             echo "EOF"
@@ -59,7 +59,7 @@ jobs:
     if: ${{ needs.prep_job.outputs.has_changes == 'true' }}
     env:
       # see https://github.com/kubernetes-sigs/kind/releases
-      kind_version: v0.20.0
+      kind_version: v0.21.0
     strategy:
       matrix: ${{ fromJson(needs.prep_job.outputs.matrix) }}
     name: ${{ matrix.name }}
