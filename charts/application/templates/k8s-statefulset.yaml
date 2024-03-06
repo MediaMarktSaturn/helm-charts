@@ -1,6 +1,6 @@
-{{- if not .Values.statefulSet.enabled }}
+{{- if .Values.statefulSet.enabled }}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
@@ -14,6 +14,7 @@ spec:
     matchLabels:
       {{- include "selectorLabels" . | nindent 6 }}
   replicas: {{ .Values.autoscaling.minReplicaCount }}
+  serviceName: {{ .Release.Name }}
   template:
     {{- include "podTemplate" . | nindent 4 }}
 {{- end }}

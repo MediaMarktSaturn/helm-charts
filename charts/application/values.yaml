@@ -1,3 +1,7 @@
+# per default, a Deployment is created, if required, it can be changed to a StatefulSet
+statefulSet:
+  enabled: false
+
 container:
   port: 8080
   securityContext:
@@ -47,7 +51,7 @@ readinessProbe:
 
 image:
   repository: quay.io/heubeck/examiner
-  tag: 1.11.26
+  tag: 1.12.9
   pullPolicy: IfNotPresent
 
   # ImagePolicy options:
@@ -280,7 +284,7 @@ sidecars: []
 # - name: sqlproxy
 #   image:
 #     repository: quay.io/heubeck/examiner
-#     tag: 1.11.26
+#     tag: 1.12.9
 #   args: []
 #   env: {}
 #   configEnvFrom: []
