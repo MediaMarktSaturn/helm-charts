@@ -1,6 +1,6 @@
 # application
 
-![Version: 1.13.1](https://img.shields.io/badge/Version-1.13.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.14.0](https://img.shields.io/badge/Version-1.14.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Generic application chart with common requirements of a typical workload.
 
@@ -16,6 +16,7 @@ Generic application chart with common requirements of a typical workload.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| statefulSet.enabled | bool | `false` |  |
 | container.port | int | `8080` |  |
 | container.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | container.annotations."cluster-autoscaler.kubernetes.io/safe-to-evict" | string | `"true"` |  |
