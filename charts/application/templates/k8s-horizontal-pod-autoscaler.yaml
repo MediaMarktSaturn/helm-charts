@@ -15,7 +15,11 @@ spec:
   maxReplicas: {{ .Values.autoscaling.maxReplicaCount }}
   scaleTargetRef:
     apiVersion: apps/v1
+    {{- if .Values.statefulSet.enabled }}
+    kind: StatefulSet
+    {{- else }}
     kind: Deployment
+    {{- end }}
     name: {{ .Release.Name }}
   metrics:
     {{- if .Values.autoscaling.averageUtilization.cpu }}

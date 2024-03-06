@@ -20,7 +20,11 @@ spec:
   {{- end }}
   targetRef:
     apiVersion: apps/v1
+    {{- if .Values.statefulSet.enabled }}
+    kind: StatefulSet
+    {{- else }}
     kind: Deployment
+    {{- end }}
     name: {{ .Release.Name }}
   progressDeadlineSeconds: {{ .Values.canary.progressDeadlineSeconds }}
   {{- if not (eq .Values.autoscaling.minReplicaCount .Values.autoscaling.maxReplicaCount) }}
