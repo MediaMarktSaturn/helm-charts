@@ -1,0 +1,33 @@
+resources:
+  requests:
+    cpu: 10m
+    memory: 50Mi
+  limits:
+    cpu: 100m
+    memory: 100Mi
+
+encryptedSecret:
+  stringData:
+    key-no1: |
+      this is just
+      an ordinary
+      multiline string
+    key-no2: |
+      just
+
+      don't
+
+      let: anyone read this
+
+configuration:
+  this-is: boring
+  here: |
+    we go
+    again
+  some: >
+    people always
+    will love yaml
+  why-not: |-
+    just
+      be
+        happy
