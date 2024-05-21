@@ -6,5 +6,5 @@ type: application
 maintainers:
   - name: MediaMarktSaturn
     url: https://github.com/MediaMarktSaturn
-appVersion: 4.11.0
-version: 1.6.0
+appVersion: 4.11.1
+version: 1.6.1
