@@ -7,7 +7,7 @@ curl -s https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/crds/kusto
 kubectl create -k .tmp
 
 # install istio crds
-kubectl create -f https://raw.githubusercontent.com/istio/istio/master/manifests/charts/base/crds/crd-all.gen.yaml
+kubectl create -f https://raw.githubusercontent.com/istio/istio/1.22.0/manifests/charts/base/crds/crd-all.gen.yaml
 
 # install linkerd crds via its cli
 curl --proto '=https' --tlsv1.2 -sSfL https://run.linkerd.io/install | sh
