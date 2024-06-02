@@ -51,7 +51,7 @@ readinessProbe:
 
 image:
   repository: quay.io/heubeck/examiner
-  tag: 1.12.9
+  tag: 1.12.21
   pullPolicy: IfNotPresent
 
   # ImagePolicy options:
@@ -284,7 +284,7 @@ sidecars: []
 # - name: sqlproxy
 #   image:
 #     repository: quay.io/heubeck/examiner
-#     tag: 1.12.9
+#     tag: 1.12.21
 #   args: []
 #   env: {}
 #   configEnvFrom: []
