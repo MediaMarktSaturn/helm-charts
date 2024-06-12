@@ -168,8 +168,10 @@ linkerd:
 gatewayApi:
   enabled: false
   host:
+  # option first url part to match this services http route
   pathPrefix:
-  stripPathPrefix: false
+  # optionally rewrite (or remove) the matched url prefix
+  pathPrefixRewrite: /
   gatewayRef:
     name:
     namespace:

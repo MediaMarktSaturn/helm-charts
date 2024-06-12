@@ -33,13 +33,13 @@ spec:
       - path:
           type: PathPrefix
           value: {{ .Values.gatewayApi.pathPrefix | quote }}
-      {{- if .Values.gatewayApi.stripPathPrefix }}
+      {{- if .Values.gatewayApi.pathPrefixRewrite }}
       filters:
         - type: URLRewrite
           urlRewrite:
             path:
-              replaceFullPath: /
-              type: ReplaceFullPath
+              replacePrefixMatch: {{ .Values.gatewayApi.pathPrefixRewrite | quote }}
+              type: ReplacePrefixMatch
       {{- end }}
       {{- end }}
 {{- end }}

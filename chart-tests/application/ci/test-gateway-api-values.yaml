@@ -9,7 +9,6 @@ resources:
 gatewayApi:
   enabled: true
   pathPrefix: /examine
-  stripPathPrefix: true
   gatewayRef:
     name: http-gateway
     namespace: default
