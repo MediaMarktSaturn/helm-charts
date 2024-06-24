@@ -395,6 +395,20 @@ entries:
     version: 1.0.0
   dependency-track:
   - apiVersion: v2
+    appVersion: 4.11.4
+    created: "2024-06-24T15:33:37.435142236Z"
+    description: Helm Chart for running OWASP Dependency-Track on Kubernetes
+    digest: 9bcbf5aba04c0be3f6b63c1d31aa04c8eb94f406de3800d592a3e9801edb9290
+    home: https://github.com/MediaMarktSaturn/helm-charts
+    maintainers:
+    - name: MediaMarktSaturn
+      url: https://github.com/MediaMarktSaturn
+    name: dependency-track
+    type: application
+    urls:
+    - https://github.com/MediaMarktSaturn/helm-charts/releases/download/dependency-track-1.6.4/dependency-track-1.6.4.tgz
+    version: 1.6.4
+  - apiVersion: v2
     appVersion: 4.11.3
     created: "2024-06-04T10:07:37.202326256Z"
     description: Helm Chart for running OWASP Dependency-Track on Kubernetes
@@ -689,4 +703,4 @@ entries:
     urls:
     - https://github.com/MediaMarktSaturn/helm-charts/releases/download/pod-cleanup-1.0.0/pod-cleanup-1.0.0.tgz
     version: 1.0.0
-generated: "2024-06-12T11:31:16.63990627Z"
+generated: "2024-06-24T15:33:37.435282788Z"
