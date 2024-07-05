@@ -24,10 +24,12 @@ spec:
       protocol: TCP
       name: http
     {{- range $ap := .Values.additionalPorts }}
+    {{- if $ap.servicePort }}
     - port: {{ $ap.servicePort }}
       targetPort: {{ $ap.containerPort }}
       protocol: {{ $ap.protocol }}
       name: {{ $ap.name }}
+    {{- end }}
     {{- end }}
 
   selector:

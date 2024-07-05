@@ -1,6 +1,6 @@
-{{- if .Values.monitoring.serviceMonitor }}
+{{- if .Values.monitoring.podMonitor }}
 apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+kind: PodMonitor
 metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Values.monitoring.namespace }}
@@ -22,7 +22,7 @@ spec:
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
-  endpoints:
+  podMetricsEndpoints:
     - port: {{ .Values.monitoring.metricsPortName | quote }}
       path: {{ .Values.monitoring.metricsPath | quote }}
       interval: {{ .Values.monitoring.scrapeInterval | quote }}

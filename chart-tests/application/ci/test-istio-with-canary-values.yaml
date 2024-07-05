@@ -65,7 +65,7 @@ linkerd:
   enabled: false
 
 monitoring:
-  serviceMonitor: true
+  podMonitor: true
   namespace: monitoring
 
 canary:
