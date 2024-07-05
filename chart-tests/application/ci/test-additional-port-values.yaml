@@ -22,4 +22,3 @@ spec:
       - name: grpc
         protocol: TCP
         containerPort: 8082
-        servicePort: 82
