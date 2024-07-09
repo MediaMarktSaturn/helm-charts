@@ -1,0 +1,94 @@
+{{- if .Values.prepJob.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-prep
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation
+    release/time: {{ date "2006-01-02T15:04:05Z07:00" now }}
+    release/revision: {{ .Release.Revision | quote }}
+spec:
+  backoffLimit: {{ .Values.prepJob.backoffLimit }}
+  template:
+    metadata:
+      labels:
+        {{- include "commonLabels" . | nindent 8 }}
+      annotations: {{ if not (or .Values.linkerd.enabled .Values.istio.enabled) }}{}{{- end }}
+        {{- if .Values.linkerd.enabled }}
+        {{- if .Values.prepJob.sidecarInjection }}
+        linkerd.io/inject: enabled
+        {{- range $k, $v := .Values.linkerd.proxyConfig }}
+        {{ $k }}: {{ $v | quote }}
+        {{- end }}
+        {{- else }}
+        linkerd.io/inject: disabled
+        {{- end }}
+        {{- end }}
+        {{- if .Values.istio.enabled }}
+        sidecar.istio.io/inject: {{ .Values.prepJob.sidecarInjection | quote }}
+        {{- end }}
+    spec:
+      activeDeadlineSeconds: {{ .Values.prepJob.activeDeadlineSeconds }}
+      restartPolicy: {{ .Values.prepJob.restartPolicy }}
+      {{- if .Values.prepJob.serviceAccountName }}
+      serviceAccountName: {{ .Values.prepJob.serviceAccountName }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      nodeSelector: {{ if not .Values.serviceAccount.workloadIdentityServiceAccount -}}{{- if not .Values.nodeSelector -}}{}{{- end -}}{{- end }}
+        {{- if .Values.serviceAccount.workloadIdentityServiceAccount }}
+        iam.gke.io/gke-metadata-server-enabled: "true"
+        {{- end }}
+        {{- range $k, $v := .Values.nodeSelector }}
+        {{ $k }}: {{ $v | quote }}
+        {{- end }}
+      automountServiceAccountToken: {{ and .Values.prepJob.sidecarInjection (or .Values.istio.enabled .Values.linkerd.enabled) }} # required for side-car injection
+      containers:
+        - name: {{ .Release.Name }}-prep
+          securityContext:
+            {{- toYaml .Values.container.securityContext | nindent 12 }}
+          {{- if contains ":" .Values.prepJob.image }}
+          image: {{ .Values.prepJob.image }}
+          {{- else }}
+          image: "{{ .Values.prepJob.image }}:{{ .Values.image.tag }}"
+          {{- end }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: {{ if not .Values.prepJob.command -}}[]{{- end -}}
+            {{- range .Values.prepJob.command }}
+            - {{ . | quote }}
+            {{- end }}
+          envFrom: {{ if not (or .Values.configEnvFrom .Values.secretEnvFrom) -}}[]{{- end -}}
+            {{- range $c := .Values.configEnvFrom }}
+            - configMapRef:
+                name: {{ $c }}
+            {{- end }}
+            {{- range $s := .Values.secretEnvFrom }}
+            - secretRef:
+                name: {{ $s }}
+            {{- end }}
+          {{- if .Values.prepJob.configuration }}
+          env:
+            {{- range $k, $v := .Values.prepJob.configuration }}
+            - name: {{ $k | quote }}
+              value: {{ $v | quote }}
+            {{- end }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.prepJob.resources | nindent 12 }}
+          volumeMounts: {{ if not .Values.secretVolumes -}}[]{{- end -}}
+            {{- range .Values.secretVolumes }}
+            - name: {{ .secretName }}
+              mountPath: {{ .mountPath }}
+              readOnly: true
+            {{- end }}
+      volumes: {{ if not .Values.secretVolumes -}}[]{{- end -}}
+        {{- range .Values.secretVolumes }}
+        - name: {{ .secretName }}
+          secret:
+            secretName: {{ .secretName }}
+        {{- end }}
+{{- end }}

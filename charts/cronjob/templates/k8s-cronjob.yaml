@@ -1,0 +1,19 @@
+{{- if not .Values.statefulSet.enabled }}
+apiVersion: apps/v1
+kind: Cronjob
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+  annotations:
+    release/time: {{ date "2006-01-02T15:04:05Z07:00" now }}
+    release/revision: {{ .Release.Revision | quote }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "selectorLabels" . | nindent 6 }}
+  replicas: {{ .Values.autoscaling.minReplicaCount }}
+  template:
+    {{- include "podTemplate" . | nindent 4 }}
+{{- end }}
