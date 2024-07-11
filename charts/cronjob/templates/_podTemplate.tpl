@@ -21,6 +21,7 @@ metadata:
     {{- end }}
     {{- end }}
 spec:
+  restartPolicy: OnFailure
   serviceAccountName: {{ .Release.Name }}
   {{- if .Values.podSecurityContext }}
   securityContext:
