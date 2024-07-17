@@ -1,0 +1,6 @@
+service:
+  disabled: true
+readinessProbe:
+  disabled: true
+livenessProbe:
+  disabled: true

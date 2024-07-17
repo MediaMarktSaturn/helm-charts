@@ -230,6 +230,7 @@ spec:
           containerPort: {{ $ap.containerPort }}
           protocol: {{ $ap.protocol }}
         {{- end }}
+      {{- if not .Values.livenessProbe.disabled }}
       livenessProbe:
         {{- if .Values.livenessProbe.cmd }}
         exec:
@@ -246,6 +247,8 @@ spec:
         periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
         failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
         timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+      {{- end }}
+      {{- if not .Values.readinessProbe.disabled }}
       readinessProbe:
         {{- if .Values.readinessProbe.cmd }}
         exec:
@@ -262,6 +265,7 @@ spec:
         periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
         failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+      {{- end }}
       resources:
         {{- toYaml .Values.resources | nindent 8 }}
       volumeMounts: {{ if not (or .Values.secretVolumes .Values.configVolumes .Values.serviceAccount.secretName .Values.encryptedSecret.mountPath .Values.volumeMounts) -}}[]{{- end -}}
