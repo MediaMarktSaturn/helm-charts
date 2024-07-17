@@ -24,14 +24,14 @@ Generic application chart with common requirements of a typical workload.
 | autoscaling.minReplicaCount | int | `1` |  |
 | autoscaling.maxReplicaCount | int | `1` |  |
 | autoscaling.averageUtilization.cpu | int | `80` |  |
-| livenessProbe.disabled | bool | `false` |  |
+| livenessProbe.enabled | bool | `true` |  |
 | livenessProbe.path | string | `"/.well-known/live"` |  |
 | livenessProbe.cmd | list | `[]` |  |
 | livenessProbe.initialDelaySeconds | int | `10` |  |
 | livenessProbe.periodSeconds | int | `10` |  |
 | livenessProbe.failureThreshold | int | `3` |  |
 | livenessProbe.timeoutSeconds | int | `5` |  |
-| readinessProbe.disabled | bool | `false` |  |
+| readinessProbe.enabled | bool | `true` |  |
 | readinessProbe.path | string | `"/.well-known/ready"` |  |
 | readinessProbe.cmd | list | `[]` |  |
 | readinessProbe.initialDelaySeconds | int | `10` |  |
@@ -51,7 +51,7 @@ Generic application chart with common requirements of a typical workload.
 | image.repositoryProvider | string | `"generic"` |  |
 | image.imageAutomationNamespace | string | `nil` |  |
 | image.pullSecrets | list | `[]` |  |
-| service.disabled | bool | `false` |  |
+| service.enabled | bool | `true` |  |
 | service.port | int | `80` |  |
 | service.timeout | string | `"120s"` |  |
 | service.annotations | object | `{}` |  |

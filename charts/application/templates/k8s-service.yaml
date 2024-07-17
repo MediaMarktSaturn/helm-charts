@@ -1,4 +1,4 @@
-{{- if and (not .Values.service.disabled) (not (and .Values.canary.enabled .Values.istio.enabled)) }}
+{{- if and .Values.service.enabled (not (and .Values.canary.enabled .Values.istio.enabled)) }}
 apiVersion: v1
 kind: Service
 metadata:

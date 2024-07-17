@@ -230,7 +230,7 @@ spec:
           containerPort: {{ $ap.containerPort }}
           protocol: {{ $ap.protocol }}
         {{- end }}
-      {{- if not .Values.livenessProbe.disabled }}
+      {{- if .Values.livenessProbe.enabled }}
       livenessProbe:
         {{- if .Values.livenessProbe.cmd }}
         exec:
@@ -248,7 +248,7 @@ spec:
         failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
         timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
       {{- end }}
-      {{- if not .Values.readinessProbe.disabled }}
+      {{- if .Values.readinessProbe.enabled }}
       readinessProbe:
         {{- if .Values.readinessProbe.cmd }}
         exec:
