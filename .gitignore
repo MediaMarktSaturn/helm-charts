@@ -17,4 +17,3 @@
 .tmp
 .chckv
 charts/*/ci
-helm-docs
