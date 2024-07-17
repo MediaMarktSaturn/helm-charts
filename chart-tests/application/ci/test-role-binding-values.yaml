@@ -6,3 +6,6 @@ serviceAccount:
     - kind: ClusterRoleBinding
       roleType: ClusterRole
       roleName: edit
+    - kind: ClusterRoleBinding
+      roleType: ClusterRole
+      roleName: view
