@@ -72,6 +72,7 @@ Generic application chart with common requirements of a typical workload.
 | serviceAccount.secretName | string | `nil` |  |
 | serviceAccount.mountPath | string | `"/config/service-account"` |  |
 | serviceAccount.automountServiceAccountToken | bool | `false` |  |
+| serviceAccount.rbac | list | `[]` |  |
 | istio.enabled | bool | `false` |  |
 | istio.tlsMode | string | `"ISTIO_MUTUAL"` |  |
 | istio.ingress.enabled | bool | `true` |  |
