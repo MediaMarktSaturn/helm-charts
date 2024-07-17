@@ -48,6 +48,7 @@ Generic application chart with common requirements of a typical workload.
 | image.repositorySecret | string | `"oci-registry-service"` |  |
 | image.repositoryProvider | string | `"generic"` |  |
 | image.imageAutomationNamespace | string | `nil` |  |
+| image.pullSecrets | list | `[]` |  |
 | service.port | int | `80` |  |
 | service.timeout | string | `"120s"` |  |
 | service.annotations | object | `{}` |  |
