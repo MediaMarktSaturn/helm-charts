@@ -17,7 +17,7 @@ initContainers:
       tag: 9.3
     command: ['sh', '-c', 'echo $BUMP_ME_UP']
     env:
-     BUMP_ME_UP: bump me up
+      BUMP_ME_UP: bump me up
     securityContext:
       runAsNonRoot: true
       allowPrivilegeEscalation: false

@@ -141,6 +141,11 @@ serviceAccount:
   mountPath: /config/service-account
   # k8s ServiceAccount.automountServiceAccountToken setting
   automountServiceAccountToken: false
+  # gives the application the defined role binding
+  rbac: []
+  #  - kind: RoleBinding
+  #    roleType: ClusterRole
+  #    roleName: admin
 
 # Pick one of the service mesh configs
 istio:

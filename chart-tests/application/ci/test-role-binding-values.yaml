@@ -1,0 +1,8 @@
+serviceAccount:
+  rbac:
+    - kind: RoleBinding
+      roleType: Role
+      roleName: admin
+    - kind: ClusterRoleBinding
+      roleType: ClusterRole
+      roleName: edit
