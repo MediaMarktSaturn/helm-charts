@@ -98,6 +98,12 @@ spec:
         {{- end }}
         {{- end }}
     {{- end }}
+  {{- if .Values.image.pullSecrets }}
+  imagePullSecrets:
+    {{- range $s := .Values.image.pullSecrets }}
+    - name: {{ $s }}
+    {{- end }}
+  {{- end }}
   containers:
     {{- range $s := .Values.sidecars }}
     - name: {{ $s.name }}

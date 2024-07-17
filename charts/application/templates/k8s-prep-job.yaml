@@ -47,6 +47,12 @@ spec:
         {{ $k }}: {{ $v | quote }}
         {{- end }}
       automountServiceAccountToken: {{ and .Values.prepJob.sidecarInjection (or .Values.istio.enabled .Values.linkerd.enabled) }} # required for side-car injection
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- range $s := .Values.image.pullSecrets }}
+        - name: {{ $s }}
+        {{- end }}
+      {{- end }}
       containers:
         - name: {{ .Release.Name }}-prep
           securityContext:
