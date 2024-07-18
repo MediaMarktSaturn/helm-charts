@@ -16,3 +16,5 @@ skip-check:
   - CKV2_K8S_6 # https://www.checkov.io/5.Policy%20Index/kubernetes.html - Minimize the admission of pods which lack an associated NetworkPolicy
   - CKV_K8S_13 # https://docs.bridgecrew.io/docs/bc_k8s_12 - Ensure memory limits are set
   - CKV_K8S_11 # https://docs.bridgecrew.io/docs/bc_k8s_10 - Ensure CPU limits are set
+  - CKV_K8S_8 # https://docs.prismacloud.io/en/enterprise-edition/policy-reference/kubernetes-policies/kubernetes-policy-index/bc-k8s-7 - Ensure liveness probes are implemented
+  - CKV_K8S_9 # https://docs.prismacloud.io/en/enterprise-edition/policy-reference/kubernetes-policies/kubernetes-policy-index/bc-k8s-8 - Ensure readiness probes are implemented

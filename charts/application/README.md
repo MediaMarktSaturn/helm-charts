@@ -1,6 +1,6 @@
 # application
 
-![Version: 1.18.0](https://img.shields.io/badge/Version-1.18.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.19.0](https://img.shields.io/badge/Version-1.19.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Generic application chart with common requirements of a typical workload.
 
@@ -24,12 +24,14 @@ Generic application chart with common requirements of a typical workload.
 | autoscaling.minReplicaCount | int | `1` |  |
 | autoscaling.maxReplicaCount | int | `1` |  |
 | autoscaling.averageUtilization.cpu | int | `80` |  |
+| livenessProbe.enabled | bool | `true` |  |
 | livenessProbe.path | string | `"/.well-known/live"` |  |
 | livenessProbe.cmd | list | `[]` |  |
 | livenessProbe.initialDelaySeconds | int | `10` |  |
 | livenessProbe.periodSeconds | int | `10` |  |
 | livenessProbe.failureThreshold | int | `3` |  |
 | livenessProbe.timeoutSeconds | int | `5` |  |
+| readinessProbe.enabled | bool | `true` |  |
 | readinessProbe.path | string | `"/.well-known/ready"` |  |
 | readinessProbe.cmd | list | `[]` |  |
 | readinessProbe.initialDelaySeconds | int | `10` |  |
@@ -49,6 +51,7 @@ Generic application chart with common requirements of a typical workload.
 | image.repositoryProvider | string | `"generic"` |  |
 | image.imageAutomationNamespace | string | `nil` |  |
 | image.pullSecrets | list | `[]` |  |
+| service.enabled | bool | `true` |  |
 | service.port | int | `80` |  |
 | service.timeout | string | `"120s"` |  |
 | service.annotations | object | `{}` |  |
