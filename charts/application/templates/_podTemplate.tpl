@@ -33,7 +33,7 @@ spec:
     {{- range $k, $v := .Values.nodeSelector }}
     {{ $k }}: {{ $v | quote }}
     {{- end }}
-  automountServiceAccountToken: {{ or .Values.serviceAccount.automountServiceAccountToken .Values.istio.enabled .Values.linkerd.enabled }} # 'true' if explictly set or required for side-car injection
+  automountServiceAccountToken: {{ or .Values.serviceAccount.automountServiceAccountToken .Values.istio.enabled .Values.linkerd.enabled (not (empty .Values.serviceAccount.rbac))}} # 'true' if explictly set or required for side-car injection
   {{- if .Values.hostAliases }}
   hostAliases:
   {{- range $ip, $hostList := .Values.hostAliases }}
