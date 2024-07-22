@@ -52,6 +52,9 @@ spec:
     {{- range $i := .Values.initContainers }}
     - name: {{ $i.name }}
       image: "{{ .image.repository }}:{{ .image.tag }}"
+      {{- else }}
+      image: "{{ .image.repository }}@{{ .image.hash }}"
+      {{- end }}
       imagePullPolicy: {{ or $i.image.pullPolicy $.Values.initDefaults.image.pullPolicy }}
       command: {{ if not $i.command }}[]{{ end }}
         {{- range $i.command }}
@@ -107,7 +110,11 @@ spec:
   containers:
     {{- range $s := .Values.sidecars }}
     - name: {{ $s.name }}
+      {{- if .Values.tag }}
       image: "{{ .image.repository }}:{{ .image.tag }}"
+      {{- else }}
+      image: "{{ .image.repository }}@{{ .image.hash }}"
+      {{- end }}
       imagePullPolicy: {{ or $s.image.pullPolicy $.Values.sidecarDefaults.image.pullPolicy }}
       args: {{ if not $s.args }}[]{{ end }}
         {{- range $s.args }}
@@ -195,7 +202,11 @@ spec:
       securityContext:
         {{- toYaml .Values.container.securityContext | nindent 8 }}
       {{- end }}
+      {{- if .Values.tag }}
       image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+      {{- else }}
+      image: "{{ .Values.image.repository }}@{{ .Values.image.hash }}"
+      {{- end }}
       imagePullPolicy: {{ .Values.image.pullPolicy }}
       args: {{ if not .Values.container.args }}[]{{ end }}
         {{- range .Values.container.args }}
