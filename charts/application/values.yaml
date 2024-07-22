@@ -58,7 +58,7 @@ image:
   tag: 1.12.21
   # When hash is set image.tag, imagepolicy and imagerepository is ignored
   # e.g. "sha256:b187aed68cc8c75f475efe8aebcc61fc7ca0c5adc2d2c5b8318997c3edc8d32f"
-  hash:
+  digest:
   pullPolicy: IfNotPresent
 
   # ImagePolicy options:
