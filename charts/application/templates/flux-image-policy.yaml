@@ -1,4 +1,4 @@
-{{- if (and .Values.image.tagUpdateInterval (or .Values.image.tagSemverRange (has .Values.image.tagNumerical (list "asc" "desc")) (has .Values.image.tagAlphabetical (list "asc" "desc")) )) and not .Values.image.tag }}
+{{- if (and .Values.image.tagUpdateInterval (or .Values.image.tagSemverRange (has .Values.image.tagNumerical (list "asc" "desc")) (has .Values.image.tagAlphabetical (list "asc" "desc")) )) and not .Values.image.hash }}
 {{- if .Capabilities.APIVersions.Has "image.toolkit.fluxcd.io/v1beta2" }}
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 {{- else }}
