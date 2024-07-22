@@ -40,7 +40,7 @@ Generic application chart with common requirements of a typical workload.
 | readinessProbe.timeoutSeconds | int | `5` |  |
 | image.repository | string | `"quay.io/heubeck/examiner"` |  |
 | image.tag | string | `"1.12.21"` |  |
-| image.hash | string | `"sha256:b187aed68cc8c75f475efe8aebcc61fc7ca0c5adc2d2c5b8318997c3edc8d32f"` |  |
+| image.digest | string | `nil` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.tagSemverRange | string | `nil` |  |
 | image.tagNumerical | string | `nil` |  |
