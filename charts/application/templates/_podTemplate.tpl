@@ -51,7 +51,11 @@ spec:
   initContainers: {{ if not .Values.initContainers -}}[]{{- end -}}
     {{- range $i := .Values.initContainers }}
     - name: {{ $i.name }}
+      {{- if .image.digest }}
+      image: "{{ .image.repository }}@{{ .image.digest }}"
+      {{- else }}
       image: "{{ .image.repository }}:{{ .image.tag }}"
+      {{- end }}
       imagePullPolicy: {{ or $i.image.pullPolicy $.Values.initDefaults.image.pullPolicy }}
       command: {{ if not $i.command }}[]{{ end }}
         {{- range $i.command }}
@@ -107,7 +111,11 @@ spec:
   containers:
     {{- range $s := .Values.sidecars }}
     - name: {{ $s.name }}
+      {{- if .image.digest }}
+      image: "{{ .image.repository }}@{{ .image.digest }}"
+      {{- else }}
       image: "{{ .image.repository }}:{{ .image.tag }}"
+      {{- end }}
       imagePullPolicy: {{ or $s.image.pullPolicy $.Values.sidecarDefaults.image.pullPolicy }}
       args: {{ if not $s.args }}[]{{ end }}
         {{- range $s.args }}
@@ -195,7 +203,11 @@ spec:
       securityContext:
         {{- toYaml .Values.container.securityContext | nindent 8 }}
       {{- end }}
+      {{- if .Values.image.digest }}
+      image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
+      {{- else }}
       image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+      {{- end }}
       imagePullPolicy: {{ .Values.image.pullPolicy }}
       args: {{ if not .Values.container.args }}[]{{ end }}
         {{- range .Values.container.args }}

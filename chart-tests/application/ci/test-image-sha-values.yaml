@@ -1,0 +1,11 @@
+resources:
+  requests:
+    cpu: 10m
+    memory: 50Mi
+  limits:
+    cpu: 100m
+    memory: 100Mi
+
+image:
+  digest: sha256:b187aed68cc8c75f475efe8aebcc61fc7ca0c5adc2d2c5b8318997c3edc8d32f
+  tag:

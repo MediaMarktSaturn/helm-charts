@@ -14,7 +14,7 @@ sidecars:
   - name: sidekick
     image:
       repository: quay.io/heubeck/examiner
-      tag: 1.12.21
+      tag: 1.13.1
     env:
       ECHO_VALUE: yehaaa
       QUARKUS_HTTP_PORT: 9090
@@ -31,7 +31,7 @@ sidecars:
   - name: kickback
     image:
       repository: quay.io/heubeck/examiner
-      tag: 1.12.21
+      tag: 1.13.1
     env:
       ECHO_VALUE: wohooo
       QUARKUS_HTTP_PORT: 7070
