@@ -51,10 +51,10 @@ spec:
   initContainers: {{ if not .Values.initContainers -}}[]{{- end -}}
     {{- range $i := .Values.initContainers }}
     - name: {{ $i.name }}
-      {{- if .image.tag }}
-      image: "{{ .image.repository }}:{{ .image.tag }}"
-      {{- else }}
+      {{- if .image.hash }}
       image: "{{ .image.repository }}@{{ .image.hash }}"
+      {{- else }}
+      image: "{{ .image.repository }}:{{ .image.tag }}"
       {{- end }}
       imagePullPolicy: {{ or $i.image.pullPolicy $.Values.initDefaults.image.pullPolicy }}
       command: {{ if not $i.command }}[]{{ end }}
