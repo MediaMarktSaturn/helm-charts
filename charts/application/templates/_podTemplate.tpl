@@ -51,8 +51,8 @@ spec:
   initContainers: {{ if not .Values.initContainers -}}[]{{- end -}}
     {{- range $i := .Values.initContainers }}
     - name: {{ $i.name }}
-      {{- if .image.hash }}
-      image: "{{ .image.repository }}@{{ .image.hash }}"
+      {{- if .image.digest }}
+      image: "{{ .image.repository }}@{{ .image.digest }}"
       {{- else }}
       image: "{{ .image.repository }}:{{ .image.tag }}"
       {{- end }}
@@ -111,10 +111,10 @@ spec:
   containers:
     {{- range $s := .Values.sidecars }}
     - name: {{ $s.name }}
-      {{- if .image.tag }}
-      image: "{{ .image.repository }}:{{ .image.tag }}"
+      {{- if .image.digest }}
+      image: "{{ .image.repository }}@{{ .image.digest }}"
       {{- else }}
-      image: "{{ .image.repository }}@{{ .image.hash }}"
+      image: "{{ .image.repository }}:{{ .image.tag }}"
       {{- end }}
       imagePullPolicy: {{ or $s.image.pullPolicy $.Values.sidecarDefaults.image.pullPolicy }}
       args: {{ if not $s.args }}[]{{ end }}
@@ -203,10 +203,10 @@ spec:
       securityContext:
         {{- toYaml .Values.container.securityContext | nindent 8 }}
       {{- end }}
-      {{- if .Values.image.tag }}
-      image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+      {{- if .Values.image.digest }}
+      image: "{{ .Values.image.repository }}@{{ .Values.image.digest }}"
       {{- else }}
-      image: "{{ .Values.image.repository }}@{{ .Values.image.hash }}"
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
       {{- end }}
       imagePullPolicy: {{ .Values.image.pullPolicy }}
       args: {{ if not .Values.container.args }}[]{{ end }}
