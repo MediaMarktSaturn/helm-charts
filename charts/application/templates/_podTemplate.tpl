@@ -51,6 +51,7 @@ spec:
   initContainers: {{ if not .Values.initContainers -}}[]{{- end -}}
     {{- range $i := .Values.initContainers }}
     - name: {{ $i.name }}
+      {{- if .image.tag }}
       image: "{{ .image.repository }}:{{ .image.tag }}"
       {{- else }}
       image: "{{ .image.repository }}@{{ .image.hash }}"
@@ -110,7 +111,7 @@ spec:
   containers:
     {{- range $s := .Values.sidecars }}
     - name: {{ $s.name }}
-      {{- if .Values.tag }}
+      {{- if .image.tag }}
       image: "{{ .image.repository }}:{{ .image.tag }}"
       {{- else }}
       image: "{{ .image.repository }}@{{ .image.hash }}"
@@ -202,7 +203,7 @@ spec:
       securityContext:
         {{- toYaml .Values.container.securityContext | nindent 8 }}
       {{- end }}
-      {{- if .Values.tag }}
+      {{- if .Values.image.tag }}
       image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
       {{- else }}
       image: "{{ .Values.image.repository }}@{{ .Values.image.hash }}"
