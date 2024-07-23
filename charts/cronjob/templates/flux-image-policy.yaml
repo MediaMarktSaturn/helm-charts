@@ -1,0 +1,34 @@
+{{- if and .Values.image.tagUpdateInterval (or .Values.image.tagSemverRange (has .Values.image.tagNumerical (list "asc" "desc")) (has .Values.image.tagAlphabetical (list "asc" "desc")) ) }}
+{{- if .Capabilities.APIVersions.Has "image.toolkit.fluxcd.io/v1beta2" }}
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+{{- else }}
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+{{- end }}
+kind: ImagePolicy
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ default .Release.Namespace .Values.image.imageAutomationNamespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  imageRepositoryRef:
+    name: {{ .Release.Name }}
+  {{- if .Values.image.tagFilterPattern }}
+  filterTags:
+    pattern: {{ .Values.image.tagFilterPattern | squote }}
+    {{- if .Values.image.tagFilterExtract }}
+    extract: {{ .Values.image.tagFilterExtract | squote }}
+    {{- end }}
+  {{- end }}
+  policy:
+    {{- if .Values.image.tagSemverRange }}
+    semver:
+      range: {{ .Values.image.tagSemverRange | squote }}
+    {{- else if (has .Values.image.tagNumerical (list "asc" "desc")) }}
+    numerical:
+      order: {{ .Values.image.tagNumerical }}
+    {{- else if (has .Values.image.tagAlphabetical (list "asc" "desc")) }}
+    alphabetical:
+      order: {{ .Values.image.tagAlphabetical }}
+    {{- end }}
+{{- end }}

@@ -1,0 +1,368 @@
+# per default, a Deployment is created, if required, it can be changed to a StatefulSet
+statefulSet:
+  enabled: false
+
+container:
+  port: 8080
+  securityContext:
+    allowPrivilegeEscalation: false
+  # annotations to be added to the pod template
+  annotations:
+    "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
+  # arguments given to the container; []string
+  args: []
+
+autoscaling:
+  minReplicaCount: 1
+  maxReplicaCount: 1
+  averageUtilization:
+    cpu: 80
+    # memory: 80
+
+# Check if the container is running
+livenessProbe:
+  path: /.well-known/live
+  # Use a command to check liveness from inside the container, for example ['curl', '-f', 'http://localhost/health/live'].
+  # This will take precedence over the given `path` value, if provided.
+  cmd: []
+  # Number of seconds after the container has started before liveness or readiness probes are initiated.
+  initialDelaySeconds: 10
+  # How often (in seconds) to perform the probe.
+  periodSeconds: 10
+  # When a probe fails, Kubernetes will try failureThreshold times before giving up.
+  failureThreshold: 3
+  # Number of seconds after which the probe times out.
+  timeoutSeconds: 5
+
+# Check if the container are able to service requests
+readinessProbe:
+  path: /.well-known/ready
+  # Use a command to check readiness from inside the container, for example ['curl', '-f', 'http://localhost/health/ready'].
+  # This will take precedence over the given `path` value, if provided.
+  cmd: []
+  # Number of seconds after the container has started before liveness or readiness probes are initiated.
+  initialDelaySeconds: 10
+  # How often (in seconds) to perform the probe.
+  periodSeconds: 10
+  # When a probe fails, Kubernetes will try failureThreshold times before giving up.
+  failureThreshold: 3
+  # Number of seconds after which the probe times out.
+  timeoutSeconds: 5
+
+image:
+  repository: quay.io/heubeck/examiner
+  tag: 1.12.21
+  pullPolicy: IfNotPresent
+
+  # ImagePolicy options:
+  # update acc. to semver pattern
+  tagSemverRange:
+  # update based on numerical sorting of tags: asc or desc
+  tagNumerical:
+  # update based on alphabetical sorting of tags: asc or desc
+  tagAlphabetical:
+
+  # image tag filtering, see: https://fluxcd.io/flux/components/image/imagepolicies/#filter-tags
+  tagFilterPattern:
+  tagFilterExtract:
+
+  # period to check for new image tags
+  tagUpdateInterval: "10m0s"
+
+  # existing secret of type 'kubernetes.io/dockerconfigjson' in same namespace
+  repositorySecret: oci-registry-service
+
+  # Provider of the image registry to be used with Fluxs ImageRepository: https://fluxcd.io/flux/components/image/imagerepositories/#provider
+  repositoryProvider: generic
+
+  # namespace to provision ImageRepository and ImagePolicy into. Defaulting to namespace of the release itself, may be useful to change to re-use an ImageUpdateAutomation from a different namespace
+  imageAutomationNamespace:
+
+service:
+  port: 80
+  timeout: 120s
+  annotations: {}
+
+  # GCP BackendConfig parameters: https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#configuring_ingress_features_through_backendconfig_parameters
+  backendConfig:
+    enabled: false
+    securityPolicyName:
+
+nodeSelector: {}
+
+# additional labels to be added to all resource
+labels: {}
+
+resources: {}
+#  requests:
+#    cpu: 500m
+#    memory: 500Mi
+#  limits:
+#    cpu: 2
+#    memory: 3000Mi
+
+podSecurityContext: {}
+configuration: {}
+
+disruptionBudget:
+  minAvailable:
+  maxUnavailable: "50%"
+
+# list of secrets to be mounted to app pod
+secretVolumes: []
+#  - secretName: mysecret
+#    mountPath: /mypath
+
+# list of configmaps to be mounted to app pod
+configVolumes: []
+#  - configMapName: myconfigmap
+#    mountPath: /mypath
+
+# list of secret names to be used as envFrom entries
+secretEnvFrom: []
+
+# list of configmap names to be used as envFrom entries
+configEnvFrom: []
+
+# secret values to be made available to the container
+encryptedSecret:
+  # SOPS encrypted data used as k8s secret data block. DO NOT PUT CLEAR BASE64 TEXT HERE. Details: https://fluxcd.io/docs/guides/mozilla-sops/
+  data: {}
+  # SOPS encrypted stringData used as k8s secret stringData block. DO NOT PUT CLEAR TEXT HERE. Details: https://fluxcd.io/docs/guides/mozilla-sops/
+  stringData: {}
+  # path inside the container to mount this secret to. If empty it will be published as ENV variables.
+  mountPath:
+
+serviceAccount:
+  # service account email address for use with workload identity, see https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
+  workloadIdentityServiceAccount:
+  # secret containing a 'key.json' of the GCP service account key to be used by this app
+  secretName:
+  mountPath: /config/service-account
+  # k8s ServiceAccount.automountServiceAccountToken setting
+  automountServiceAccountToken: false
+
+# Pick one of the service mesh configs
+istio:
+  enabled: false
+  tlsMode: ISTIO_MUTUAL
+  # VirtualService configuration for accessing the service through the ingress gateway.
+  ingress:
+    # set `enabled: false` to omit the VirtualService
+    enabled: true
+    gateway: public-gateway
+    host: "*"
+    uriPrefix: /
+    uriRewrite: /
+
+linkerd:
+  enabled: false
+  # please find all options here: https://linkerd.io/2.11/reference/proxy-configuration/
+  proxyConfig:
+    # requests need to be set in order for the HPA to work correctly
+    # one of: trace, debug, info, warn, error
+    config.linkerd.io/proxy-log-level: error
+    config.linkerd.io/proxy-cpu-request: "0.2"
+    config.linkerd.io/proxy-memory-request: 128Mi
+
+gatewayApi:
+  enabled: false
+  host:
+  # optional first url part to match this services http route
+  pathPrefix:
+  # optionally rewrite (or remove) the matched url prefix
+  pathPrefixRewrite: /
+  gatewayRef:
+    name:
+    namespace:
+    sectionName:
+
+monitoring:
+  serviceMonitor: false
+  # choose podMonitor, if serviceMonitor is not possible because of e.g. a not exposed pod port exposing metrics
+  podMonitor: false
+  namespace: monitoring
+  metricsPath: /metrics
+  metricsPortName: http
+  scrapeInterval: 30s
+  scrapeTimeout: 10s
+  followRedirects: true
+
+canary:
+  enabled: false
+  analysis:
+    skip: false
+    # schedule interval (default 60s)
+    interval: 60s
+    # max number of failed metric checks before rollback
+    threshold: 10
+    # max traffic percentage routed to canary
+    # percentage (0-100)
+    maxWeight: 50
+    # canary increment step
+    # percentage (0-100)
+    stepWeight: 5
+    # primary routing-back promotion step
+    stepWeightPromotion: 10
+    metrics: []
+    #  - name: request-success-rate
+    #    # minimum req success rate (non 5xx responses)
+    #    # percentage (0-100)
+    #    thresholdRange:
+    #      min: 99
+    #    interval: 1m
+    #  - name: request-duration
+    #    # maximum req duration P99
+    #    # milliseconds
+    #    thresholdRange:
+    #      max: 500
+    #    interval: 30s
+    webhooks: []
+    #  - name: "Event Log"
+    #    type: event
+    #    url: http://logger.monitoring
+    alerts: []
+    #  - name: "notify team"
+    #    severity: info
+    #    providerRef:
+    #      name: rocketchat
+    #      namespace: flux-system
+  progressDeadlineSeconds: 600
+
+# Job, running as pre-install & pre-upgrade hook for initialization tasks like database schema updates
+prepJob:
+  # When enabled, preparation jobs are configured the same way as the application deployment
+  enabled: false
+  # Istio/Linkerd sidecar injection is disabled for Jobs by default, because this may cause a job to run forever
+  sidecarInjection: false
+  # job execution time limit in minutes (incl. retries)
+  backoffLimit: 30
+  # time limit for executing a single pod ("one try") in seconds
+  activeDeadlineSeconds: 1800
+  # pod restart policy within the job
+  restartPolicy: Never
+  # the image to be run by the preparation job. tag defaults to 'image.tag' as long as there's no tag suffixed in this value
+  image: busybox:stable
+  # arguments to be executed by the job container
+  command: []
+  # key/value pairs that will be bound as env
+  configuration: {}
+  # pre-existing service account to be used
+  serviceAccountName:
+  resources: {}
+  #  requests:
+  #    cpu: 1
+  #    memory: 1Gi
+  #  limits:
+  #    cpu: 1
+  #    memory: 1Gi
+
+networkPolicy:
+  ingress:
+    - {}
+  egress:
+    - {}
+
+# list of volumes to be attached and mounted
+volumeMounts: []
+#  - name: data
+#    # name of a pre-existent PVC to be used. if empty, a 'emptyDir' is bound
+#    pvcName:
+#    mountPath: /data
+
+# list of additional ports to be exposed
+additionalPorts: []
+# - name: grpc
+#   protocol: TCP
+#   containerPort: 8081
+#   # omit servicePort to only add it to the pod
+#   servicePort: 81
+
+# additional /etc/hosts entries, either a list, or a single hostname
+hostAliases: {}
+# "127.0.0.1":
+#   - this-is.local
+#   - home-sweet-home
+# "172.23.17.1": somewhere
+
+# further containers to run inside the pod
+sidecars: []
+# - name: sqlproxy
+#   image:
+#     repository: quay.io/heubeck/examiner
+#     tag: 1.12.21
+#   args: []
+#   env: {}
+#   configEnvFrom: []
+#   secretEnvFrom: []
+#   secretVolumes: []
+#     - secretName: mysecret
+#       mountPath: /mypath
+#   # see sidecarDefaults
+#   resources: {}
+#   securityContext: {}
+#   # probe timing is identical to main container
+#   livenessProbe:
+#     path: /liveness
+#     port: 9090
+#     # Use a command to check liveness from inside the container.
+#     # This will take precedence over the given `path` and `port` value, if provided.
+#     cmd: []
+#   readinessProbe:
+#     path: /readiness
+#     port: 9090
+#     # Use a command to check readiness from inside the container.
+#     # This will take precedence over the given `path` and `port` value, if provided.
+#     cmd: []
+#   # 'volumeMounts' names to be mounted in sidecar as well (under the same path); default: none
+#   volumeMountNames: []
+#   #  - data
+
+# default values that apply on sidecars if not explicit set
+sidecarDefaults:
+  image:
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi
+  securityContext:
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+
+# initContainers to be executed at pod startup
+initContainers: []
+# - name: setup
+#   image:
+#     repository: busybox
+#     tag: latest
+#   command: ['sh', '-c', 'echo "bump me up"']
+#   env: {}
+#   restartPolicy: Always
+#   configEnvFrom: []
+#   secretEnvFrom: []
+#   secretVolumes:
+#     - secretName: mysecret
+#       mountPath: /mypath
+#   # see initDefaults
+#   resources: {}
+#   securityContext: {}
+#   # 'volumeMounts' names to be mounted in init container as well (under the same path); default: none
+#   volumeMountNames: []
+#   #  - data
+
+# default values that apply on init containers if not explicit set
+initDefaults:
+  image:
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 100Mi
+  restartPolicy: Always

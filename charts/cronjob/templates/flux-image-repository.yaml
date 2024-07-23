@@ -1,0 +1,23 @@
+{{- if and .Values.image.tagUpdateInterval (or .Values.image.tagSemverRange .Values.image.tagNumerical .Values.image.tagAlphabetical ) }}
+{{- if .Capabilities.APIVersions.Has "image.toolkit.fluxcd.io/v1beta2" }}
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+{{- else }}
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+{{- end }}
+kind: ImageRepository
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ default .Release.Namespace .Values.image.imageAutomationNamespace }}
+  labels:
+    {{- include "labels" . | nindent 4 }}
+spec:
+  image: {{ .Values.image.repository }}
+  interval: {{ .Values.image.tagUpdateInterval | quote}}
+  {{- if .Values.image.repositorySecret }}
+  secretRef:
+    name: {{ .Values.image.repositorySecret }}
+  {{- end }}
+  {{- if .Capabilities.APIVersions.Has "image.toolkit.fluxcd.io/v1beta2" }}
+  provider: {{ .Values.image.repositoryProvider }}
+  {{- end }}
+{{- end }}
