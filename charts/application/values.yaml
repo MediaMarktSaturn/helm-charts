@@ -382,3 +382,9 @@ initDefaults:
       cpu: 500m
       memory: 100Mi
   restartPolicy: Always
+
+# List of tolerations, will be taken over like-for-like to pod-spec
+tolerations: []
+
+# Affinity object, will be taken over like-for-like as well
+affinity: {}
