@@ -112,6 +112,11 @@ resources: {}
 #    cpu: 2
 #    memory: 3000Mi
 
+# The lifecycle handlers for the container
+lifecycle:
+  postStart: {}
+  preStop: {}
+
 podSecurityContext: {}
 configuration: {}
 
@@ -333,6 +338,9 @@ sidecars: []
 #   # 'volumeMounts' names to be mounted in sidecar as well (under the same path); default: none
 #   volumeMountNames: []
 #   #  - data
+#   lifecycle:
+#     postStart: {}
+#     preStop: {}
 
 # default values that apply on sidecars if not explicit set
 sidecarDefaults:

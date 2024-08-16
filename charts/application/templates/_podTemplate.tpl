@@ -197,6 +197,17 @@ spec:
         failureThreshold: {{ $.Values.readinessProbe.failureThreshold }}
         timeoutSeconds: {{ $.Values.readinessProbe.timeoutSeconds }}
       {{- end }}
+      {{- if or $s.lifecycle.postStart $s.lifecycle.preStop }}
+      lifecycle:
+        {{- if $s.lifecycle.postStart }}
+        postStart:
+          {{- toYaml ($s.lifecycle.postStart) | nindent 10 }}
+        {{- end }}
+        {{- if $s.lifecycle.preStop }}
+        preStop:
+          {{- toYaml ($s.lifecycle.preStop) | nindent 10 }}
+        {{- end }}
+      {{- end }}
     {{- end }}
     - name: {{ .Release.Name }}
       {{- if .Values.container.securityContext }}
@@ -305,6 +316,17 @@ spec:
         - name: {{ .name }}
           mountPath: {{ .mountPath }}
         {{- end }}
+      {{- if or .Values.lifecycle.postStart .Values.lifecycle.preStop }}
+      lifecycle:
+        {{- if .Values.lifecycle.postStart }}
+        postStart:
+          {{- toYaml (.Values.lifecycle.postStart) | nindent 10 }}
+        {{- end }}
+        {{- if $s.lifecycle.preStop }}
+        preStop:
+          {{- toYaml (.Values.lifecycle.preStop) | nindent 10 }}
+        {{- end }}
+      {{- end }}
   {{ $hasSidecarVolume := 0 }}
   {{ range .Values.sidecars }}{{ if .secretVolumes }}{{ $hasSidecarVolume = 1 }}{{ end }}{{ end }}
   {{ $hasInitVolume := 0 }}
