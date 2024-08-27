@@ -1,6 +1,6 @@
 # application
 
-![Version: 1.22.0](https://img.shields.io/badge/Version-1.22.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.23.0](https://img.shields.io/badge/Version-1.23.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Generic application chart with common requirements of a typical workload.
 
@@ -61,6 +61,8 @@ Generic application chart with common requirements of a typical workload.
 | nodeSelector | object | `{}` |  |
 | labels | object | `{}` |  |
 | resources | object | `{}` |  |
+| lifecycle.postStart | object | `{}` |  |
+| lifecycle.preStop | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
 | configuration | object | `{}` |  |
 | disruptionBudget.minAvailable | string | `nil` |  |
