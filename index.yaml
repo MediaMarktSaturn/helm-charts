@@ -3,6 +3,20 @@ entries:
   application:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-08-27T12:57:02.588205571Z"
+    description: Generic application chart with common requirements of a typical workload.
+    digest: c1e88d208f2160840506ef1f72a162ae88edd4a43ef6d531f0c38877d3dfb242
+    home: https://github.com/MediaMarktSaturn/helm-charts
+    maintainers:
+    - name: MediaMarktSaturn
+      url: https://github.com/MediaMarktSaturn
+    name: application
+    type: application
+    urls:
+    - https://github.com/MediaMarktSaturn/helm-charts/releases/download/application-1.23.0/application-1.23.0.tgz
+    version: 1.23.0
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2024-07-30T19:47:20.486399843Z"
     description: Generic application chart with common requirements of a typical workload.
     digest: c4be3c08e118097850fb9eb6c69e9300f1dce81d2cb47d77987e5b8ad5add402
@@ -829,4 +843,4 @@ entries:
     urls:
     - https://github.com/MediaMarktSaturn/helm-charts/releases/download/pod-cleanup-1.0.0/pod-cleanup-1.0.0.tgz
     version: 1.0.0
-generated: "2024-07-30T19:47:20.486669573Z"
+generated: "2024-08-27T12:57:02.588563874Z"
