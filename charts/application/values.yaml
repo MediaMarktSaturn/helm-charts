@@ -112,7 +112,7 @@ resources: {}
 #    cpu: 2
 #    memory: 3000Mi
 
-# The lifecycle handlers for the container
+# The lifecycle handlers for the pod: https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/#define-poststart-and-prestop-handlers
 lifecycle:
   postStart: {}
   preStop: {}

@@ -197,7 +197,7 @@ spec:
         failureThreshold: {{ $.Values.readinessProbe.failureThreshold }}
         timeoutSeconds: {{ $.Values.readinessProbe.timeoutSeconds }}
       {{- end }}
-      {{- if or $s.lifecycle $s.lifecycle.postStart $s.lifecycle.preStop }}
+      {{- if and $s.lifecycle ( or $s.lifecycle.postStart $s.lifecycle.preStop ) }}
       lifecycle:
         {{- if $s.lifecycle.postStart }}
         postStart:
