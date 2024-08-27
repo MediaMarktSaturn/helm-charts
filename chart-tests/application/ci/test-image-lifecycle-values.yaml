@@ -7,7 +7,7 @@ resources:
     memory: 100Mi
 image:
   repository: busybox
-  tag: latest
+  tag: stable
 container:
   args: ["sleep", "2000"]
 lifecycle:
@@ -17,4 +17,7 @@ lifecycle:
   preStop:
     exec:
       command: ["/bin/sh", "-c", "echo exiting"]
-
+livenessProbe:
+  cmd: ['ls']
+readinessProbe:
+  cmd: ['ls']
