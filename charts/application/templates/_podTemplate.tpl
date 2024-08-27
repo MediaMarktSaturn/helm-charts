@@ -322,7 +322,7 @@ spec:
         postStart:
           {{- toYaml (.Values.lifecycle.postStart) | nindent 10 }}
         {{- end }}
-        {{- if $s.lifecycle.preStop }}
+        {{- if .Values.lifecycle.preStop }}
         preStop:
           {{- toYaml (.Values.lifecycle.preStop) | nindent 10 }}
         {{- end }}
