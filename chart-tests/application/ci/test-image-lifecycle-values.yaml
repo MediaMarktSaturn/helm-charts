@@ -1,0 +1,20 @@
+resources:
+  requests:
+    cpu: 10m
+    memory: 50Mi
+  limits:
+    cpu: 100m
+    memory: 100Mi
+image:
+  repository: busybox
+  tag: latest
+container:
+  args: ["sleep", "2000"]
+lifecycle:
+  postStart:
+    exec:
+      command: ["/bin/sh", "-c", "echo $(ls /)"]
+  preStop:
+    exec:
+      command: ["/bin/sh", "-c", "echo exiting"]
+
