@@ -5,20 +5,20 @@ resources:
   limits:
     cpu: 100m
     memory: 100Mi
-spec:
-  values:
-    container:
-      port: 8000
-    service:
-      port: 8000
-      backendConfig:
-        enabled: true
-        securityPolicyName: uri-path-policy
-    additionalPorts:
-      - name: https
-        protocol: TCP
-        containerPort: 8081
-        servicePort: 81
-      - name: grpc
-        protocol: TCP
-        containerPort: 8082
+container:
+  port: 8000
+service:
+  port: 8000
+  backendConfig:
+    enabled: true
+    securityPolicyName: uri-path-policy
+configuration:
+  HTTP_PORT: 8000
+additionalPorts:
+  - name: https
+    protocol: TCP
+    containerPort: 8081
+    servicePort: 81
+  - name: grpc
+    protocol: TCP
+    containerPort: 8082

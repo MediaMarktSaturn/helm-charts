@@ -39,3 +39,14 @@ Selector labels
 {{ include "commonLabels" . }}
 {{ include "selectorLabels" . }}
 {{- end -}}
+
+{{/*
+ServiceAccount name
+*/}}
+{{- define "serviceAccountName" -}}
+{{- if .Values.serviceAccount.existingServiceAccountName -}}
+{{- .Values.serviceAccount.existingServiceAccountName | quote -}}
+{{- else -}}
+{{- .Release.Name -}}
+{{- end -}}
+{{- end -}}
