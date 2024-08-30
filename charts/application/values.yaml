@@ -150,7 +150,7 @@ encryptedSecret:
   mountPath:
 
 serviceAccount:
-  # giving an `existingServiceAccountName` will map that one instead of creating an own; the refered SA has to already exist
+  # giving an `existingServiceAccountName` will map that one instead of creating a new one; the refered SA must already exist
   ## you may want to manual set:
   ## ```
   ## nodeSelector:
