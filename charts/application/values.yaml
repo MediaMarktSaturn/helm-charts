@@ -55,7 +55,7 @@ readinessProbe:
 
 image:
   repository: quay.io/heubeck/examiner
-  tag: 1.13.1
+  tag: 1.13.3
   # When image.digest is set the image.tag, imagepolicy and imagerepository is ignored
   # e.g. "sha256:b187aed68cc8c75f475efe8aebcc61fc7ca0c5adc2d2c5b8318997c3edc8d32f"
   digest:
@@ -150,6 +150,14 @@ encryptedSecret:
   mountPath:
 
 serviceAccount:
+  # giving an `existingServiceAccountName` will map that one instead of creating a new one; the refered SA must already exist
+  ## you may want to manual set:
+  ## ```
+  ## nodeSelector:
+  ##   iam.gke.io/gke-metadata-server-enabled: "true"
+  ## ```
+  ## if using workload identity with your own SA (done automatically when using `workloadIdentityServiceAccount` for automatically created SA)
+  existingServiceAccountName:
   # service account email address for use with workload identity, see https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
   workloadIdentityServiceAccount:
   # secret containing a 'key.json' of the GCP service account key to be used by this app
@@ -268,7 +276,7 @@ prepJob:
   command: []
   # key/value pairs that will be bound as env
   configuration: {}
-  # pre-existing service account to be used
+  # pre-existing service account to be used (as automatically created one does not exist yet on-install of helm release)
   serviceAccountName:
   resources: {}
   #  requests:
@@ -311,7 +319,7 @@ sidecars: []
 # - name: sqlproxy
 #   image:
 #     repository: quay.io/heubeck/examiner
-#     tag: 1.13.1
+#     tag: 1.13.3
 #   args: []
 #   env: {}
 #   configEnvFrom: []

@@ -21,7 +21,7 @@ metadata:
     {{- end }}
     {{- end }}
 spec:
-  serviceAccountName: {{ .Release.Name }}
+  serviceAccountName: {{ include "serviceAccountName" . }}
   {{- if .Values.podSecurityContext }}
   securityContext:
     {{- toYaml .Values.podSecurityContext | nindent 4 }}
