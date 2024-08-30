@@ -5,3 +5,4 @@ all: true
 debug: true
 check-version-increment: true
 helm-extra-args: '--timeout 120s'
+namespace: test
