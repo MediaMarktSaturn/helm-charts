@@ -133,6 +133,7 @@ secretVolumes: []
 configVolumes: []
 #  - configMapName: myconfigmap
 #    mountPath: /mypath
+#    defaultMode: 420
 
 # list of secret names to be used as envFrom entries
 secretEnvFrom: []
