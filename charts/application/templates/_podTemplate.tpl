@@ -295,11 +295,17 @@ spec:
         {{- range .Values.secretVolumes }}
         - name: {{ .secretName }}
           mountPath: {{ .mountPath }}
+          {{- if .defaultMode }}
+          defaultMode: {{ .defaultMode }}
+          {{- end }}
           readOnly: true
         {{- end }}
         {{- range .Values.configVolumes }}
         - name: {{ .configMapName }}
           mountPath: {{ .mountPath }}
+          {{- if .defaultMode }}
+          defaultMode: {{ .defaultMode }}
+          {{- end }}
           readOnly: true
         {{- end }}
         {{- if .Values.serviceAccount.secretName }}
