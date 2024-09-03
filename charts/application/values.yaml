@@ -128,6 +128,7 @@ disruptionBudget:
 secretVolumes: []
 #  - secretName: mysecret
 #    mountPath: /mypath
+#    defaultMode: 420
 
 # list of configmaps to be mounted to app pod
 configVolumes: []
