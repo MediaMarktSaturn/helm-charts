@@ -208,6 +208,14 @@ spec:
           {{- toYaml ($s.lifecycle.preStop) | nindent 10 }}
         {{- end }}
       {{- end }}
+      {{- if $s.ports }}
+      ports:
+        {{- range $sp := $s.ports }}
+        - name: {{ $sp.name }}
+          containerPort: {{ $sp.containerPort }}
+          protocol: {{ $sp.protocol }}
+        {{- end }}
+      {{- end }}
     {{- end }}
     - name: {{ .Release.Name }}
       {{- if .Values.container.securityContext }}
