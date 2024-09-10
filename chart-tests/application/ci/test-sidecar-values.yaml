@@ -28,6 +28,10 @@ sidecars:
       runAsUser: 65532
     volumeMountNames:
       - share
+    ports:
+      - name: sc-port
+        protocol: TCP
+        containerPort: 9090
   - name: kickback
     image:
       repository: quay.io/heubeck/examiner

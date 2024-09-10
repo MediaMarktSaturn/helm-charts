@@ -351,6 +351,11 @@ sidecars: []
 #   lifecycle:
 #     postStart: {}
 #     preStop: {}
+#   # ports of the sidecar container to be published by the pod (e.g. for prometheus exporter sidecars
+#   ports:
+#     - name: prom-exporter
+#       protocol: TCP
+#       containerPort: 1337
 
 # default values that apply on sidecars if not explicit set
 sidecarDefaults:
