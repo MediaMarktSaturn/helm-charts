@@ -43,7 +43,7 @@ jobs:
             echo "matrix<<EOF"
             echo '{ "include": ['
             [[ "${{ steps.changed-files.outputs.any_changed }}" == 'false' ]] && echo '{ "name": "lint" },'
-            echo '{ "name": "k8s-1.31", "kindest_image": "kindest/node:v1.31.0"  },'
+            echo '{ "name": "k8s-1.31", "kindest_image": "kindest/node:v1.31.1"  },'
             echo '{ "name": "k8s-1.30", "kindest_image": "kindest/node:v1.30.4"  },'
             echo '{ "name": "k8s-1.29", "kindest_image": "kindest/node:v1.29.8"  },'
             echo '{ "name": "k8s-1.28", "kindest_image": "kindest/node:v1.28.13"  },'
