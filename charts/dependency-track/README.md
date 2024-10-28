@@ -1,6 +1,6 @@
 # dependency-track
 
-![Version: 1.7.0](https://img.shields.io/badge/Version-1.7.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.12.0](https://img.shields.io/badge/AppVersion-4.12.0-informational?style=flat-square)
+![Version: 1.7.1](https://img.shields.io/badge/Version-1.7.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.12.1](https://img.shields.io/badge/AppVersion-4.12.1-informational?style=flat-square)
 
 Helm Chart for running OWASP Dependency-Track on Kubernetes
 
@@ -17,7 +17,7 @@ Helm Chart for running OWASP Dependency-Track on Kubernetes
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | apiserver.image.repository | string | `"docker.io/dependencytrack/apiserver"` |  |
-| apiserver.image.tag | string | `"4.12.0"` |  |
+| apiserver.image.tag | string | `"4.12.1"` |  |
 | apiserver.resources.limits.cpu | string | `"3"` |  |
 | apiserver.resources.limits.memory | string | `"12Gi"` |  |
 | apiserver.resources.requests.cpu | string | `"1"` |  |
@@ -48,7 +48,7 @@ Helm Chart for running OWASP Dependency-Track on Kubernetes
 | apiserver.metrics.serviceMonitor.scrapeInterval | string | `"30s"` |  |
 | apiserver.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` |  |
 | frontend.image.repository | string | `"docker.io/dependencytrack/frontend"` |  |
-| frontend.image.tag | string | `"4.12.0"` |  |
+| frontend.image.tag | string | `"4.12.1"` |  |
 | frontend.resources.limits.cpu | string | `"1"` |  |
 | frontend.resources.limits.memory | string | `"512Mi"` |  |
 | frontend.resources.requests.cpu | string | `"100m"` |  |
