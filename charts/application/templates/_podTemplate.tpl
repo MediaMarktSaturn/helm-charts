@@ -303,17 +303,11 @@ spec:
         {{- range .Values.secretVolumes }}
         - name: {{ .secretName }}
           mountPath: {{ .mountPath }}
-          {{- if .defaultMode }}
-          defaultMode: {{ .defaultMode }}
-          {{- end }}
           readOnly: true
         {{- end }}
         {{- range .Values.configVolumes }}
         - name: {{ .configMapName }}
           mountPath: {{ .mountPath }}
-          {{- if .defaultMode }}
-          defaultMode: {{ .defaultMode }}
-          {{- end }}
           readOnly: true
         {{- end }}
         {{- if .Values.serviceAccount.secretName }}
@@ -350,11 +344,17 @@ spec:
     - name: {{ .secretName }}
       secret:
         secretName: {{ .secretName }}
+        {{- if .defaultMode }}
+        defaultMode: {{ .defaultMode }}
+        {{- end }}
     {{- end }}
     {{- range .Values.configVolumes }}
     - name: {{ .configMapName }}
       configMap:
         name: {{ .configMapName }}
+        {{- if .defaultMode }}
+        defaultMode: {{ .defaultMode }}
+        {{- end }}
     {{- end }}
     {{- if .Values.serviceAccount.secretName }}
     - name: service-account
