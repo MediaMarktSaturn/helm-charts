@@ -2,7 +2,7 @@
 statefulSet:
   enabled: false
 
-  # The policy for how pods inside the statefulSet are created and stopped: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies
+  # The policy for how pods inside the statefulSet are handled: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies
   podManagementPolicy: OrderedReady
 
 container:
