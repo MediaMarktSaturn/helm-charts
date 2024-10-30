@@ -15,6 +15,7 @@ spec:
       {{- include "selectorLabels" . | nindent 6 }}
   replicas: {{ .Values.autoscaling.minReplicaCount }}
   serviceName: {{ .Release.Name }}
+  podManagementPolicy: {{ .Values.statefulSet.podManagementPolicy }}
   template:
     {{- include "podTemplate" . | nindent 4 }}
 {{- end }}
