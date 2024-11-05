@@ -69,13 +69,17 @@ spec:
         {{- end }}
       resources:
         {{- toYaml (or $i.resources $.Values.initDefaults.resources) | nindent 8 }}
-      {{- if .env }}
       env:
+        - name: APPLICATION_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        {{- if .env }}
         {{- range $k, $v := .env }}
         - name: {{ $k }}
           value: {{ $v | quote }}
         {{- end }}
-      {{- end }}
+        {{- end }}
       {{- if (or $i.configEnvFrom $i.secretEnvFrom )}}
       envFrom:
         {{- range $c := $i.configEnvFrom }}
@@ -129,13 +133,17 @@ spec:
         {{- end }}
       resources:
         {{- toYaml (or $s.resources $.Values.sidecarDefaults.resources) | nindent 8 }}
-      {{- if .env }}
       env:
+        - name: APPLICATION_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        {{- if .env }}
         {{- range $k, $v := .env }}
         - name: {{ $k }}
           value: {{ $v | quote }}
         {{- end }}
-      {{- end }}
+        {{- end }}
       {{- if (or $s.configEnvFrom $s.secretEnvFrom )}}
       envFrom:
         {{- range $c := $s.configEnvFrom }}
@@ -247,11 +255,15 @@ spec:
         - secretRef:
             name: {{ include "secret" . }}
         {{- end }}
-      {{- if .Values.serviceAccount.secretName }}
       env:
+        - name: APPLICATION_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        {{- if .Values.serviceAccount.secretName }}
         - name: "GOOGLE_APPLICATION_CREDENTIALS"
           value: "{{- .Values.serviceAccount.mountPath -}}/key.json"
-      {{- end }}
+        {{- end }}
       ports:
         - name: http
           containerPort: {{ .Values.container.port }}
