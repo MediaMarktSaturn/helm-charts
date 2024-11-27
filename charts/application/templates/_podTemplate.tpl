@@ -63,7 +63,7 @@ spec:
         {{- end }}
       securityContext:
         {{- if and $i.securityContext $.Values.initDefaults.securityContext }}
-        {{- toYaml (mergeOverwrite $.Values.initDefaults.securityContext $i.securityContext) | nindent 8 }}
+        {{- toYaml (merge $i.securityContext $.Values.initDefaults.securityContext) | nindent 8 }}
         {{- else }}
         {{- toYaml (or $i.securityContext $.Values.initDefaults.securityContext) | nindent 8 }}
         {{- end }}
