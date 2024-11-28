@@ -265,6 +265,7 @@ spec:
         {{- with (first .Values.container.command ) }}
         - {{ . | quote }}
         {{- end }}
+      {{- end }}
       args: {{ if not .Values.container.args }}[]{{ end }}
         {{- range .Values.container.args }}
         - {{ . | quote }}
