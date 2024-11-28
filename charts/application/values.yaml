@@ -13,7 +13,7 @@ container:
   annotations:
     "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
   # arguments given to the container; []one string
-  command: []
+  # command: []
   # arguments given to the container; []string
   args: []
 
