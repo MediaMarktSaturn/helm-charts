@@ -123,7 +123,7 @@ spec:
       imagePullPolicy: {{ or $s.image.pullPolicy $.Values.sidecarDefaults.image.pullPolicy }}
       {{- if $s.command }} 
       command: 
-        {{- with (first $s.command ) }}
+        {{- range $s.command }}
         - {{ . | quote }}
         {{- end }}
       {{- end }}  
@@ -262,7 +262,7 @@ spec:
       imagePullPolicy: {{ .Values.image.pullPolicy }}
       {{- if .Values.container.command }} 
       command: 
-        {{- with (first .Values.container.command ) }}
+        {{- range .Values.container.command }}
         - {{ . | quote }}
         {{- end }}
       {{- end }}
