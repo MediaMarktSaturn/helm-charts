@@ -121,7 +121,7 @@ spec:
       image: "{{ .image.repository }}:{{ .image.tag }}"
       {{- end }}
       imagePullPolicy: {{ or $s.image.pullPolicy $.Values.sidecarDefaults.image.pullPolicy }}
-      {{ if $s.command }} 
+      {{- if $s.command }} 
       command: 
         {{- with (first $s.command ) }}
         - {{ . | quote }}
@@ -260,7 +260,7 @@ spec:
       image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
       {{- end }}
       imagePullPolicy: {{ .Values.image.pullPolicy }}
-      {{ if .Values.container.command }} 
+      {{- if .Values.container.command }} 
       command: 
         {{- with (first .Values.container.command ) }}
         - {{ . | quote }}
