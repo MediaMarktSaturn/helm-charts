@@ -50,7 +50,7 @@ Please have a look on the [values](https://github.com/MediaMarktSaturn/helm-char
 
 ## Contributing
 
-Contributions of any kind are welcome and very much appreciate!
+Contributions of any kind are welcome and very much appreciated!
 
 ### Update Charts
 
