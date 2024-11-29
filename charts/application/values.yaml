@@ -12,8 +12,8 @@ container:
   # annotations to be added to the pod template
   annotations:
     "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
-  # arguments given to the container; []one string
-  # command: []
+  # command line given to the container; []string
+  command: []
   # arguments given to the container; []string
   args: []
 
