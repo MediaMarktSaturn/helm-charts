@@ -55,6 +55,16 @@ sidecars:
       port: 7070
     securityContext:
       runAsUser: 65532
+  - name: 
+    image:
+      repository: busybox
+      tag: stable
+    command: ["sh", "-c"]
+    args: ["sleep", "2000"]
+    livenessProbe:
+      cmd: ['ls']
+    readinessProbe:
+      cmd: ['ls']
 
 sidecarDefaults:
   resources:

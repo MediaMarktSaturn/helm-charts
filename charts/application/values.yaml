@@ -344,7 +344,7 @@ sidecars: []
 #   image:
 #     repository: quay.io/heubeck/examiner
 #     tag: 1.13.3
-#   coammnd: []
+#   command: []
 #   args: []
 #   env: {}
 #   configEnvFrom: []
