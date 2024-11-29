@@ -60,7 +60,7 @@ If applicable, please also add or extend current test cases in [chart-tests](./c
 
 ### Create Pull Request
 
-Please check the current [opened pull requests](https://github.com/MediaMarktSaturn/helm-charts/pulls?q=is%3Apr+is%3Aopen+) for duplicated before opening a new one.
+Please check the current [opened pull requests](https://github.com/MediaMarktSaturn/helm-charts/pulls?q=is%3Apr+is%3Aopen+) for duplicates before opening a new one.
 
 Pull request's title should include a scope (usually the chart's name),
 for example: [`[Application] Set status.podIP as APPLICATION_POD_IP env`](https://github.com/MediaMarktSaturn/helm-charts/pull/159)).
