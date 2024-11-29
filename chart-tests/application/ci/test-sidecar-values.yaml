@@ -60,7 +60,7 @@ sidecars:
       repository: busybox
       tag: stable
     command: ["sh", "-c"]
-    args: ["sleep", "2000"]
+    args: ["sleep 2000"]
     livenessProbe:
       cmd: ['ls']
     readinessProbe:

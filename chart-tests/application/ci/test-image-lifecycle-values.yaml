@@ -10,7 +10,7 @@ image:
   tag: stable
 container:
   command: ["sh", "-c"]
-  args: ["sleep", "2000"]
+  args: ["sleep 2000"]
 lifecycle:
   postStart:
     exec:
