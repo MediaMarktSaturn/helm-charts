@@ -48,6 +48,26 @@ We're using this for lots of our business applications.
 
 Please have a look on the [values](https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/application/values.yaml) for all its features.
 
+## Contributing
+
+Contributions of any kind are welcome and very much appreciated!
+
+### Update Charts
+
+When updating a chart, please make sure to also increase its version in the `Chart.yaml`, according to the [semantic versioning](https://semver.org).
+
+If applicable, please also add or extend current test cases in [chart-tests](./chart-tests/).
+
+### Create Pull Request
+
+Please check the current [opened pull requests](https://github.com/MediaMarktSaturn/helm-charts/pulls?q=is%3Apr+is%3Aopen+) for duplicates before opening a new one.
+
+Pull request's title should include a scope (usually the chart's name),
+for example: [`[Application] Set status.podIP as APPLICATION_POD_IP env`](https://github.com/MediaMarktSaturn/helm-charts/pull/159)).
+
+Or use the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) with the scope,
+for example [`chore(action): bump kind_version from 0.24.0 to 0.25.0`](https://github.com/MediaMarktSaturn/helm-charts/pull/162).
+
 ---
 
 _This repository is published under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)_

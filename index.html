@@ -196,6 +196,21 @@ spec:
       We're using this for lots of our business applications.
     </p>
     <p>Please have a look on the <a href="https://github.com/MediaMarktSaturn/helm-charts/tree/main/charts/application/values.yaml">values</a> for all its features.</p>
+    <h2 id="contributing"><a class="anchor" aria-hidden="true" tabindex="-1" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+    <p>Contributions of any kind are welcome and very much appreciated!</p>
+    <h3 id="update-charts"><a class="anchor" aria-hidden="true" tabindex="-1" href="#update-charts"><span class="octicon octicon-link"></span></a>Update Charts</h3>
+    <p>When updating a chart, please make sure to also increase its version in the <code>Chart.yaml</code>, according to the <a href="https://semver.org/">semantic versioning</a>.</p>
+    <p>If applicable, please also add or extend current test cases in <a href="./chart-tests/">chart-tests</a>.</p>
+    <h3 id="create-pull-request"><a class="anchor" aria-hidden="true" tabindex="-1" href="#create-pull-request"><span class="octicon octicon-link"></span></a>Create Pull Request</h3>
+    <p>Please check the current <a href="https://github.com/MediaMarktSaturn/helm-charts/pulls?q=is%3Apr+is%3Aopen+">opened pull requests</a> for duplicates before opening a new one.</p>
+    <p>
+      Pull request's title should include a scope (usually the chart's name),
+      for example: <a href="https://github.com/MediaMarktSaturn/helm-charts/pull/159"><code>[Application] Set status.podIP as APPLICATION_POD_IP env</code></a>).
+    </p>
+    <p>
+      Or use the <a href="https://www.conventionalcommits.org/en/v1.0.0/">conventional commits</a> with the scope,
+      for example <a href="https://github.com/MediaMarktSaturn/helm-charts/pull/162"><code>chore(action): bump kind_version from 0.24.0 to 0.25.0</code></a>.
+    </p>
     <hr>
     <p><em>This repository is published under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a></em></p>
     <p><strong><em>get to know us 👉 <a href="https://mms.tech/">https://mms.tech</a> 👈</em></strong></p>
