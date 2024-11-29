@@ -55,7 +55,7 @@ sidecars:
       port: 7070
     securityContext:
       runAsUser: 65532
-  - name: 
+  - name: commandtest
     image:
       repository: busybox
       tag: stable
