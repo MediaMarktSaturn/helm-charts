@@ -22,6 +22,23 @@ autoscaling:
     cpu: 80
     # memory: 80
 
+# Check if the container is started
+startupProbe:
+  # Allows to disable the startup probe
+  enabled: false
+  path: /.well-known/live
+  # Use a command to check startup from inside the container, for example ['curl', '-f', 'http://localhost/health/ready'].
+  # This will take precedence over the given `path` value, if provided.
+  cmd: []
+  # Number of seconds after the container has started before liveness or readiness probes are initiated.
+  initialDelaySeconds: 10
+  # How often (in seconds) to perform the probe.
+  periodSeconds: 10
+  # When a probe fails, Kubernetes will try failureThreshold times before giving up.
+  failureThreshold: 3
+  # Number of seconds after which the probe times out.
+  timeoutSeconds: 5
+
 # Check if the container is running
 livenessProbe:
   # Allows to disable the liveness probe

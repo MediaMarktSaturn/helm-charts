@@ -169,6 +169,24 @@ spec:
           mountPath: {{ .mountPath }}
         {{- end }}
         {{- end }}
+      {{- if $s.startupProbe }}
+      startupProbe:
+        {{- if $s.startupProbe.cmd }}
+        exec:
+          command:
+          {{- range $s.startupProbe.cmd }}
+            - {{ . | quote }}
+          {{- end }}
+        {{ else }}
+        httpGet:
+          path: {{ $s.startupProbe.path }}
+          port: {{ $s.startupProbe.port }}
+        {{- end }}
+        initialDelaySeconds: {{ $.Values.startupProbe.initialDelaySeconds }}
+        periodSeconds: {{ $.Values.startupProbe.periodSeconds }}
+        failureThreshold: {{ $.Values.startupProbe.failureThreshold }}
+        timeoutSeconds: {{ $.Values.startupProbe.timeoutSeconds }}
+      {{- end }}
       {{- if $s.livenessProbe }}
       livenessProbe:
         {{- if $s.livenessProbe.cmd }}
@@ -273,6 +291,24 @@ spec:
           containerPort: {{ $ap.containerPort }}
           protocol: {{ $ap.protocol }}
         {{- end }}
+      {{- if .Values.startupProbe.enabled }}
+      startupProbe:
+        {{- if .Values.startupProbe.cmd }}
+        exec:
+          command:
+          {{- range .Values.startupProbe.cmd }}
+            - {{ . | quote }}
+          {{- end }}
+        {{ else }}
+        httpGet:
+          path: {{ .Values.startupProbe.path }}
+          port: {{ .Values.container.port }}
+        {{- end }}
+        initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
+        periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+        failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+        timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
+      {{- end }}
       {{- if .Values.livenessProbe.enabled }}
       livenessProbe:
         {{- if .Values.livenessProbe.cmd }}

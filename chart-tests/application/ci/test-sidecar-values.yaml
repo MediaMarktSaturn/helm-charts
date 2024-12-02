@@ -18,6 +18,10 @@ sidecars:
     env:
       ECHO_VALUE: yehaaa
       QUARKUS_HTTP_PORT: 9090
+    startupProbe:
+      enabled: true
+      path: /.well-known/live
+      port: 9090
     livenessProbe:
       path: /.well-known/live
       port: 9090
@@ -39,6 +43,10 @@ sidecars:
     env:
       ECHO_VALUE: wohooo
       QUARKUS_HTTP_PORT: 7070
+    startupProbe:
+      enabled: true
+      path: /.well-known/live
+      port: 7070
     livenessProbe:
       path: /.well-known/live
       port: 7070
