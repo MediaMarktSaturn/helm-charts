@@ -63,7 +63,7 @@ spec:
         {{- end }}
       securityContext:
         {{- if and $i.securityContext $.Values.initDefaults.securityContext }}
-        {{- toYaml (mergeOverwrite $.Values.initDefaults.securityContext $i.securityContext) | nindent 8 }}
+        {{- toYaml (merge $i.securityContext $.Values.initDefaults.securityContext) | nindent 8 }}
         {{- else }}
         {{- toYaml (or $i.securityContext $.Values.initDefaults.securityContext) | nindent 8 }}
         {{- end }}
@@ -127,7 +127,7 @@ spec:
         {{- end }}
       securityContext:
         {{- if and $s.securityContext $.Values.sidecarDefaults.securityContext }}
-        {{- toYaml (mergeOverwrite $.Values.sidecarDefaults.securityContext $s.securityContext) | nindent 8 }}
+        {{- toYaml (merge $s.securityContext $.Values.sidecarDefaults.securityContext) | nindent 8 }}
         {{- else }}
         {{- toYaml (or $s.securityContext $.Values.sidecarDefaults.securityContext) | nindent 8 }}
         {{- end }}
