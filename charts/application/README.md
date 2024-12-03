@@ -1,6 +1,6 @@
 # application
 
-![Version: 1.28.0](https://img.shields.io/badge/Version-1.28.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.29.0](https://img.shields.io/badge/Version-1.29.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Generic application chart with common requirements of a typical workload.
 
@@ -25,6 +25,13 @@ Generic application chart with common requirements of a typical workload.
 | autoscaling.minReplicaCount | int | `1` |  |
 | autoscaling.maxReplicaCount | int | `1` |  |
 | autoscaling.averageUtilization.cpu | int | `80` |  |
+| startupProbe.enabled | bool | `false` |  |
+| startupProbe.path | string | `"/.well-known/live"` |  |
+| startupProbe.cmd | list | `[]` |  |
+| startupProbe.initialDelaySeconds | int | `10` |  |
+| startupProbe.periodSeconds | int | `10` |  |
+| startupProbe.failureThreshold | int | `3` |  |
+| startupProbe.timeoutSeconds | int | `5` |  |
 | livenessProbe.enabled | bool | `true` |  |
 | livenessProbe.path | string | `"/.well-known/live"` |  |
 | livenessProbe.cmd | list | `[]` |  |
