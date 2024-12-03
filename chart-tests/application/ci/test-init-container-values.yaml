@@ -32,8 +32,11 @@ initContainers:
     command: ['ls', '-lah', '/']
     env: {}
     restartPolicy: Never
-    securityContext:
-      runAsNonRoot: true
-      allowPrivilegeEscalation: false
-      runAsUser: 65534
-      runAsGroup: 65534
+
+
+initDefaults:
+  securityContext:
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    runAsUser: 65534
+    runAsGroup: 65534

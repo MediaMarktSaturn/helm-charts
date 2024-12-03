@@ -62,11 +62,7 @@ spec:
         - {{ . | quote }}
         {{- end }}
       securityContext:
-        {{- if and $i.securityContext $.Values.initDefaults.securityContext }}
-        {{- toYaml (merge $i.securityContext $.Values.initDefaults.securityContext) | nindent 8 }}
-        {{- else }}
-        {{- toYaml (or $i.securityContext $.Values.initDefaults.securityContext) | nindent 8 }}
-        {{- end }}
+        {{- toYaml (default $.Values.initDefaults.securityContext $i.securityContext ) | nindent 8 }}
       resources:
         {{- toYaml (or $i.resources $.Values.initDefaults.resources) | nindent 8 }}
       env:
@@ -132,11 +128,7 @@ spec:
         - {{ . | quote }}
         {{- end }}
       securityContext:
-        {{- if and $s.securityContext $.Values.sidecarDefaults.securityContext }}
-        {{- toYaml (merge $s.securityContext $.Values.sidecarDefaults.securityContext) | nindent 8 }}
-        {{- else }}
-        {{- toYaml (or $s.securityContext $.Values.sidecarDefaults.securityContext) | nindent 8 }}
-        {{- end }}
+        {{- toYaml (default $.Values.sidecarDefaults.securityContext $s.securityContext) | nindent 8 }}
       resources:
         {{- toYaml (or $s.resources $.Values.sidecarDefaults.resources) | nindent 8 }}
       env:
