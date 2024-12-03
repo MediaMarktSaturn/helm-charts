@@ -12,6 +12,8 @@ container:
   # annotations to be added to the pod template
   annotations:
     "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
+  # command line given to the container; []string
+  command: []
   # arguments given to the container; []string
   args: []
 
@@ -342,6 +344,7 @@ sidecars: []
 #   image:
 #     repository: quay.io/heubeck/examiner
 #     tag: 1.13.3
+#   command: []
 #   args: []
 #   env: {}
 #   configEnvFrom: []
@@ -425,6 +428,7 @@ initDefaults:
       cpu: 500m
       memory: 100Mi
   restartPolicy: Always
+  # securityContext: {}
 
 # List of tolerations, will be taken over like-for-like to pod-spec
 tolerations: []

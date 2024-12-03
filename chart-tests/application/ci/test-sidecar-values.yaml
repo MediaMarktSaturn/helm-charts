@@ -30,6 +30,7 @@ sidecars:
       port: 9090
     securityContext:
       runAsUser: 65532
+      allowPrivilegeEscalation: false
     volumeMountNames:
       - share
     ports:
@@ -55,6 +56,17 @@ sidecars:
       port: 7070
     securityContext:
       runAsUser: 65532
+      allowPrivilegeEscalation: false
+  - name: commandtest
+    image:
+      repository: busybox
+      tag: stable
+    command: ["sh", "-c"]
+    args: ["sleep 2000"]
+    livenessProbe:
+      cmd: ['ls']
+    readinessProbe:
+      cmd: ['ls']
 
 sidecarDefaults:
   resources:
@@ -64,3 +76,6 @@ sidecarDefaults:
     limits:
       cpu: 100m
       memory: 100Mi
+  securityContext:
+    runAsNonRoot: false
+    allowPrivilegeEscalation: false

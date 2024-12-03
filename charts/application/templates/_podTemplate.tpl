@@ -62,11 +62,7 @@ spec:
         - {{ . | quote }}
         {{- end }}
       securityContext:
-        {{- if and $i.securityContext $.Values.initDefaults.securityContext }}
-        {{- toYaml (merge $i.securityContext $.Values.initDefaults.securityContext) | nindent 8 }}
-        {{- else }}
-        {{- toYaml (or $i.securityContext $.Values.initDefaults.securityContext) | nindent 8 }}
-        {{- end }}
+        {{- toYaml (default $.Values.initDefaults.securityContext $i.securityContext ) | nindent 8 }}
       resources:
         {{- toYaml (or $i.resources $.Values.initDefaults.resources) | nindent 8 }}
       env:
@@ -121,16 +117,18 @@ spec:
       image: "{{ .image.repository }}:{{ .image.tag }}"
       {{- end }}
       imagePullPolicy: {{ or $s.image.pullPolicy $.Values.sidecarDefaults.image.pullPolicy }}
+      {{- if $s.command }}
+      command:
+        {{- range $s.command }}
+        - {{ . | quote }}
+        {{- end }}
+      {{- end }}
       args: {{ if not $s.args }}[]{{ end }}
         {{- range $s.args }}
         - {{ . | quote }}
         {{- end }}
       securityContext:
-        {{- if and $s.securityContext $.Values.sidecarDefaults.securityContext }}
-        {{- toYaml (merge $s.securityContext $.Values.sidecarDefaults.securityContext) | nindent 8 }}
-        {{- else }}
-        {{- toYaml (or $s.securityContext $.Values.sidecarDefaults.securityContext) | nindent 8 }}
-        {{- end }}
+        {{- toYaml (default $.Values.sidecarDefaults.securityContext $s.securityContext) | nindent 8 }}
       resources:
         {{- toYaml (or $s.resources $.Values.sidecarDefaults.resources) | nindent 8 }}
       env:
@@ -254,6 +252,12 @@ spec:
       image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
       {{- end }}
       imagePullPolicy: {{ .Values.image.pullPolicy }}
+      {{- if .Values.container.command }}
+      command:
+        {{- range .Values.container.command }}
+        - {{ . | quote }}
+        {{- end }}
+      {{- end }}
       args: {{ if not .Values.container.args }}[]{{ end }}
         {{- range .Values.container.args }}
         - {{ . | quote }}

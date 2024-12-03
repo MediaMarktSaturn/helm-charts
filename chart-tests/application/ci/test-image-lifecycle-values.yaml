@@ -9,7 +9,8 @@ image:
   repository: busybox
   tag: stable
 container:
-  args: ["sleep", "2000"]
+  command: ["sh", "-c"]
+  args: ["sleep 2000"]
 lifecycle:
   postStart:
     exec:
