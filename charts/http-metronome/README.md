@@ -1,6 +1,6 @@
 # http-metronome
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Chart for k8s cronjobs to periodic triggering cluster-local http endpoints.
 
@@ -26,6 +26,7 @@ Chart for k8s cronjobs to periodic triggering cluster-local http endpoints.
 | ttlSecondsAfterFinished | int | `86400` |  |
 | startingDeadlineSeconds | int | `200` |  |
 | istioManaged | bool | `false` |  |
+| podTemplate.annotations | object | `{}` |  |
 | jobs[0].name | string | `"this-is-just-a-test"` |  |
 | jobs[0].schedule | string | `"* * * * *"` |  |
 | jobs[0].target | string | `"http://the-cluster-local-service/the-path"` |  |
