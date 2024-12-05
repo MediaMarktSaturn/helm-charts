@@ -22,6 +22,10 @@ startingDeadlineSeconds: 200
 # in an istio meshed environment, sidecar lifecycle has to be managed
 istioManaged: false
 
+# annotations to be added to the job template
+podTemplate:
+  annotations: {}
+
 # list of cronjobs that should run, structure see below.
 jobs:
   - name: this-is-just-a-test                          # MANDATORY: name of the cron-job that should be created

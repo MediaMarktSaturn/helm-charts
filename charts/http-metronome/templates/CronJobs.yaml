@@ -22,11 +22,16 @@ spec:
       ttlSecondsAfterFinished: {{ $.Values.ttlSecondsAfterFinished }}
       activeDeadlineSeconds: {{ .activeDeadlineSeconds }}
       template:
-                {{- if $.Values.istioManaged }}
         metadata:
+          {{- if $.Values.istioManaged }}
           labels:
             istio-prometheus-ignore: "true"
-                {{- end }}
+          {{- end }}
+          annotations: {{ if not $.Values.podTemplate.annotations }}{}{{ else }}
+            {{- range $k, $v := $.Values.podTemplate.annotations }}
+            {{ $k }}: {{ $v | quote }}
+            {{- end }}
+          {{- end }}
         spec:
           automountServiceAccountToken: false
           containers:
