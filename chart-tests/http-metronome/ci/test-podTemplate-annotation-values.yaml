@@ -1,0 +1,9 @@
+podTemplate:
+  annotations:
+    linkerd.io/inject: disabled
+
+jobs:
+  - name: this-is-just-a-test                          # MANDATORY: name of the cron-job that should be created
+    schedule: "* * * * *"                              # MANDATORY: cron expression this job trigger should run
+    target: http://the-cluster-local-service/the-path  # MANDATORY: http endpoint within the cluster that should be called using GET
+    activeDeadlineSeconds: 60                          # MANDATORY: maximum lifetime of a single job execution
