@@ -87,7 +87,7 @@ spec:
             name: {{ $ie }}
         {{- end }}
       {{- end }}
-      {{- if or $i.restartPolicy }}
+      {{- if $i.restartPolicy }}
       restartPolicy: {{ $i.restartPolicy }}
       {{- end }}
       {{ $hasInitVolumeMount := 0 }}

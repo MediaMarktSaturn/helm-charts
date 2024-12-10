@@ -31,7 +31,7 @@ initContainers:
       tag: 9.3
     command: ['ls', '-lah', '/']
     env: {}
-    restartPolicy: Never
+    restartPolicy: Always
 
 
 initDefaults:
