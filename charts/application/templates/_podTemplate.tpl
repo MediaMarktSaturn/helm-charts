@@ -449,7 +449,7 @@ spec:
     {{- end }}
     {{- end }}
   {{- if or .Values.podRestartPolicy .Values.cronJob.enabled }}
-  restartPolicy: {{ default "onFailure" .Values.podRestartPolicy }}
+  restartPolicy: {{ default "OnFailure" .Values.podRestartPolicy }}
   {{- end }}
   {{- if .Values.tolerations }}
   tolerations:
