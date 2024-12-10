@@ -5,6 +5,19 @@ statefulSet:
   # The policy for how pods inside the statefulSet are handled: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies
   podManagementPolicy: OrderedReady
 
+cronJob:
+  enabled: false
+  schedule: ""
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
+  activeDeadlineSeconds: 60
+  ttlSecondsAfterFinished: 86400
+  startingDeadlineSeconds: 200
+
+# Defaulting to onFailure for cronJobs only: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#restart-policy
+podRestartPolicy:
+
 container:
   port: 8080
   securityContext:
@@ -412,6 +425,7 @@ initContainers: []
 #   # see initDefaults
 #   resources: {}
 #   securityContext: {}
+#   restartPolicy:
 #   # 'volumeMounts' names to be mounted in init container as well (under the same path); default: none
 #   volumeMountNames: []
 #   #  - data

@@ -1,0 +1,16 @@
+cronJob:
+  enabled: true
+  schedule: "* * * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
+  activeDeadlineSeconds: 60
+  ttlSecondsAfterFinished: 86400
+  startingDeadlineSeconds: 200
+
+image:
+  repository: busybox
+  tag: latest
+
+container:
+  command: ["ls"]
