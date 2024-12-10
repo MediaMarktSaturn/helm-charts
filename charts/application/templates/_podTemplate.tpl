@@ -87,6 +87,9 @@ spec:
             name: {{ $ie }}
         {{- end }}
       {{- end }}
+      {{- if $i.restartPolicy }}
+      restartPolicy: {{ $i.restartPolicy }}
+      {{- end }}
       {{ $hasInitVolumeMount := 0 }}
       {{ range $.Values.volumeMounts }}{{ if (has .name $i.volumeMountNames) }}{{ $hasInitVolumeMount = 1 }}{{ end }}{{ end }}
       volumeMounts: {{ if not (or $i.secretVolumes (and $.Values.volumeMounts $hasInitVolumeMount)) -}}[]{{- end -}}
@@ -445,6 +448,9 @@ spec:
     {{- end }}
     {{- end }}
     {{- end }}
+  {{- if or .Values.podRestartPolicy .Values.cronJob.enabled }}
+  restartPolicy: {{ default "OnFailure" .Values.podRestartPolicy }}
+  {{- end }}
   {{- if .Values.tolerations }}
   tolerations:
     {{- toYaml .Values.tolerations | nindent 4 }}

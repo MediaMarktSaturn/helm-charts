@@ -1,4 +1,4 @@
-{{- if or .Values.disruptionBudget.minAvailable .Values.disruptionBudget.maxUnavailable }}
+{{- if and (or .Values.disruptionBudget.minAvailable .Values.disruptionBudget.maxUnavailable) (not .Values.cronJob.enabled) }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:

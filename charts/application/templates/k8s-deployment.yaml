@@ -1,4 +1,4 @@
-{{- if not .Values.statefulSet.enabled }}
+{{- if not (or .Values.statefulSet.enabled .Values.cronJob.enabled)}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
