@@ -10,7 +10,7 @@ cronJob:
 
 image:
   repository: busybox
-  tag: latest
+  tag: stable
 
 container:
   command: ["ls"]
