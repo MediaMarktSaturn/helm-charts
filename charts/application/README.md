@@ -1,6 +1,6 @@
 # application
 
-![Version: 1.30.0](https://img.shields.io/badge/Version-1.30.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.31.0](https://img.shields.io/badge/Version-1.31.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Generic application chart with common requirements of a typical workload.
 
@@ -18,6 +18,15 @@ Generic application chart with common requirements of a typical workload.
 |-----|------|---------|-------------|
 | statefulSet.enabled | bool | `false` |  |
 | statefulSet.podManagementPolicy | string | `"OrderedReady"` |  |
+| cronJob.enabled | bool | `false` |  |
+| cronJob.schedule | string | `""` |  |
+| cronJob.successfulJobsHistoryLimit | int | `3` |  |
+| cronJob.failedJobsHistoryLimit | int | `1` |  |
+| cronJob.concurrencyPolicy | string | `"Forbid"` |  |
+| cronJob.activeDeadlineSeconds | int | `60` |  |
+| cronJob.ttlSecondsAfterFinished | int | `86400` |  |
+| cronJob.startingDeadlineSeconds | int | `200` |  |
+| podRestartPolicy | string | `nil` |  |
 | container.port | int | `8080` |  |
 | container.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | container.annotations."cluster-autoscaler.kubernetes.io/safe-to-evict" | string | `"true"` |  |
@@ -155,7 +164,6 @@ Generic application chart with common requirements of a typical workload.
 | initDefaults.resources.requests.memory | string | `"100Mi"` |  |
 | initDefaults.resources.limits.cpu | string | `"500m"` |  |
 | initDefaults.resources.limits.memory | string | `"100Mi"` |  |
-| initDefaults.restartPolicy | string | `"Always"` |  |
 | tolerations | list | `[]` |  |
 | affinity | object | `{}` |  |
 
