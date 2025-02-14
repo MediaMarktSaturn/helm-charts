@@ -18,6 +18,10 @@ metadata:
   {{- end }}
 spec:
   type: ClusterIP
+  {{- if .Values.service.clusterIP }}
+  clusterIP: {{ .Values.service.clusterIP }}
+  {{- end }}
+
   ports:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.container.port }}
