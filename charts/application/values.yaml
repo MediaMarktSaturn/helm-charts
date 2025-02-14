@@ -134,6 +134,9 @@ service:
     enabled: false
     securityPolicyName:
 
+  # Static clusterIP to be used, see: https://kubernetes.io/docs/concepts/services-networking/cluster-ip-allocation/
+  clusterIP:
+
 nodeSelector: {}
 
 # additional labels to be added to all resource
