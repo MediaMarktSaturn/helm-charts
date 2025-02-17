@@ -45,7 +45,7 @@ jobs:
             echo '{ "include": ['
             [[ "${{ steps.changed-files.outputs.any_changed }}" == 'false' ]] && echo '{ "name": "lint" },'
             echo '{ "name": "k8s-1.32", "kindest_image": "kindest/node:v1.32.2"  },'
-            echo '{ "name": "k8s-1.31", "kindest_image": "kindest/node:v1.30.6"  },'
+            echo '{ "name": "k8s-1.31", "kindest_image": "kindest/node:v1.31.6"  },'
             echo '{ "name": "k8s-1.30", "kindest_image": "kindest/node:v1.30.10" },'
             echo '{ "name": "k8s-1.29", "kindest_image": "kindest/node:v1.29.14" }'
             echo '] }'
