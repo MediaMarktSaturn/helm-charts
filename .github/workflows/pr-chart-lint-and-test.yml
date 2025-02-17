@@ -44,11 +44,10 @@ jobs:
             echo "matrix<<EOF"
             echo '{ "include": ['
             [[ "${{ steps.changed-files.outputs.any_changed }}" == 'false' ]] && echo '{ "name": "lint" },'
-            echo '{ "name": "k8s-1.32", "kindest_image": "kindest/node:v1.32.0"  },'
-            echo '{ "name": "k8s-1.31", "kindest_image": "kindest/node:v1.31.4"  },'
-            echo '{ "name": "k8s-1.30", "kindest_image": "kindest/node:v1.30.8"  },'
-            echo '{ "name": "k8s-1.29", "kindest_image": "kindest/node:v1.29.12" },'
-            echo '{ "name": "k8s-1.28", "kindest_image": "kindest/node:v1.28.15" }'
+            echo '{ "name": "k8s-1.32", "kindest_image": "kindest/node:v1.32.2"  },'
+            echo '{ "name": "k8s-1.31", "kindest_image": "kindest/node:v1.30.6"  },'
+            echo '{ "name": "k8s-1.30", "kindest_image": "kindest/node:v1.30.10" },'
+            echo '{ "name": "k8s-1.29", "kindest_image": "kindest/node:v1.29.14" }'
             echo '] }'
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
@@ -61,7 +60,7 @@ jobs:
     env:
       # See https://github.com/kubernetes-sigs/kind/releases
       # Check and update the image versions in the prep_job as well when updating this version.
-      kind_version: v0.26.0
+      kind_version: v0.27.0
     strategy:
       matrix: ${{ fromJson(needs.prep_job.outputs.matrix) }}
     name: ${{ matrix.name }}
