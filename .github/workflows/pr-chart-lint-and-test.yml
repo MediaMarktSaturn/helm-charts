@@ -1,3 +1,4 @@
+---
 name: Lint and Test Charts
 "on":
   pull_request:
@@ -10,7 +11,7 @@ name: Lint and Test Charts
       - main
 
 env:
-  python_version: '3.10'
+  python_version: '3.13'
 
 jobs:
   prep_job:

@@ -294,7 +294,7 @@ spec:
           containerPort: {{ .Values.container.port }}
           protocol: TCP
         {{- range $ap := .Values.additionalPorts }}
-        {{- if $ap.containerPort != .Values.container.port }}
+        {{- if not (eq $ap.containerPort $.Values.container.port) }}
         - name: {{ $ap.name }}
           containerPort: {{ $ap.containerPort }}
           protocol: {{ $ap.protocol }}
