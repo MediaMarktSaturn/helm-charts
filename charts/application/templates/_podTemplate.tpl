@@ -294,9 +294,11 @@ spec:
           containerPort: {{ .Values.container.port }}
           protocol: TCP
         {{- range $ap := .Values.additionalPorts }}
+        {{- if not (eq $ap.containerPort $.Values.container.port) }}
         - name: {{ $ap.name }}
           containerPort: {{ $ap.containerPort }}
           protocol: {{ $ap.protocol }}
+        {{- end }}
         {{- end }}
       {{- if .Values.startupProbe.enabled }}
       startupProbe:
