@@ -13,8 +13,6 @@ echo "[INFO] install linkerd crds via its cli"
 curl --proto '=https' --tlsv1.2 -sSfL https://run.linkerd.io/install | sh
 curl --proto '=https' --tlsv1.2 -sSfL https://linkerd.github.io/linkerd-smi/install | sh
 export PATH=$PATH:$HOME/.linkerd2/bin/
-
-echo "::debug::install linkerd crds via its cli"
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.1/standard-install.yaml
 linkerd install --crds | kubectl apply -f -
 
