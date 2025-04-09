@@ -11,7 +11,7 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
 
@@ -21,13 +21,13 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Install Helm
-        uses: azure/setup-helm@v4
+        uses: azure/setup-helm@b9e51907a09c216f16ebe8536097933489208112 # v4.3.0
 
       - name: Generate docs
         run: .github/workflows/scripts/helm-docs.sh
 
       - name: Publish charts
-        uses: helm/chart-releaser-action@v1.7.0
+        uses: helm/chart-releaser-action@cae68fefc6b5f367a0275617c9f83181ba54714f # v1.7.0
         with:
           charts_dir: charts
           charts_repo_url: https://helm-charts.mms.tech
@@ -41,7 +41,7 @@ jobs:
     needs:
       - release
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
           ref: gh-pages
@@ -50,7 +50,7 @@ jobs:
         run: git checkout origin/main -- README.md
 
       - name: Generate index.html from readme.md
-        uses: jaywcjlove/markdown-to-html-cli@v5.0.3
+        uses: jaywcjlove/markdown-to-html-cli@d2c8ffd676de1801e2586904bc540a938e4bc480 # v5.0.3
         with:
           source: README.md
           output: index.html
@@ -78,7 +78,7 @@ jobs:
     name: Generate helm docs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
 
@@ -86,7 +86,7 @@ jobs:
         run: .github/workflows/scripts/helm-docs.sh
 
       - name: Create PR
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
         with:
           commit-message: "docs: update versions in readme"
           author: github_actions <noreply@github.com>
