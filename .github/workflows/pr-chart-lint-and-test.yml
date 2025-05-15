@@ -36,6 +36,8 @@ jobs:
             **/.*md
             .github/CODEOWNERS
             .github/dependabot.yml
+            .github/ISSUE_TEMPLATE/*
+            .github/workflows/assign_issue.yml
 
       - run: |
           echo "Has changes: ${{ steps.changed-files.outputs.any_changed }}"
