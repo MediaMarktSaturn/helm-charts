@@ -1113,6 +1113,19 @@ entries:
     version: 1.0.0
   pod-cleanup:
   - apiVersion: v2
+    created: "2025-09-19T07:37:04.500572632Z"
+    description: Helm Chart for cleaning up failed/terminated Kubernetes pods
+    digest: 1edec5bc2156b4bb9d24665a364c7ae6d037284097dc84ea3f35e6797b9c31c4
+    home: https://github.com/MediaMarktSaturn/helm-charts
+    maintainers:
+    - name: MediaMarktSaturn
+      url: https://github.com/MediaMarktSaturn
+    name: pod-cleanup
+    type: application
+    urls:
+    - https://github.com/MediaMarktSaturn/helm-charts/releases/download/pod-cleanup-1.2.0/pod-cleanup-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
     created: "2023-11-10T13:20:19.501874132Z"
     description: Helm Chart for cleaning up failed/terminated Kubernetes pods
     digest: 02e06cd79b21ce4bc776b53c1fa5769acb2cffd1338ac63268570b4da87377a8
@@ -1138,4 +1151,4 @@ entries:
     urls:
     - https://github.com/MediaMarktSaturn/helm-charts/releases/download/pod-cleanup-1.0.0/pod-cleanup-1.0.0.tgz
     version: 1.0.0
-generated: "2025-08-26T12:30:44.40546568Z"
+generated: "2025-09-19T07:37:04.50075785Z"
