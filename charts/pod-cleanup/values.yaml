@@ -1,9 +1,9 @@
 image:
-  # Docker image used in container, defaults to https://hub.docker.com/r/bitnami/kubectl
+  # Docker image used in container, defaults to https://explore.ggcr.dev/?repo=registry.k8s.io%2Fkubectl
   # A different image can be used as long as it contains the "kubectl" tool
-  repository: bitnami/kubectl
+  repository: registry.k8s.io/kubectl
   # Tag can be set to any Kubernetes version, to avoid unexpected compability issues it is recommended to use the same version configured for the K8s cluster
-  tag: "1.27"
+  tag: "v1.34.1"
 
 # CronJob schedule https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#cron-schedule-syntax
 # Defaults to once every Monday on 07:00 AM (once per week)
