@@ -16,8 +16,8 @@ Helm Chart for cleaning up failed/terminated Kubernetes pods
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image.repository | string | `"bitnami/kubectl"` |  |
-| image.tag | string | `"1.27"` |  |
+| image.repository | string | `"registry.k8s.io/kubectl"` |  |
+| image.tag | string | `"v1.34.1"` |  |
 | schedule | string | `"0 7 * * 1"` |  |
 | successfulJobsHistoryLimit | int | `3` |  |
 | failedJobsHistoryLimit | int | `3` |  |
