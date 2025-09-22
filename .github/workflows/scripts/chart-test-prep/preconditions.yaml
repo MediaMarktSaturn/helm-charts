@@ -19,3 +19,21 @@ kind: ServiceAccount
 metadata:
   name: name-me-butterfly
   namespace: test
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-cm
+  namespace: test
+data:
+  my-key: my-value
+  great-key: awesome-value
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-secret
+  namespace: test
+stringData:
+  secret-key: secret-value
+  great-secret: "don't tell anyone"

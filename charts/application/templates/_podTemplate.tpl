@@ -361,11 +361,17 @@ spec:
         - name: {{ .secretName }}
           mountPath: {{ .mountPath }}
           readOnly: true
+          {{- if and .itemKey .subPath }}
+          subPath: {{ .subPath }}
+          {{- end }}
         {{- end }}
         {{- range .Values.configVolumes }}
         - name: {{ .configMapName }}
           mountPath: {{ .mountPath }}
           readOnly: true
+          {{- if and .itemKey .subPath }}
+          subPath: {{ .subPath }}
+          {{- end }}
         {{- end }}
         {{- if .Values.serviceAccount.secretName }}
         - name: service-account
@@ -404,6 +410,11 @@ spec:
         {{- if .defaultMode }}
         defaultMode: {{ .defaultMode }}
         {{- end }}
+        {{- if and .itemKey .subPath }}
+        items:
+          - key: {{ .itemKey }}
+            path: {{ .subPath }}
+        {{- end }}
     {{- end }}
     {{- range .Values.configVolumes }}
     - name: {{ .configMapName }}
@@ -411,6 +422,11 @@ spec:
         name: {{ .configMapName }}
         {{- if .defaultMode }}
         defaultMode: {{ .defaultMode }}
+        {{- end }}
+        {{- if and .itemKey .subPath }}
+        items:
+          - key: {{ .itemKey }}
+            path: {{ .subPath }}
         {{- end }}
     {{- end }}
     {{- if .Values.serviceAccount.secretName }}

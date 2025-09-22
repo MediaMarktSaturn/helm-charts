@@ -90,7 +90,7 @@ readinessProbe:
 
 image:
   repository: quay.io/heubeck/examiner
-  tag: 1.13.3
+  tag: 1.14.4
   # When image.digest is set the image.tag, imagepolicy and imagerepository is ignored
   # e.g. "sha256:b187aed68cc8c75f475efe8aebcc61fc7ca0c5adc2d2c5b8318997c3edc8d32f"
   digest:
@@ -167,12 +167,16 @@ secretVolumes: []
 #  - secretName: mysecret
 #    mountPath: /mypath
 #    defaultMode: 0420
+#    subPath: cm-subpath.file # used as subPath volumeMount option as well as volumes item path
+#    itemKey: cm-key # to be mounted in subPath
 
 # list of configmaps to be mounted to app pod
 configVolumes: []
 #  - configMapName: myconfigmap
 #    mountPath: /mypath
 #    defaultMode: 0420
+#    subPath: cm-subpath.file # used as subPath volumeMount option as well as volumes item path
+#    itemKey: cm-key # to be mounted in subPath
 
 # list of secret names to be used as envFrom entries
 secretEnvFrom: []
@@ -359,7 +363,7 @@ sidecars: []
 # - name: sqlproxy
 #   image:
 #     repository: quay.io/heubeck/examiner
-#     tag: 1.13.3
+#     tag: 1.14.4
 #   command: []
 #   args: []
 #   env: {}

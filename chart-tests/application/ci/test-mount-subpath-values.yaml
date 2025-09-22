@@ -1,0 +1,10 @@
+configVolumes:
+  - configMapName: test-cm
+    mountPath: /conf/item.key
+    itemKey: my-key
+    subPath: item.key
+secretVolumes:
+  - secretName: test-secret
+    mountPath: /secret/secret.key
+    subPath: secret.key
+    itemKey: great-secret
