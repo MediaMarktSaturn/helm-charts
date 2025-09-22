@@ -14,7 +14,7 @@ sidecars:
   - name: sidekick
     image:
       repository: quay.io/heubeck/examiner
-      tag: 1.13.3
+      tag: 1.14.4
     env:
       ECHO_VALUE: yehaaa
       QUARKUS_HTTP_PORT: 9090
@@ -40,7 +40,7 @@ sidecars:
   - name: kickback
     image:
       repository: quay.io/heubeck/examiner
-      tag: 1.13.3
+      tag: 1.14.4
     env:
       ECHO_VALUE: wohooo
       QUARKUS_HTTP_PORT: 7070
@@ -64,9 +64,9 @@ sidecars:
     command: ["sh", "-c"]
     args: ["sleep 2000"]
     livenessProbe:
-      cmd: ['ls']
+      cmd: ["ls"]
     readinessProbe:
-      cmd: ['ls']
+      cmd: ["ls"]
 
 sidecarDefaults:
   resources:
