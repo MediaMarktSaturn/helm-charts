@@ -1,6 +1,6 @@
 # application
 
-![Version: 1.32.1](https://img.shields.io/badge/Version-1.32.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.33.0](https://img.shields.io/badge/Version-1.33.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Generic application chart with common requirements of a typical workload.
 
@@ -57,7 +57,7 @@ Generic application chart with common requirements of a typical workload.
 | readinessProbe.failureThreshold | int | `3` |  |
 | readinessProbe.timeoutSeconds | int | `5` |  |
 | image.repository | string | `"quay.io/heubeck/examiner"` |  |
-| image.tag | string | `"1.13.3"` |  |
+| image.tag | string | `"1.14.4"` |  |
 | image.digest | string | `nil` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.tagSemverRange | string | `nil` |  |
