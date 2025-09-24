@@ -28,10 +28,7 @@ spec:
           containers:
             - image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
               name: {{ $.Release.Name }}
-              command:
-                - /bin/sh
-                - -c
-                - kubectl delete pods -A --field-selector={{ $.Values.podFieldSelector }}
+              args: ["delete", "pods", "-A", "--field-selector={{ $.Values.podFieldSelector }}"]
               resources:
                 {{- toYaml $.Values.resources | nindent 16 }}
               imagePullPolicy: IfNotPresent
