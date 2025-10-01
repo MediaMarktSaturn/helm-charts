@@ -7,15 +7,17 @@ curl -s https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/crds/kusto
 kubectl create -k .tmp
 
 echo "::debug::install istio crds"
-kubectl create -f https://raw.githubusercontent.com/istio/istio/1.22.0/manifests/charts/base/crds/crd-all.gen.yaml
+kubectl create -f https://raw.githubusercontent.com/istio/istio/refs/tags/1.27.1/manifests/charts/base/files/crd-all.gen.yaml
 
 echo "::debug::install linkerd cli"
 curl --proto '=https' --tlsv1.2 -sSfL https://run.linkerd.io/install-edge | sh
 curl --proto '=https' --tlsv1.2 -sSfL https://linkerd.github.io/linkerd-smi/install | sh
 export PATH=$PATH:$HOME/.linkerd2/bin/
 
+echo "::debug::install gateway crd"
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
+
 echo "::debug::install linkerd crds via its cli"
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.1/standard-install.yaml
 linkerd install --crds | kubectl apply -f -
 
 echo "::debug::GKE backendconfig crd"
@@ -39,5 +41,3 @@ kubectl create -f https://raw.githubusercontent.com/fluxcd/flagger/main/artifact
 echo "::debug::apply chart preconditions"
 kubectl apply -f .github/workflows/scripts/chart-test-prep/preconditions.yaml
 
-echo "::debug::install gateway crd"
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml

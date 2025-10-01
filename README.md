@@ -14,7 +14,7 @@ With FluxCD:
 
 ```yaml
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
+apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: mediamarktsaturn
