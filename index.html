@@ -109,7 +109,7 @@ svg { z-index: 99; position: fixed; border: 0px; top: 0px; right: 0; }
     <p><code>helm repo add mediamarktsaturn https://helm-charts.mms.tech</code></p>
     <p>With FluxCD:</p>
     <pre class="language-yaml"><code class="language-yaml code-highlight"><span class="code-line line-number" line="1"><span class="token punctuation">---</span>
-</span><span class="code-line line-number" line="2"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> source.toolkit.fluxcd.io/v1beta1
+</span><span class="code-line line-number" line="2"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> source.toolkit.fluxcd.io/v1
 </span><span class="code-line line-number" line="3"><span class="token key atrule">kind</span><span class="token punctuation">:</span> HelmRepository
 </span><span class="code-line line-number" line="4"><span class="token key atrule">metadata</span><span class="token punctuation">:</span>
 </span><span class="code-line line-number" line="5">  <span class="token key atrule">name</span><span class="token punctuation">:</span> mediamarktsaturn
@@ -117,7 +117,7 @@ svg { z-index: 99; position: fixed; border: 0px; top: 0px; right: 0; }
 </span><span class="code-line line-number" line="7">  <span class="token key atrule">interval</span><span class="token punctuation">:</span> 120m
 </span><span class="code-line line-number" line="8">  <span class="token key atrule">url</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//helm<span class="token punctuation">-</span>charts.mms.tech
 </span></code><div onclick="copied(this)" data-code="---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
+apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: mediamarktsaturn
