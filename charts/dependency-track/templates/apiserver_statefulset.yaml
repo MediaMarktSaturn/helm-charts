@@ -84,10 +84,10 @@ spec:
             httpGet:
               port: api
               path: /health/started
-            periodSeconds: 5
-            timeoutSeconds: 4
-            successThreshold: 1
-            failureThreshold: 60
+            periodSeconds: {{ .Values.apiserver.startupProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.apiserver.startupProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.apiserver.startupProbe.successThreshold }}
+            failureThreshold: {{ .Values.apiserver.startupProbe.failureThreshold }}
       volumes:
         - name: tmp
           emptyDir: { }

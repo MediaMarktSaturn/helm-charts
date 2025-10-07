@@ -27,10 +27,16 @@ apiserver:
     type: ClusterIP
   baseurl: "https://127.0.0.1"
   probes:
-    periodSeconds: 30
-    timeoutSeconds: 20
+    periodSeconds: 60
+    timeoutSeconds: 30
     successThreshold: 1
-    failureThreshold: 4
+    failureThreshold: 5
+  startupProbe:
+    periodSeconds: 30
+    timeoutSeconds: 25
+    successThreshold: 1
+    failureThreshold: 60
+
   metrics:
     enabled: true
     grafana:
@@ -63,10 +69,10 @@ frontend:
     type: ClusterIP
   probes:
     initialDelaySeconds: 30
-    periodSeconds: 30
-    timeoutSeconds: 20
+    periodSeconds: 60
+    timeoutSeconds: 30
     successThreshold: 1
-    failureThreshold: 4
+    failureThreshold: 5
 
 ingress:
   enabled: true
