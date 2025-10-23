@@ -329,6 +329,43 @@ prepJob:
   #  limits:
   #    cpu: 1
   #    memory: 1Gi
+  sidecars: []
+    #- name: sql-proxy
+    #  image:
+    #    repository: quay.io/heubeck/examiner
+    #    tag: 1.14.4
+    #  command: []
+    #  args: []
+    #  env: {}
+    #  configEnvFrom: []
+    #  secretEnvFrom: []
+    #  secretVolumes: []
+    #    - secretName: mysecret
+    #      mountPath: /mypath
+    #  # see sidecarDefaults
+    #  resources: {}
+    #  securityContext: {}
+    #  # probe timing is identical to main container
+    #  livenessProbe:
+    #    path: /liveness
+    #    port: 9090
+    #    # Use a command to check liveness from inside the container.
+    #    # This will take precedence over the given `path` and `port` value, if provided.
+    #    cmd: []
+    #  readinessProbe:
+    #    path: /readiness
+    #    port: 9090
+    #    # Use a command to check readiness from inside the container.
+    #    # This will take precedence over the given `path` and `port` value, if provided.
+    #    cmd: []
+    #  # 'volumeMounts' names to be mounted in sidecar as well (under the same path); default: none
+    #  volumeMountNames: []
+    #  #  - data
+    #  # ports of the sidecar container to be published by the pod (e.g. for prometheus exporter sidecars
+    #  ports:
+    #    - name: prom-exporter
+    #      protocol: TCP
+    #      containerPort: 1337
 
 networkPolicy:
   ingress:
@@ -432,7 +469,6 @@ initContainers: []
 #   # see initDefaults
 #   resources: {}
 #   securityContext: {}
-#   restartPolicy:
 #   # 'volumeMounts' names to be mounted in init container as well (under the same path); default: none
 #   volumeMountNames: []
 #   #  - data
