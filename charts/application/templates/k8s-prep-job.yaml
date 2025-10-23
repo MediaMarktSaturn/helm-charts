@@ -91,6 +91,109 @@ spec:
               mountPath: {{ .mountPath }}
               readOnly: true
             {{- end }}
+      initContainers: {{ if not .Values.prepJob.sidecars -}}[]{{- end -}}
+        {{- range $i := .Values.prepJob.sidecars }}
+        - name: {{ $i.name }}
+          {{- if .image.digest }}
+          image: "{{ .image.repository }}@{{ .image.digest }}"
+          {{- else }}
+          image: "{{ .image.repository }}:{{ .image.tag }}"
+          {{- end }}
+          imagePullPolicy: {{ or $i.image.pullPolicy $.Values.sidecarDefaults.image.pullPolicy }}
+          restartPolicy: Always
+          command: {{ if not $i.command }}[]{{ end }}
+            {{- range $i.command }}
+            - {{ . | quote }}
+            {{- end }}
+          args: {{ if not $i.args }}[]{{ end }}
+            {{- range $i.args }}
+            - {{ . | quote }}
+            {{- end }}
+          securityContext:
+            {{- toYaml (or $.Values.sidecarDefaults.securityContext $i.securityContext ) | nindent 12 }}
+          resources:
+            {{- toYaml (or $i.resources $.Values.sidecarDefaults.resources) | nindent 12 }}
+          env:
+            - name: APPLICATION_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            {{- if .env }}
+            {{- range $k, $v := .env }}
+            - name: {{ $k }}
+              value: {{ $v | quote }}
+            {{- end }}
+            {{- end }}
+          {{- if (or $i.configEnvFrom $i.secretEnvFrom )}}
+          envFrom:
+            {{- range $c := $i.configEnvFrom }}
+            - configMapRef:
+                name: {{ $c }}
+            {{- end }}
+            {{- range $ie := $i.secretEnvFrom }}
+            - secretRef:
+                name: {{ $ie }}
+            {{- end }}
+          {{- end }}
+          {{ $hasInitVolumeMount := 0 }}
+          {{ range $.Values.volumeMounts }}{{ if (has .name $i.volumeMountNames) }}{{ $hasInitVolumeMount = 1 }}{{ end }}{{ end }}
+          volumeMounts: {{ if not (or $i.secretVolumes (and $.Values.volumeMounts $hasInitVolumeMount)) -}}[]{{- end -}}
+            {{- range $i.secretVolumes }}
+            - name: "{{ $i.name }}-{{ .secretName }}"
+              mountPath: {{ .mountPath }}
+              readOnly: true
+            {{- end }}
+            {{- range $.Values.volumeMounts }}
+            {{- if (has .name $i.volumeMountNames) }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
+            {{- end }}
+          {{- if $i.livenessProbe }}
+          livenessProbe:
+            {{- if $i.livenessProbe.cmd }}
+            exec:
+              command:
+              {{- range $i.livenessProbe.cmd }}
+                - {{ . | quote }}
+              {{- end }}
+            {{ else }}
+            httpGet:
+              path: {{ $i.livenessProbe.path }}
+              port: {{ $i.livenessProbe.port }}
+            {{- end }}
+            initialDelaySeconds: {{ $.Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $.Values.livenessProbe.periodSeconds }}
+            failureThreshold: {{ $.Values.livenessProbe.failureThreshold }}
+            timeoutSeconds: {{ $.Values.livenessProbe.timeoutSeconds }}
+          {{- end }}
+          {{- if $i.readinessProbe }}
+          readinessProbe:
+            {{- if $i.readinessProbe.cmd }}
+            exec:
+              command:
+              {{- range $i.readinessProbe.cmd }}
+                - {{ . | quote }}
+              {{- end }}
+            {{ else }}
+            httpGet:
+              path: {{ $i.readinessProbe.path }}
+              port: {{ $i.readinessProbe.port }}
+            {{- end }}
+            initialDelaySeconds: {{ $.Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $.Values.readinessProbe.periodSeconds }}
+            failureThreshold: {{ $.Values.readinessProbe.failureThreshold }}
+            timeoutSeconds: {{ $.Values.readinessProbe.timeoutSeconds }}
+          {{- end }}
+          {{- if $i.ports }}
+          ports:
+            {{- range $ip := $i.ports }}
+            - name: {{ $ip.name }}
+              containerPort: {{ $ip.containerPort }}
+              protocol: {{ $ip.protocol }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
       volumes: {{ if not .Values.secretVolumes -}}[]{{- end -}}
         {{- range .Values.secretVolumes }}
         - name: {{ .secretName }}
