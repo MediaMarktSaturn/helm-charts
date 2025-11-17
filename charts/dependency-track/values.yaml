@@ -1,7 +1,7 @@
 apiserver:
   image:
     repository: docker.io/dependencytrack/apiserver
-    tag: 4.13.5
+    tag: 4.13.6
   resources:
     limits:
       cpu: "3"
@@ -53,7 +53,7 @@ apiserver:
 frontend:
   image:
     repository: docker.io/dependencytrack/frontend
-    tag: 4.13.5
+    tag: 4.13.6
   resources:
     limits:
       cpu: "1"
