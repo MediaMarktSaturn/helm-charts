@@ -331,6 +331,7 @@ prepJob:
   #    memory: 1Gi
 
 networkPolicy:
+  enabled: true
   ingress:
     - {}
   egress:
