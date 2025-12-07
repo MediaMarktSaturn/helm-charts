@@ -1,6 +1,6 @@
 # application
 
-![Version: 1.34.0](https://img.shields.io/badge/Version-1.34.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.35.0](https://img.shields.io/badge/Version-1.35.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Generic application chart with common requirements of a typical workload.
 
@@ -57,7 +57,7 @@ Generic application chart with common requirements of a typical workload.
 | readinessProbe.failureThreshold | int | `3` |  |
 | readinessProbe.timeoutSeconds | int | `5` |  |
 | image.repository | string | `"quay.io/heubeck/examiner"` |  |
-| image.tag | string | `"1.14.4"` |  |
+| image.tag | string | `"1.14.6"` |  |
 | image.digest | string | `nil` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.tagSemverRange | string | `nil` |  |
@@ -146,6 +146,7 @@ Generic application chart with common requirements of a typical workload.
 | prepJob.configuration | object | `{}` |  |
 | prepJob.serviceAccountName | string | `nil` |  |
 | prepJob.resources | object | `{}` |  |
+| networkPolicy.enabled | bool | `true` |  |
 | networkPolicy.ingress[0] | object | `{}` |  |
 | networkPolicy.egress[0] | object | `{}` |  |
 | volumeMounts | list | `[]` |  |
