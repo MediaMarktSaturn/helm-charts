@@ -1,3 +1,6 @@
+# Additional annotations to be added to the created Deployment/Statefulset
+annotations: {}
+
 # per default, a Deployment is created, if required, it can be changed to a StatefulSet
 statefulSet:
   enabled: false
