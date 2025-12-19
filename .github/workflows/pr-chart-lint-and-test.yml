@@ -1,4 +1,3 @@
----
 name: Lint and Test Charts
 "on":
   pull_request:
@@ -47,10 +46,11 @@ jobs:
             echo "matrix<<EOF"
             echo '{ "include": ['
             [[ "${{ steps.changed-files.outputs.any_changed }}" == 'false' ]] && echo '{ "name": "lint" },'
-            echo '{ "name": "k8s-1.34", "kindest_image": "kindest/node:v1.34.0"  },'
-            echo '{ "name": "k8s-1.33", "kindest_image": "kindest/node:v1.33.4"  },'
-            echo '{ "name": "k8s-1.32", "kindest_image": "kindest/node:v1.32.8"  },'
-            echo '{ "name": "k8s-1.31", "kindest_image": "kindest/node:v1.31.12" }'
+            echo '{ "name": "k8s-1.35", "kindest_image": "kindest/node:v1.35.0"  },'
+            echo '{ "name": "k8s-1.34", "kindest_image": "kindest/node:v1.34.3"  },'
+            echo '{ "name": "k8s-1.33", "kindest_image": "kindest/node:v1.33.7"  },'
+            echo '{ "name": "k8s-1.32", "kindest_image": "kindest/node:v1.32.11" },'
+            echo '{ "name": "k8s-1.31", "kindest_image": "kindest/node:v1.31.14" }'
             echo '] }'
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
@@ -63,7 +63,7 @@ jobs:
     env:
       # See https://github.com/kubernetes-sigs/kind/releases
       # Check and update the image versions in the prep_job as well when updating this version.
-      kind_version: v0.30.0
+      kind_version: v0.31.0
     strategy:
       matrix: ${{ fromJson(needs.prep_job.outputs.matrix) }}
     name: ${{ matrix.name }}
