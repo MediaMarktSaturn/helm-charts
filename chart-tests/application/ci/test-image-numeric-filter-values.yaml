@@ -1,4 +1,0 @@
-image:
-  tagNumerical: desc
-  tagFilterPattern: '^v(?P<version>)$'
-  tagFilterExtract: '$version'
