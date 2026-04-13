@@ -45,6 +45,8 @@ startupProbe:
   # Allows to disable the startup probe
   enabled: false
   path: /.well-known/live
+  # Port used to run the startup probe against. Defaults to container port if not provided.
+  port:
   # Use a command to check startup from inside the container, for example ['curl', '-f', 'http://localhost/health/ready'].
   # This will take precedence over the given `path` value, if provided.
   cmd: []
@@ -62,6 +64,8 @@ livenessProbe:
   # Allows to disable the liveness probe
   enabled: true
   path: /.well-known/live
+  # Port used to run the liveness probe against. Defaults to container port if not provided.
+  port:
   # Use a command to check liveness from inside the container, for example ['curl', '-f', 'http://localhost/health/live'].
   # This will take precedence over the given `path` value, if provided.
   cmd: []
@@ -79,6 +83,8 @@ readinessProbe:
   # Allows to disable the readiness probe
   enabled: true
   path: /.well-known/ready
+  # Port used to run the readiness probe against. Defaults to container port if not provided.
+  port:
   # Use a command to check readiness from inside the container, for example ['curl', '-f', 'http://localhost/health/ready'].
   # This will take precedence over the given `path` value, if provided.
   cmd: []

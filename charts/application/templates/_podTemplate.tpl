@@ -311,7 +311,7 @@ spec:
         {{ else }}
         httpGet:
           path: {{ .Values.startupProbe.path }}
-          port: {{ .Values.container.port }}
+          port: {{ .Values.startupProbe.port | default .Values.container.port }}
         {{- end }}
         initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
         periodSeconds: {{ .Values.startupProbe.periodSeconds }}
@@ -329,7 +329,7 @@ spec:
         {{ else }}
         httpGet:
           path: {{ .Values.livenessProbe.path }}
-          port: {{ .Values.container.port }}
+          port: {{ .Values.livenessProbe.port | default .Values.container.port }}
         {{- end }}
         initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
         periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
@@ -347,7 +347,7 @@ spec:
         {{ else }}
         httpGet:
           path: {{ .Values.readinessProbe.path }}
-          port: {{ .Values.container.port }}
+          port: {{ .Values.readinessProbe.port | default .Values.container.port }}
         {{- end }}
         initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
         periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
