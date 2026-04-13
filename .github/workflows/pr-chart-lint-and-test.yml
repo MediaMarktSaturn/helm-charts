@@ -93,8 +93,11 @@ jobs:
       - name: Create chart preconditions
         run: .github/workflows/scripts/chart-test-prep.sh
 
+      - name: Copy test-values into charts
+        run: rsync -a chart-tests/ charts/
+
       - name: Chart installation tests
-        run: .github/workflows/scripts/chart-test.sh
+        run: ct install --config .github/workflows/conf/ct-test.yml
 
       - name: Debug information on failure
         run: kubectl describe nodes; echo "=== API Versions ==="; kubectl api-versions; echo "=== CRDs ==="; kubectl get crd

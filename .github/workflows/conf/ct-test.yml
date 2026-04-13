@@ -2,7 +2,7 @@
 chart-dirs:
   - charts
 all: true
-debug: true
+debug: false
 check-version-increment: true
-helm-extra-args: '--timeout 600s'
+helm-extra-args: "--timeout 600s"
 namespace: test
