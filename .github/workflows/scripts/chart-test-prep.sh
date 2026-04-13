@@ -1,13 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
+ISTIO_VERSION="1.29.1"
+
 echo "::debug::install flux crds"
 mkdir -p .tmp
 curl -s https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/crds/kustomization.yaml -o .tmp/kustomization.yaml
 kubectl create -k .tmp
 
 echo "::debug::install istio crds"
-kubectl create -f https://raw.githubusercontent.com/istio/istio/refs/tags/1.27.1/manifests/charts/base/files/crd-all.gen.yaml
+kubectl create -f "https://raw.githubusercontent.com/istio/istio/refs/tags/$ISTIO_VERSION/manifests/charts/base/files/crd-all.gen.yaml"
 
 echo "::debug::install linkerd cli"
 curl --proto '=https' --tlsv1.2 -sSfL https://run.linkerd.io/install-edge | sh
