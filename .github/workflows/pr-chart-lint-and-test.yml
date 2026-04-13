@@ -99,7 +99,7 @@ jobs:
       - name: Debug information on failure
         run: |
           echo "=== ct install logs ================================================================================"
-          grep -C 5 'INSTALLATION FAILED' .tmp/ct-test.log
+          grep -C 3 'INSTALLATION FAILED' .tmp/ct-test.log
           echo "===================================================================================================="
           echo ""
           echo "=== kubectl info ==================================================================================="

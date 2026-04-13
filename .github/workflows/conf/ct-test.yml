@@ -1,6 +1,8 @@
-charts:
-  - charts/application
-debug: false
+---
+chart-dirs:
+  - charts
+all: true
+debug: true
 check-version-increment: true
-helm-extra-args: "--timeout 600s"
+helm-extra-args: '--timeout 600s'
 namespace: test
