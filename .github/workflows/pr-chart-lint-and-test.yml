@@ -12,6 +12,7 @@ name: Lint and Test Charts
 env:
   python_version: "3.14"
 
+
 jobs:
   prep_job:
     runs-on: ubuntu-latest
@@ -63,6 +64,8 @@ jobs:
       # See https://github.com/kubernetes-sigs/kind/releases
       # Check and update the image versions in the prep_job as well when updating this version.
       kind_version: v0.30.0
+      istio_version: "1.27.1"
+      k8s_sigs_gateway_version: "1.3.0"
     strategy:
       matrix: ${{ fromJson(needs.prep_job.outputs.matrix) }}
       fail-fast: false
@@ -91,7 +94,7 @@ jobs:
           node_image: ${{ matrix.kindest_image }}
 
       - name: Create chart preconditions
-        run: .github/workflows/scripts/chart-test-prep.sh
+        run: .github/workflows/scripts/chart-test-prep.sh ${{ env.istio_version }} ${{ env.k8s_sigs_gateway_version }}
 
       - name: Chart installation tests
         run: .github/workflows/scripts/chart-test.sh
