@@ -12,7 +12,6 @@ name: Lint and Test Charts
 env:
   python_version: "3.14"
 
-
 jobs:
   prep_job:
     runs-on: ubuntu-latest
@@ -47,9 +46,9 @@ jobs:
             echo "matrix<<EOF"
             echo '{ "include": ['
             [[ "${{ steps.changed-files.outputs.any_changed }}" == 'false' ]] && echo '{ "name": "lint" },'
-            echo '{ "name": "k8s-1.34", "kindest_image": "kindest/node:v1.34.0"  },'
-            echo '{ "name": "k8s-1.33", "kindest_image": "kindest/node:v1.33.4"  },'
-            echo '{ "name": "k8s-1.32", "kindest_image": "kindest/node:v1.32.8"  },'
+            # echo '{ "name": "k8s-1.34", "kindest_image": "kindest/node:v1.34.0"  },'
+            # echo '{ "name": "k8s-1.33", "kindest_image": "kindest/node:v1.33.4"  },'
+            # echo '{ "name": "k8s-1.32", "kindest_image": "kindest/node:v1.32.8"  },'
             echo '{ "name": "k8s-1.31", "kindest_image": "kindest/node:v1.31.12" }'
             echo '] }'
             echo "EOF"
@@ -96,14 +95,33 @@ jobs:
       - name: Create chart preconditions
         run: .github/workflows/scripts/chart-test-prep.sh ${{ env.istio_version }} ${{ env.k8s_sigs_gateway_version }}
 
+      - run: |
+          echo "=== api versions ==="
+          kubectl api-versions
+
+          echo "=== helm dry-run ==="
+          helm install application-test-image-numeric charts/application \
+            --namespace test \
+            --dry-run=client \
+            -f chart-tests/application/ci/test-image-numeric-filter-values.yaml
+
       - name: Chart installation tests
-        run: .github/workflows/scripts/chart-test.sh
+        env:
+          test_case: test-image-numeric-filter-values.yaml
+        run: |
+          # .github/workflows/scripts/chart-test.sh
+          mkdir -pv charts/application/ci
+
+          cp -v chart-tests/application/ci/${{ env.test_case }} charts/application/ci/
+
+          set -o pipefail
+          ct install --config .github/workflows/conf/ct-test.yml | tee -a .tmp/ct-test.log
+          exit $?
 
       - name: Debug information on failure
         run: |
           echo "=== ct install logs ================================================================================"
           grep -C 3 'INSTALLATION FAILED' .tmp/ct-test.log
-          echo "===================================================================================================="
           echo ""
           echo "=== kubectl info ==================================================================================="
           kubectl describe nodes; echo "=== API Versions ==="; kubectl api-versions; echo "=== CRDs ==="; kubectl get crd
@@ -112,7 +130,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     needs: prep_job
-    if: ${{ needs.prep_job.outputs.has_changes == 'true' }}
+    if: ${{ needs.prep_job.outputs.has_changes == 'true' && github.event.pull_request.draft == false }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:

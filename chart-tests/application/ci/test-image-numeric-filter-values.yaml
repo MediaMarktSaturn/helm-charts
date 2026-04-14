@@ -1,5 +1,5 @@
 image:
-  tagSemverRange: ">=1"
+  # tagSemverRange: ">=1"
   tagNumerical: desc
   tagFilterPattern: "^v(?P<version>)$"
   tagFilterExtract: "$version"

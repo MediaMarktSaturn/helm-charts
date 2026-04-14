@@ -6,6 +6,6 @@ set -o pipefail
 rsync -a chart-tests/ charts/
 
 # run chart tests
-ct install --config .github/workflows/conf/ct-test.yml | tee .tmp/ct-test.log
+ct install --config .github/workflows/conf/ct-test.yml | tee -a .tmp/ct-test.log
 
 exit $?
