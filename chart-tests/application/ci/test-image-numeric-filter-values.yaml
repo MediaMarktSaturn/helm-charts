@@ -2,3 +2,4 @@ image:
   tagNumerical: desc
   tagFilterPattern: '^v(?P<version>)$'
   tagFilterExtract: '$version'
+  tagUpdateInterval: '2m0s'

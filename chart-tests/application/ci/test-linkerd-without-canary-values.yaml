@@ -15,6 +15,7 @@ autoscaling:
 image:
   # ImagePolicy and check period for automated updates
   tagSemverRange: "^1.2.x"
+  tagUpdateInterval: "2m0s"
 
 service:
   port: 80
