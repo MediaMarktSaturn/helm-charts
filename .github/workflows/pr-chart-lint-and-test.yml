@@ -196,9 +196,18 @@ jobs:
 
       - name: Debug information on failure
         run: |
-          echo "=== ct install logs ================================================================================"
+          echo "=== ct logs ==="
           grep -C 3 'INSTALLATION FAILED' .tmp/ct-test.log
-          echo ""
-          echo "=== kubectl info ==================================================================================="
-          kubectl describe nodes; echo "=== API Versions ==="; kubectl api-versions; echo "=== CRDs ==="; kubectl get crd
+
+          echo "=== kubectl nodes info ==="
+          kubectl describe nodes
+
+          echo "=== API Versions ==="
+          kubectl api-versions
+
+          echo "=== CRDs ==="
+          kubectl get crd
+
+          echo "=== ALL ==="
+          kubectl get all -A
         if: failure()
