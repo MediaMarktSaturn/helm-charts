@@ -1,9 +1,5 @@
 {{- if and .Values.image.tagUpdateInterval (or .Values.image.tagSemverRange .Values.image.tagNumerical .Values.image.tagAlphabetical ) (not .Values.image.digest) }}
-{{- if .Capabilities.APIVersions.Has "image.toolkit.fluxcd.io/v1" }}
 apiVersion: image.toolkit.fluxcd.io/v1
-{{- else }}
-apiVersion: image.toolkit.fluxcd.io/v1beta2
-{{- end }}
 kind: ImageRepository
 metadata:
   name: {{ .Release.Name }}
