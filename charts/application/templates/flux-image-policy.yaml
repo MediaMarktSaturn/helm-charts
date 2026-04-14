@@ -10,7 +10,6 @@ metadata:
   namespace: {{ default .Release.Namespace .Values.image.imageAutomationNamespace }}
   labels:
     {{- include "labels" . | nindent 4 }}
-  generation: 1
 spec:
   imageRepositoryRef:
     name: {{ .Release.Name }}
@@ -33,3 +32,5 @@ spec:
       order: {{ .Values.image.tagAlphabetical }}
     {{- end }}
 {{- end }}
+status:
+  observedGeneration: 1

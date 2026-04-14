@@ -10,7 +10,6 @@ metadata:
   namespace: {{ default .Release.Namespace .Values.image.imageAutomationNamespace }}
   labels:
     {{- include "labels" . | nindent 4 }}
-  generation: 1
 spec:
   image: {{ .Values.image.repository }}
   interval: {{ .Values.image.tagUpdateInterval | quote}}
@@ -20,3 +19,5 @@ spec:
   {{- end }}
   provider: {{ .Values.image.repositoryProvider }}
 {{- end }}
+status:
+  observedGeneration: 1
