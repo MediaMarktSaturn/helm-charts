@@ -19,5 +19,3 @@ spec:
   {{- end }}
   provider: {{ .Values.image.repositoryProvider }}
 {{- end }}
-status:
-  observedGeneration: 1

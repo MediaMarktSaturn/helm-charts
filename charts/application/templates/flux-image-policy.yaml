@@ -32,5 +32,3 @@ spec:
       order: {{ .Values.image.tagAlphabetical }}
     {{- end }}
 {{- end }}
-status:
-  observedGeneration: 1

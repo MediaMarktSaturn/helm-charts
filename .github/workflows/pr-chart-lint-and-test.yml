@@ -184,6 +184,11 @@ jobs:
             --dry-run=client \
             -f chart-tests/application/ci/${{ matrix.test }}
 
+      - name: Install flux controllers
+        run: |
+          helm install -n flux-system flux oci://ghcr.io/fluxcd-community/charts/flux2 \
+            -f .github/workflows/conf/fluxcd.yml
+
       - name: Chart installation tests
         run: |
           mkdir -pv charts/application/ci
