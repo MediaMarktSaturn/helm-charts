@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ISTIO_VERSION="${1:-1.27.1}"
-K8S_SIGS_GATEWAY_VERSION="${2:-1.3.0}"
+K8S_SIGS_GATEWAY_VERSION="${2:-v1.3.0}"
 
 echo "::debug::install flux crds"
 mkdir -p .tmp
@@ -18,7 +18,7 @@ curl --proto '=https' --tlsv1.2 -sSfL https://linkerd.github.io/linkerd-smi/inst
 export PATH=$PATH:$HOME/.linkerd2/bin/
 
 echo "::debug::install gateway crd"
-kubectl apply -f "https://github.com/kubernetes-sigs/gateway-api/releases/download/v$K8S_SIGS_GATEWAY_VERSION/standard-install.yaml"
+kubectl apply -f "https://github.com/kubernetes-sigs/gateway-api/releases/download/$K8S_SIGS_GATEWAY_VERSION/standard-install.yaml"
 
 echo "::debug::install linkerd crds via its cli"
 linkerd install --crds | kubectl apply -f -

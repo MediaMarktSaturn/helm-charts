@@ -15,6 +15,7 @@ env:
 jobs:
   prep_job:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
     outputs:
       has_changes: ${{ steps.changed-files.outputs.any_changed }}
       matrix: ${{ steps.result.outputs.matrix }}
@@ -46,9 +47,9 @@ jobs:
             echo "matrix<<EOF"
             echo '{ "include": ['
             [[ "${{ steps.changed-files.outputs.any_changed }}" == 'false' ]] && echo '{ "name": "lint" },'
-            # echo '{ "name": "k8s-1.34", "kindest_image": "kindest/node:v1.34.0"  },'
-            # echo '{ "name": "k8s-1.33", "kindest_image": "kindest/node:v1.33.4"  },'
-            # echo '{ "name": "k8s-1.32", "kindest_image": "kindest/node:v1.32.8"  },'
+            echo '{ "name": "k8s-1.34", "kindest_image": "kindest/node:v1.34.0"  },'
+            echo '{ "name": "k8s-1.33", "kindest_image": "kindest/node:v1.33.4"  },'
+            echo '{ "name": "k8s-1.32", "kindest_image": "kindest/node:v1.32.8"  },'
             echo '{ "name": "k8s-1.31", "kindest_image": "kindest/node:v1.31.12" }'
             echo '] }'
             echo "EOF"
@@ -63,8 +64,8 @@ jobs:
       # See https://github.com/kubernetes-sigs/kind/releases
       # Check and update the image versions in the prep_job as well when updating this version.
       kind_version: v0.30.0
-      istio_version: "1.27.1"
-      k8s_sigs_gateway_version: "1.3.0"
+      istio_version: 1.27.1
+      k8s_sigs_gateway_version: v1.3.0
     strategy:
       matrix: ${{ fromJson(needs.prep_job.outputs.matrix) }}
       fail-fast: false
@@ -95,28 +96,8 @@ jobs:
       - name: Create chart preconditions
         run: .github/workflows/scripts/chart-test-prep.sh ${{ env.istio_version }} ${{ env.k8s_sigs_gateway_version }}
 
-      - run: |
-          echo "=== api versions ==="
-          kubectl api-versions
-
-          echo "=== helm dry-run ==="
-          helm install application-test-image-numeric charts/application \
-            --namespace test \
-            --dry-run=client \
-            -f chart-tests/application/ci/test-image-numeric-filter-values.yaml
-
       - name: Chart installation tests
-        env:
-          test_case: test-image-numeric-filter-values.yaml
-        run: |
-          # .github/workflows/scripts/chart-test.sh
-          mkdir -pv charts/application/ci
-
-          cp -v chart-tests/application/ci/${{ env.test_case }} charts/application/ci/
-
-          set -o pipefail
-          ct install --config .github/workflows/conf/ct-test.yml | tee -a .tmp/ct-test.log
-          exit $?
+        run: .github/workflows/scripts/chart-test.sh
 
       - name: Debug information on failure
         run: |
@@ -130,7 +111,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     needs: prep_job
-    if: ${{ needs.prep_job.outputs.has_changes == 'true' && github.event.pull_request.draft == false }}
+    if: ${{ needs.prep_job.outputs.has_changes == 'true' }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
@@ -154,3 +135,73 @@ jobs:
       - run: |
           echo "Skip ${{ matrix.name }} for this pull request because no relevant files have been changed."
           echo "This is needed to not block the pull request as these are configured as required status check."
+
+  analyze:
+    runs-on: ubuntu-latest
+    env:
+      kind_version: v0.30.0
+      kindest_image: kindest/node:v1.31.12
+      istio_version: 1.27.1
+      k8s_sigs_gateway_version: v1.3.0
+    strategy:
+      matrix:
+        include:
+          - test: "test-image-numeric-filter-values.yaml"
+          - test: "test-linkerd-without-canary-values.yaml"
+          - test: "test-resources-and-label-values.yaml"
+      fail-fast: false
+    name: ${{ matrix.test }}
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
+
+      - uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 # v4.3.1
+
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with:
+          python-version: ${{ env.python_version }}
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@6ec842c01de15ebb84c8627d2744a0c2f2755c9f # v2.8.0
+
+      - name: Lint charts
+        run: ct lint --config .github/workflows/conf/ct-lint.yml
+
+      - uses: helm/kind-action@92086f6be054225fa813e0a4b13787fc9088faab # v1.13.0
+        with:
+          config: .github/workflows/conf/kind.yml
+          version: ${{ env.kind_version }}
+          node_image: ${{ env.kindest_image }}
+
+      - name: Create chart preconditions
+        run: .github/workflows/scripts/chart-test-prep.sh ${{ env.istio_version }} ${{ env.k8s_sigs_gateway_version }}
+
+      - run: |
+          echo "=== api versions ==="
+          kubectl api-versions
+
+          echo "=== helm dry-run ==="
+          helm install application-${{ env.GITHUB_RUN_ID }} charts/application \
+            --namespace test \
+            --dry-run=client \
+            -f chart-tests/application/ci/${{ matrix.test }}
+
+      - name: Chart installation tests
+        run: |
+          mkdir -pv charts/application/ci
+
+          cp -v chart-tests/application/ci/${{ matrix.test }} charts/application/ci/
+
+          set -o pipefail
+          ct install --config .github/workflows/conf/ct-test.yml | tee -a .tmp/ct-test.log
+          exit $?
+
+      - name: Debug information on failure
+        run: |
+          echo "=== ct install logs ================================================================================"
+          grep -C 3 'INSTALLATION FAILED' .tmp/ct-test.log
+          echo ""
+          echo "=== kubectl info ==================================================================================="
+          kubectl describe nodes; echo "=== API Versions ==="; kubectl api-versions; echo "=== CRDs ==="; kubectl get crd
+        if: failure()
