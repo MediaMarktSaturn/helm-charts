@@ -77,7 +77,7 @@ frontend:
 ingress:
   enabled: true
   annotations: {}
-  host: 127.0.0.1
+  host: mms.eu
   class:
 
 labels: []
