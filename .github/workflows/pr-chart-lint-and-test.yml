@@ -178,11 +178,8 @@ jobs:
         run: .github/workflows/scripts/chart-test-prep.sh ${{ env.istio_version }} ${{ env.k8s_sigs_gateway_version }}
 
       - run: |
-          echo "=== api versions ==="
-          kubectl api-versions
-
           echo "=== helm dry-run ==="
-          helm install application-${{ env.GITHUB_RUN_ID }} charts/application \
+          helm install application-test charts/application \
             --namespace test \
             --dry-run=client \
             -f chart-tests/application/ci/${{ matrix.test }}
