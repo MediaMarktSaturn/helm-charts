@@ -44,6 +44,6 @@ kubectl create -f https://raw.githubusercontent.com/fluxcd/flagger/main/artifact
 echo "::debug::apply chart preconditions"
 kubectl apply -f .github/workflows/scripts/chart-test-prep/preconditions.yaml
 
-echo "::debug::intall flux controllers"
+echo "::debug::install flux controllers"
 kubectl apply -f https://github.com/fluxcd/flux2/releases/latest/download/install.yaml
 
