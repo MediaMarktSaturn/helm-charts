@@ -18,12 +18,10 @@ image:
   pullPolicy: IfNotPresent
 
   # ImagePolicy and check period for automated updates
-  tagSemverRange: "^2.x"
-  tagUpdateInterval: "10m0s"
+  tagSemverRange: "^1.x"
+  tagUpdateInterval: "1m0s"
   imageAutomationNamespace: flux-system
-
-  # exising secret in same namespace holding a
-  repositorySecret: oci-registry-service
+  repositorySecret:
 
 service:
   port: 80

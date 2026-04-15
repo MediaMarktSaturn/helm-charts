@@ -1,4 +1,6 @@
 image:
   tagNumerical: desc
-  tagFilterPattern: '^v(?P<version>)$'
-  tagFilterExtract: '$version'
+  tagFilterPattern: '^(?P<major>\d+).*$'
+  tagFilterExtract: '$major'
+  tagUpdateInterval: '1m0s'
+  repositorySecret:

@@ -1,4 +1,3 @@
----
 name: Lint and Test Charts
 "on":
   pull_request:
@@ -10,12 +9,17 @@ name: Lint and Test Charts
     branches:
       - main
 
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
 env:
   python_version: "3.14"
 
 jobs:
   prep_job:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
     outputs:
       has_changes: ${{ steps.changed-files.outputs.any_changed }}
       matrix: ${{ steps.result.outputs.matrix }}
@@ -64,8 +68,11 @@ jobs:
       # See https://github.com/kubernetes-sigs/kind/releases
       # Check and update the image versions in the prep_job as well when updating this version.
       kind_version: v0.30.0
+      istio_version: 1.27.1
+      k8s_sigs_gateway_version: v1.3.0
     strategy:
       matrix: ${{ fromJson(needs.prep_job.outputs.matrix) }}
+      fail-fast: false
     name: ${{ matrix.name }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -91,13 +98,17 @@ jobs:
           node_image: ${{ matrix.kindest_image }}
 
       - name: Create chart preconditions
-        run: .github/workflows/scripts/chart-test-prep.sh
+        run: .github/workflows/scripts/chart-test-prep.sh ${{ env.istio_version }} ${{ env.k8s_sigs_gateway_version }}
 
       - name: Chart installation tests
         run: .github/workflows/scripts/chart-test.sh
 
       - name: Debug information on failure
-        run: kubectl describe nodes; echo "=== API Versions ==="; kubectl api-versions; echo "=== CRDs ==="; kubectl get crd
+        run: |
+          echo "=== chart-testing failures ==="; grep -C 3 'INSTALLATION FAILED' .tmp/ct-test.log
+          echo "=== Nodes Info ==="; kubectl describe nodes
+          echo "=== API Versions ==="; kubectl api-versions
+          echo "=== CRDs ==="; kubectl get crd
         if: failure()
 
   lint:

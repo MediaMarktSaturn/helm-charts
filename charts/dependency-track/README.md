@@ -1,6 +1,6 @@
 # dependency-track
 
-![Version: 1.9.0](https://img.shields.io/badge/Version-1.9.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.14.0](https://img.shields.io/badge/AppVersion-4.14.0-informational?style=flat-square)
+![Version: 1.9.1](https://img.shields.io/badge/Version-1.9.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.14.0](https://img.shields.io/badge/AppVersion-4.14.0-informational?style=flat-square)
 
 Helm Chart for running OWASP Dependency-Track on Kubernetes
 
@@ -69,7 +69,7 @@ Helm Chart for running OWASP Dependency-Track on Kubernetes
 | frontend.probes.failureThreshold | int | `5` |  |
 | ingress.enabled | bool | `true` |  |
 | ingress.annotations | object | `{}` |  |
-| ingress.host | string | `"127.0.0.1"` |  |
+| ingress.host | string | `"mms.eu"` |  |
 | ingress.class | string | `nil` |  |
 | labels | list | `[]` |  |
 
