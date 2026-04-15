@@ -11,8 +11,6 @@ metadata:
   labels:
     {{- include "labels" . | nindent 4 }}
 spec:
-  digestReflectionPolicy: Always
-  interval: {{ .Values.image.tagUpdateInterval | quote}}
   imageRepositoryRef:
     name: {{ .Release.Name }}
   {{- if .Values.image.tagFilterPattern }}
