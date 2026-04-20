@@ -2,6 +2,7 @@
 set -euo pipefail
 
 pip install checkov > /dev/null 2>&1
+
 export LOG_LEVEL=INFO
 CHECK_STATUS=0
 
