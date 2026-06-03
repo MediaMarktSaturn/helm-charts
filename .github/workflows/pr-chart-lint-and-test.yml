@@ -51,11 +51,10 @@ jobs:
             echo "matrix<<EOF"
             echo '{ "include": ['
             [[ "${{ steps.changed-files.outputs.any_changed }}" == 'false' ]] && echo '{ "name": "lint" },'
-            echo '{ "name": "k8s-1.35", "kindest_image": "kindest/node:v1.35.0"  },'
-            echo '{ "name": "k8s-1.34", "kindest_image": "kindest/node:v1.34.3"  },'
-            echo '{ "name": "k8s-1.33", "kindest_image": "kindest/node:v1.33.7"  },'
-            echo '{ "name": "k8s-1.32", "kindest_image": "kindest/node:v1.32.11" },'
-            echo '{ "name": "k8s-1.31", "kindest_image": "kindest/node:v1.31.14" }'
+            echo '{ "name": "k8s-1.36", "kindest_image": "kindest/node:v1.36.1"  },'
+            echo '{ "name": "k8s-1.35", "kindest_image": "kindest/node:v1.35.5"  },'
+            echo '{ "name": "k8s-1.34", "kindest_image": "kindest/node:v1.34.8"  },'
+            echo '{ "name": "k8s-1.33", "kindest_image": "kindest/node:v1.33.12" }'
             echo '] }'
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
@@ -68,7 +67,7 @@ jobs:
     env:
       # See https://github.com/kubernetes-sigs/kind/releases
       # Check and update the image versions in the prep_job as well when updating this version.
-      kind_version: v0.31.0
+      kind_version: v0.32.0
       istio_version: 1.27.1
       k8s_sigs_gateway_version: v1.3.0
     strategy:
