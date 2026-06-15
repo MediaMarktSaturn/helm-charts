@@ -7,13 +7,10 @@ metadata:
   annotations:
     github.com/project-slug: MediaMarktSaturn/helm-charts # https://backstage.io/docs/features/software-catalog/well-known-annotations/#githubcomproject-slug
     github.com/team-slug: MediaMarktSaturn/gitops-crew # https://backstage.io/docs/features/software-catalog/well-known-annotations/#githubcomteam-slug
-    mms.tech/ref_uuid: <REF_UUID> # LeanIX refUUID
+    mms.tech/ref_uuid: 'e8aeb682-148d-44a0-a68b-a80d522cb23d' # LeanIX refUUID of Engineering Platform Foundation
     mms.tech/product_id: '0000' # Deprecated: retained temporarily for backward compatibility with legacy tooling; remove once all consumers are migrated.
     mms.tech/app_id:  # Deprecated: retained temporarily for backward compatibility with legacy tooling; remove once all consumers are migrated.
 spec:
   type: library
   lifecycle: production
   owner: MediaMarktSaturn/gitops-crew
-
-# Errors found during processing:
-#  metadata.annotations.mms.tech/ref_uuid: Does not match format 'uuid'
