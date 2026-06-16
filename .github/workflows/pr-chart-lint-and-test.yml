@@ -38,6 +38,7 @@ jobs:
             .github/
           files_ignore: |
             **/.*md
+            catalog-info.yaml
             .github/CODEOWNERS
             .github/dependabot.yml
             .github/ISSUE_TEMPLATE/*
