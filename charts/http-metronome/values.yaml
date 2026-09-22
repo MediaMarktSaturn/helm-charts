@@ -1,6 +1,6 @@
 image:
-  repository: registry.access.redhat.com/ubi8/ubi-minimal
-  tag: "8.5"
+  repository: registry.access.redhat.com/ubi10/ubi-minimal
+  tag: "10.2"
   pullPolicy: IfNotPresent
 
 # please find details about these settings on the Kubernetes documentation: https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
