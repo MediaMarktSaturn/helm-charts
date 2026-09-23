@@ -1,6 +1,6 @@
 # http-metronome
 
-![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Chart for k8s cronjobs to periodic triggering cluster-local http endpoints.
 
@@ -16,8 +16,8 @@ Chart for k8s cronjobs to periodic triggering cluster-local http endpoints.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image.repository | string | `"registry.access.redhat.com/ubi8/ubi-minimal"` |  |
-| image.tag | string | `"8.5"` |  |
+| image.repository | string | `"registry.access.redhat.com/ubi10/ubi-minimal"` |  |
+| image.tag | string | `"10.2"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | restartPolicy | string | `"OnFailure"` |  |
 | concurrencyPolicy | string | `"Forbid"` |  |
