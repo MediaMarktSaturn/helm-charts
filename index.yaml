@@ -1223,6 +1223,21 @@ entries:
   http-metronome:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-09-23T07:56:41.691379669Z"
+    description: Chart for k8s cronjobs to periodic triggering cluster-local http
+      endpoints.
+    digest: 867e8ac6de453c4e4a610424f7eb962be3589630dba2e3bdab573fd76b4aa03f
+    home: https://github.com/MediaMarktSaturn/helm-charts
+    maintainers:
+    - name: MediaMarktSaturn
+      url: https://github.com/MediaMarktSaturn
+    name: http-metronome
+    type: application
+    urls:
+    - https://github.com/MediaMarktSaturn/helm-charts/releases/download/http-metronome-2.0.0/http-metronome-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2024-12-05T14:43:36.121818851Z"
     description: Chart for k8s cronjobs to periodic triggering cluster-local http
       endpoints.
@@ -1304,4 +1319,4 @@ entries:
     urls:
     - https://github.com/MediaMarktSaturn/helm-charts/releases/download/pod-cleanup-1.0.0/pod-cleanup-1.0.0.tgz
     version: 1.0.0
-generated: "2026-05-08T17:04:40.35364083Z"
+generated: "2026-09-23T07:56:41.691561137Z"
