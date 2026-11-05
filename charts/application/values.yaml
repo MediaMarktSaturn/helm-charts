@@ -190,6 +190,14 @@ configVolumes: []
 # list of secret names to be used as envFrom entries
 secretEnvFrom: []
 
+# list of Google Secret Manager secrets to be mounted into the app pod using the GKE Secret Manager add-on (CSI driver `secrets-store-gke.csi.k8s.io`),
+# one SecretProviderClass is created per entry. Requires the add-on enabled on the cluster and Workload Identity access to the secret:
+# https://docs.cloud.google.com/secret-manager/docs/secret-manager-managed-csi-component
+secretManagerMounts: []
+#  - resourceName: "projects/PROJECT_ID/secrets/SECRET_NAME/versions/SECRET_VERSION"
+#    path: "FILENAME.txt"
+#    mountPath: "/var/secrets"
+
 # list of configmap names to be used as envFrom entries
 configEnvFrom: []
 
