@@ -13,6 +13,13 @@
 {{- end -}}
 
 {{/*
+    Name of the SecretProviderClass for the secretManagerMounts entry at the given index
+*/}}
+{{- define "secretProviderClass" -}}
+{{- printf "%s-sm-%d" .root.Release.Name (int .index) -}}
+{{- end -}}
+
+{{/*
 Common labels
 */}}
 {{- define "commonLabels" -}}

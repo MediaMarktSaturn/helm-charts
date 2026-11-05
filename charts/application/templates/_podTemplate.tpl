@@ -356,7 +356,7 @@ spec:
       {{- end }}
       resources:
         {{- toYaml .Values.resources | nindent 8 }}
-      volumeMounts: {{ if not (or .Values.secretVolumes .Values.configVolumes .Values.serviceAccount.secretName .Values.encryptedSecret.mountPath .Values.volumeMounts) -}}[]{{- end -}}
+      volumeMounts: {{ if not (or .Values.secretVolumes .Values.configVolumes .Values.serviceAccount.secretName .Values.encryptedSecret.mountPath .Values.volumeMounts .Values.secretManagerMounts) -}}[]{{- end -}}
         {{- range .Values.secretVolumes }}
         - name: {{ .secretName }}
           mountPath: {{ .mountPath }}
@@ -387,6 +387,11 @@ spec:
         - name: {{ .name }}
           mountPath: {{ .mountPath }}
         {{- end }}
+        {{- range $i, $m := .Values.secretManagerMounts }}
+        - name: secret-manager-{{ $i }}
+          mountPath: {{ $m.mountPath }}
+          readOnly: true
+        {{- end }}
       {{- if or .Values.lifecycle.postStart .Values.lifecycle.preStop }}
       lifecycle:
         {{- if .Values.lifecycle.postStart }}
@@ -402,7 +407,7 @@ spec:
   {{ range .Values.sidecars }}{{ if .secretVolumes }}{{ $hasSidecarVolume = 1 }}{{ end }}{{ end }}
   {{ $hasInitVolume := 0 }}
   {{ range .Values.initContainers }}{{ if .secretVolumes }}{{ $hasInitVolume = 1 }}{{ end }}{{ end }}
-  volumes: {{ if not (or .Values.secretVolumes .Values.configVolumes .Values.serviceAccount.secretName .Values.encryptedSecret.mountPath .Values.volumeMounts $hasSidecarVolume $hasInitVolume) -}}[]{{- end -}}
+  volumes: {{ if not (or .Values.secretVolumes .Values.configVolumes .Values.serviceAccount.secretName .Values.encryptedSecret.mountPath .Values.volumeMounts .Values.secretManagerMounts $hasSidecarVolume $hasInitVolume) -}}[]{{- end -}}
     {{- range .Values.secretVolumes }}
     - name: {{ .secretName }}
       secret:
@@ -447,6 +452,14 @@ spec:
       {{- else }}
       emptyDir: {}
       {{- end }}
+    {{- end }}
+    {{- range $i, $m := .Values.secretManagerMounts }}
+    - name: secret-manager-{{ $i }}
+      csi:
+        driver: secrets-store-gke.csi.k8s.io
+        readOnly: true
+        volumeAttributes:
+          secretProviderClass: {{ include "secretProviderClass" (dict "root" $ "index" $i) }}
     {{- end }}
     {{- range $s := .Values.sidecars }}
     {{ if .secretVolumes }}
